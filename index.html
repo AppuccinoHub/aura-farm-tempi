@@ -401,6 +401,12 @@ button:disabled{cursor:not-allowed}
   .afx-sw,.afx-knob{transition:none}
 }
 @media (max-width:520px){ .afx-row{min-height:68px;gap:10px} .afx-txt small{font-size:14px} }
+/* auto-advance: a thin bar fills the Next button while the game waits (paused with the 🔊 panel) */
+.afx-auto{position:relative;overflow:hidden}
+.afx-auto::after{content:"";position:absolute;left:0;bottom:0;height:5px;width:100%;background:rgba(255,255,255,.85);transform-origin:left center;transform:scaleX(0);animation:afxAuto var(--afx-auto,1500ms) linear forwards;pointer-events:none}
+.afx-auto.afx-auto-paused::after{animation-play-state:paused}
+@keyframes afxAuto{to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){ .afx-auto::after{display:none} }
 
 </style>
 </head>
@@ -719,8 +725,13 @@ const AuraFX = (function(){
      68 BPM, F major. Warm pad chords (2 bars each), soft sine bass, a slow pentatonic melody
      in 2-bar call-and-response phrases, and a light arpeggio in some sections.
      Every 8 bars a new section picks another progression and which layers play, so it never
-     loops exactly but always stays in the same calm key. Original material. */
-  const BPM=68, BEAT=60/BPM, BAR=BEAT*4;
+     loops exactly but always stays in the same calm key. Original material.
+     Tempo: each bar is planned as events on a beat grid; the scheduler turns beats into seconds
+     half a beat at a time, using a tempo multiplier (1 = 68 BPM, max 1.3) that glides toward the
+     game's target by at most TEMPO_SLEW per second. Only note timing changes: pitch never changes
+     (oscillator frequencies are fixed, the echo time is fixed), so a ramp has no pitch jumps. */
+  const BPM=68, BEAT=60/BPM, BAR=BEAT*4, STEP=0.5;
+  const TEMPO_MAX=1.3, TEMPO_SLEW=0.06, LOOKAHEAD=1.0;
   const mtof = m => 440*Math.pow(2,(m-69)/12);
   const CH = {
     F:  {pad:[53,57,60,64], bass:41, tones:[65,69,72,77,81]},  /* Fmaj7 */
@@ -733,6 +744,7 @@ const AuraFX = (function(){
   const PROGS = [["F","Am","Bb","C"],["Dm","Bb","F","C"],["Bb","Am","Gm","C"],["F","Dm","Gm","Bb"],["Dm","Gm","Bb","C"],["F","C","Dm","Bb"]];
   const MEL = [62,65,67,69,72,74,77,79,81];   /* F major pentatonic, D4 to A5 */
   const RHY = [[0,1.5,3],[0,2],[0.5,2,3],[0,1,2.5],[1,2.5],[0,3],[0,1.5,2.5],[0,2,3]];
+  function clampTempo(x){ x=Number(x); return Number.isFinite(x) ? Math.max(1, Math.min(TEMPO_MAX, x)) : 1; }
   function rng(seed){ let a=seed>>>0; return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
   function impulse(c, secs){
     const n=Math.floor(c.sampleRate*secs), b=c.createBuffer(2,n,c.sampleRate);
@@ -754,6 +766,9 @@ const AuraFX = (function(){
     const arpP=pan(0.22), arpB=c.createGain(); arpB.connect(arpP); arpP.connect(mix); const arpS=c.createGain(); arpS.gain.value=0.5; arpP.connect(arpS); arpS.connect(rev);
 
     let bar=0, sec=null, lastProg=-1, mi=4, rhyA=null;
+    /* beat clock: events wait in q as {b: absolute beat, fn(time, secondsPerBeat)} */
+    let q=[], curBeat=0, curT=0, tempo=1;
+    const at=(b, fn)=>q.push({b, fn});
     function plan(n){
       let p; do{ p=Math.floor(R()*PROGS.length); }while(p===lastProg); lastProg=p;
       if(n===0) return {prog:PROGS[0], mel:false, arp:false, intro:true};
@@ -763,67 +778,101 @@ const AuraFX = (function(){
       if(r<0.78) return {prog:PROGS[p], mel:false, arp:true};
       return {prog:PROGS[p], mel:true, arp:true, sparseArp:true};
     }
-    function pad(t, chord){
-      const dur=BAR*2, rel=2.4, f=c.createBiquadFilter(); f.type="lowpass"; f.Q.value=0.5;
+    function pad(t, chord, spb, dt0){
+      const dur=spb*8, rel=2.4, f=c.createBiquadFilter(); f.type="lowpass"; f.Q.value=0.5;
       f.frequency.setValueAtTime(650,t); f.frequency.linearRampToValueAtTime(1150,t+dur*0.55); f.frequency.linearRampToValueAtTime(720,t+dur+rel);
       const g=c.createGain(); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(1,t+1.4); g.gain.setValueAtTime(1,t+dur); g.gain.linearRampToValueAtTime(0,t+dur+rel);
       f.connect(g); g.connect(padB);
-      chord.pad.forEach((m,i)=>{ [[-7,"triangle",0.030],[7,"sine",0.034]].forEach(([dt,type,v])=>{
-        const o=c.createOscillator(), og=c.createGain(); o.type=type; o.frequency.value=mtof(m); o.detune.value=dt+(R()*4-2); og.gain.value=v*(i===0?1.1:1);
+      chord.pad.forEach((m,i)=>{ [[-7,"triangle",0.030],[7,"sine",0.034]].forEach(([dt,type,v],k)=>{
+        const o=c.createOscillator(), og=c.createGain(); o.type=type; o.frequency.value=mtof(m); o.detune.value=dt+dt0[i*2+k]; og.gain.value=v*(i===0?1.1:1);
         o.connect(og); og.connect(f); o.start(t); o.stop(t+dur+rel+0.1); }); });
     }
-    function bass(t, chord, strong){
-      const o=c.createOscillator(), g=c.createGain(); o.type="sine"; o.frequency.value=mtof(chord.bass);
-      const v=strong?0.085:0.06; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+0.08); g.gain.exponentialRampToValueAtTime(v*0.35,t+BAR*0.9); g.gain.linearRampToValueAtTime(0,t+BAR+0.3);
-      o.connect(g); g.connect(bassB); o.start(t); o.stop(t+BAR+0.4);
+    function bass(t, chord, strong, spb){
+      const o=c.createOscillator(), g=c.createGain(), len=spb*4; o.type="sine"; o.frequency.value=mtof(chord.bass);
+      const v=strong?0.085:0.06; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+0.08); g.gain.exponentialRampToValueAtTime(v*0.35,t+len*0.9); g.gain.linearRampToValueAtTime(0,t+len+0.3);
+      o.connect(g); g.connect(bassB); o.start(t); o.stop(t+len+0.4);
     }
     function note(t, m, len, vel){
       const f=mtof(m), g=c.createGain(); g.connect(melB);
       g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vel,t+0.025); g.gain.exponentialRampToValueAtTime(vel*0.4,t+len*0.6); g.gain.exponentialRampToValueAtTime(0.0001,t+len+0.9);
       [[1,"sine",1],[2,"sine",0.18],[1,"triangle",0.22]].forEach(([mul,type,v],k)=>{ const o=c.createOscillator(), og=c.createGain(); o.type=type; o.frequency.value=f*mul; if(k===2) o.detune.value=5; og.gain.value=v; o.connect(og); og.connect(g); o.start(t); o.stop(t+len+1); });
     }
-    function melody(t, chord, barInPhrase){
+    function melody(base, chord, barInPhrase){
       if(barInPhrase===0){ if(R()<0.2) { rhyA=null; return; } rhyA=pick(RHY); }
       else if(!rhyA || R()<0.3) return;        /* the answer bar sometimes rests */
       const rh = barInPhrase===0 ? rhyA : (R()<0.6 ? rhyA : pick(RHY));
       rh.forEach((b,k)=>{
         if(k===0){ let best=mi, bd=99; MEL.forEach((m,j)=>{ if(chord.tones.includes(m)){ const d=Math.abs(j-mi)+R()*0.8; if(d<bd){bd=d;best=j;} } }); mi=best; }
         else { mi = Math.max(1, Math.min(MEL.length-2, mi + pick([-2,-1,-1,1,1,2,0]))); }
-        const next = k+1<rh.length ? rh[k+1] : 4, len = Math.max(0.6, Math.min(1.8, next-b))*BEAT*0.95;
-        note(t+b*BEAT+(R()*0.02), MEL[mi], len, 0.11+R()*0.03);
+        const next = k+1<rh.length ? rh[k+1] : 4, lenB = Math.max(0.6, Math.min(1.8, next-b))*0.95;
+        const m=MEL[mi], jit=R()*0.02, vel=0.11+R()*0.03;
+        at(base+b, (t,spb)=>note(t+jit, m, lenB*spb, vel));
       });
     }
-    function arp(t, chord, sparse){
+    function arp(base, chord, sparse){
       const ns = chord.pad.map(m=>m+12), pat = pick([[0,1,2,3,2,1,2,3],[0,2,1,3,0,2,1,3],[3,2,1,0,1,2,3,2]]);
       for(let s=0;s<8;s++){
         if(R() > (sparse?0.5:0.85)) continue;
-        const tt=t+s*BEAT/2, m=ns[pat[s]], o=c.createOscillator(), g=c.createGain(), f=c.createBiquadFilter();
-        o.type="triangle"; o.frequency.value=mtof(m); f.type="lowpass"; f.frequency.value=1800;
-        const v=0.045+R()*0.015; g.gain.setValueAtTime(0,tt); g.gain.linearRampToValueAtTime(v,tt+0.006); g.gain.exponentialRampToValueAtTime(0.0001,tt+0.42);
-        o.connect(f); f.connect(g); g.connect(arpB); o.start(tt); o.stop(tt+0.45);
+        const m=ns[pat[s]], v=0.045+R()*0.015;
+        at(base+s*STEP, tt=>{
+          const o=c.createOscillator(), g=c.createGain(), f=c.createBiquadFilter();
+          o.type="triangle"; o.frequency.value=mtof(m); f.type="lowpass"; f.frequency.value=1800;
+          g.gain.setValueAtTime(0,tt); g.gain.linearRampToValueAtTime(v,tt+0.006); g.gain.exponentialRampToValueAtTime(0.0001,tt+0.42);
+          o.connect(f); f.connect(g); g.connect(arpB); o.start(tt); o.stop(tt+0.45);
+        });
       }
     }
-    function scheduleBar(t){
-      const inSec = bar%8; if(inSec===0) sec = plan(Math.floor(bar/8));
+    function planBar(){
+      const base=bar*4, inSec = bar%8; if(inSec===0) sec = plan(Math.floor(bar/8));
       const chord = CH[sec.prog[Math.floor(inSec/2)]];
-      if(inSec%2===0) pad(t, chord);
-      bass(t, chord, inSec%2===0);
-      if(sec.mel && !(sec.intro)) melody(t, chord, inSec%2);
-      if(sec.intro && inSec>=4) melody(t, chord, inSec%2);
-      if(sec.arp) arp(t, chord, sec.sparseArp);
+      if(inSec%2===0){ const dt0=chord.pad.flatMap(()=>[R()*4-2, R()*4-2]); at(base, (t,spb)=>pad(t, chord, spb, dt0)); }
+      const strong = inSec%2===0; at(base, (t,spb)=>bass(t, chord, strong, spb));
+      if(sec.mel && !(sec.intro)) melody(base, chord, inSec%2);
+      if(sec.intro && inSec>=4) melody(base, chord, inSec%2);
+      if(sec.arp) arp(base, chord, sec.sparseArp);
       bar++;
     }
-    return { scheduleBar, get bar(){ return bar; } };
+    /* schedule everything up to audio time `until`; target(t) gives the wanted tempo */
+    function advance(until, target, log){
+      let guard=0;
+      while(curT < until && guard++ < 20000){
+        if(curBeat >= bar*4) planBar();
+        const want=clampTempo(target(curT)), maxD=TEMPO_SLEW*STEP*BEAT/tempo;
+        tempo += Math.max(-maxD, Math.min(maxD, want-tempo));
+        const spb=BEAT/tempo, end=curBeat+STEP-1e-6, keep=[];
+        for(const ev of q){ if(ev.b < end){ try{ ev.fn(curT + Math.max(0, ev.b-curBeat)*spb, spb); }catch(e){} } else keep.push(ev); }
+        q=keep;
+        if(log) log.push([curT, tempo]);
+        curT += STEP*spb; curBeat += STEP;
+      }
+    }
+    return { advance, start(t){ curT=t; }, catchUp(now){ if(curT < now+0.05) curT = now+0.1; },
+      get bar(){ return bar; }, get tempo(){ return tempo; }, get time(){ return curT; } };
   }
 
-  let eng=null, mBus=null, timer=null, nextT=0, playing=false, hiddenPause=false;
+  let eng=null, mBus=null, timer=null, playing=false, hiddenPause=false, tempoTarget=1;
   const MUSIC_LEVEL = 0.5;   /* music bus level: clearly quieter than the effects */
   function tick(){
     try{
       const c=ac; if(!c || !eng) return;
-      if(nextT < c.currentTime+0.05) nextT = c.currentTime+0.1;   /* never schedule in the past */
-      while(nextT < c.currentTime+1.5){ eng.scheduleBar(nextT); nextT += BAR; }
+      eng.catchUp(c.currentTime);   /* never schedule in the past (e.g. after a busy moment) */
+      eng.advance(c.currentTime+LOOKAHEAD, ()=>tempoTarget);
     }catch(e){}
+  }
+  /* the game sets the wanted tempo (1 = normal … 1.3); the engine glides there smoothly */
+  function setTempo(x){ tempoTarget = clampTempo(x); return tempoTarget; }
+  /* untimed rounds: a gentle lift over the last 3 questions (i = 0-based index of the current one) */
+  function tempoForQuestion(i, n){
+    i=Number(i); n=Number(n); if(!(n>0) || !Number.isFinite(i)) return 1;
+    const left=n-i; if(left>3 || left<1) return 1;
+    return 1 + 0.25*(4-left)/3;           /* 3 left: +8%, 2 left: +17%, last one: +25% */
+  }
+  /* timed modes: ramp up over the final stretch (30% of the time, at least 10 s, at most 30 s) */
+  function tempoForTime(left, total){
+    left=Number(left); total=Number(total); if(!(total>0) || !Number.isFinite(left)) return 1;
+    const win=Math.min(total, Math.max(10, Math.min(30, total*0.3)));
+    if(left>=win) return 1;
+    return 1 + (TEMPO_MAX-1)*(1-Math.max(0,left)/win);
   }
   function musicStart(){
     if(playing || !S.music || (typeof document!=="undefined" && document.hidden)) return;
@@ -832,7 +881,7 @@ const AuraFX = (function(){
       resume();
       mBus=c.createGain(); mBus.gain.setValueAtTime(0,c.currentTime); mBus.gain.linearRampToValueAtTime(MUSIC_LEVEL,c.currentTime+3); mBus.connect(out);
       eng=Engine(c, mBus, (Math.random()*4294967295)>>>0);
-      nextT=c.currentTime+0.15; playing=true; tick(); timer=setInterval(tick, 250);
+      eng.start(c.currentTime+0.15); playing=true; tick(); timer=setInterval(tick, 200);
     }catch(e){ playing=false; }
   }
   function musicStop(fade){
@@ -841,16 +890,17 @@ const AuraFX = (function(){
     const b=mBus; mBus=null;
     try{ const t=ac.currentTime, f=fade==null?0.8:fade; b.gain.cancelScheduledValues(t); b.gain.setValueAtTime(b.gain.value,t); b.gain.linearRampToValueAtTime(0,t+f); setTimeout(()=>{ try{ b.disconnect(); }catch(e){} }, f*1000+150); }catch(e){}
   }
-  /* offline render for tests: returns {sampleRate, channels:[Float32Array,...]} */
-  function renderMusic(secs, sr, seed){
+  /* offline render for tests: returns {sampleRate, channels:[Float32Array,...], tempoLog:[[t,tempo],...]}
+     tempoFn(t) (optional) gives the wanted tempo at time t, e.g. to render a ramp */
+  function renderMusic(secs, sr, seed, tempoFn){
     const OC = W.OfflineAudioContext || W.webkitOfflineAudioContext;
     if(!OC) return Promise.reject(new Error("no OfflineAudioContext"));
     const c = new OC(2, Math.ceil(secs*sr), sr);
     const lim = limiter(c); lim.connect(c.destination);
     const bus = c.createGain(); bus.gain.setValueAtTime(0,0); bus.gain.linearRampToValueAtTime(MUSIC_LEVEL,3); bus.connect(lim);
-    const e = Engine(c, bus, seed==null?12345:seed);
-    for(let t=0.1; t<secs; t+=BAR) e.scheduleBar(t);
-    return c.startRendering().then(buf=>({sampleRate:buf.sampleRate, channels:[buf.getChannelData(0), buf.getChannelData(1)]}));
+    const e = Engine(c, bus, seed==null?12345:seed), log=[];
+    e.start(0.1); e.advance(secs, typeof tempoFn==="function" ? tempoFn : ()=>1, log);
+    return c.startRendering().then(buf=>({sampleRate:buf.sampleRate, channels:[buf.getChannelData(0), buf.getChannelData(1)], tempoLog:log}));
   }
   function renderSfx(kind, sr){
     const OC = W.OfflineAudioContext || W.webkitOfflineAudioContext;
@@ -884,8 +934,8 @@ const AuraFX = (function(){
     el("afxDone").addEventListener("click", close);
   }
   function isOpen(){ const p=el("afxPanel"); return !!(p && p.classList.contains("show")); }
-  function open(from){ buildPanel(); opener=from||document.activeElement; sync(); el("afxPanel").classList.add("show"); setTimeout(()=>{ const b=el("afxSfx"); if(b) b.focus(); },30); }
-  function close(){ const p=el("afxPanel"); if(!p || !p.classList.contains("show")) return; p.classList.remove("show"); try{ if(opener && opener.focus && document.contains(opener)) opener.focus(); }catch(e){} opener=null; }
+  function open(from){ buildPanel(); opener=from||document.activeElement; sync(); el("afxPanel").classList.add("show"); autoCheck(); setTimeout(()=>{ const b=el("afxSfx"); if(b) b.focus(); },30); }
+  function close(){ const p=el("afxPanel"); if(!p || !p.classList.contains("show")) return; p.classList.remove("show"); autoCheck(); try{ if(opener && opener.focus && document.contains(opener)) opener.focus(); }catch(e){} opener=null; }
   function sync(){
     const on = S.sfx||S.music;
     document.querySelectorAll('[data-fx="panel"]').forEach(b=>{
@@ -913,6 +963,38 @@ const AuraFX = (function(){
       w.innerHTML=h; document.body.appendChild(w); setTimeout(()=>w.remove(), 950);
     }catch(e){}
   }
+  /* ---------------- auto-advance after a correct answer ----------------
+     One job at a time. It waits `ms`, pausing while the 🔊 panel (or a game modal, via init's
+     `paused` option) is open or the tab is hidden, then calls fn once. cancelAuto() stops it
+     (every Next/skip, leaving a screen or starting a round must call it, so nothing advances twice).
+     An optional button gets a thin progress bar (no bar with reduced motion). */
+  let autoJob=null, autoIv=null, pausedHook=null;
+  function autoPausedNow(){ try{ return isOpen() || (typeof document!=="undefined" && document.hidden) || !!(pausedHook && pausedHook()); }catch(e){ return false; } }
+  function autoBtn(j, cls, on){ try{ if(j && j.btn) j.btn.classList.toggle(cls, on); }catch(e){} }
+  function autoCheck(){
+    const j=autoJob; if(!j){ clearInterval(autoIv); autoIv=null; return; }
+    const p=autoPausedNow();
+    if(p && j.id){ clearTimeout(j.id); j.id=null; j.left -= Date.now()-j.t0; autoBtn(j,"afx-auto-paused",true); }
+    else if(!p && !j.id){
+      j.t0=Date.now(); autoBtn(j,"afx-auto-paused",false);
+      j.id=setTimeout(()=>{ if(autoJob!==j) return; autoJob=null; autoBtn(j,"afx-auto",false); clearInterval(autoIv); autoIv=null; try{ j.fn(); }catch(e){ try{ console.warn(e); }catch(_){} } }, Math.max(0, j.left));
+    }
+  }
+  function autoAdvance(fn, ms, btn){
+    cancelAuto();
+    const j={fn, left: ms==null?1500:ms, t0:0, id:null, btn:btn||null};
+    autoJob=j;
+    if(j.btn){ try{ j.btn.style.setProperty("--afx-auto", j.left+"ms"); j.btn.classList.remove("afx-auto","afx-auto-paused"); void j.btn.offsetWidth; j.btn.classList.add("afx-auto"); }catch(e){} }
+    autoCheck();
+    if(!autoIv) autoIv=setInterval(autoCheck, 100);
+    return true;
+  }
+  function cancelAuto(){
+    const j=autoJob; autoJob=null; clearInterval(autoIv); autoIv=null;
+    if(j){ clearTimeout(j.id); autoBtn(j,"afx-auto",false); autoBtn(j,"afx-auto-paused",false); }
+  }
+  function autoState(){ const j=autoJob; if(!j) return null; return {paused:!j.id, left: j.id ? Math.max(0, j.left-(Date.now()-j.t0)) : j.left}; }
+
   function bump(node){ try{ if(!node || reduced()) return; node.classList.remove("afx-bump"); void node.offsetWidth; node.classList.add("afx-bump"); }catch(e){} }
 
   /* ---------------- wiring ---------------- */
@@ -924,6 +1006,7 @@ const AuraFX = (function(){
   function init(opts){
     opts = opts || {};
     if(opts.key) KEY=opts.key;
+    if(typeof opts.paused==="function") pausedHook=opts.paused;
     load();
     try{
       ["pointerdown","keydown","touchend"].forEach(ev=>document.addEventListener(ev, onGesture, true));
@@ -943,7 +1026,10 @@ const AuraFX = (function(){
     init, play, sync, open, close, isOpen, burst, bump,
     click:()=>play("click"), ok:()=>play("ok"), bad:()=>play("bad"), fanfare:()=>play("fanfare"), soft:()=>play("soft"),
     get sfx(){ return S.sfx; }, get music(){ return S.music; },
-    state:()=>({sfx:S.sfx, music:S.music, playing, hasAudio:!!AC_CLASS, ctx:ac?ac.state:null, bar:eng?eng.bar:0, open:isOpen()}),
+    state:()=>({sfx:S.sfx, music:S.music, playing, hasAudio:!!AC_CLASS, ctx:ac?ac.state:null, bar:eng?eng.bar:0, open:isOpen(),
+      tempo: eng ? Math.round(eng.tempo*1000)/1000 : 1, tempoTarget, schedT: eng ? eng.time : 0, auto:autoState()}),
+    setTempo, tempoForQuestion, tempoForTime, get tempoTarget(){ return tempoTarget; },
+    autoAdvance, cancelAuto, autoState, reduced,
     renderMusic, renderSfx, _musicStart:musicStart, _musicStop:musicStop
   };
 })();
@@ -1555,6 +1641,12 @@ function hasProgress(){ return P.r.some(Boolean) || P.aura>0 || P.pts>0 || BEST.
 /* ===================== SOUND (AuraFX: Web Audio, sounds on / music off by default) ===================== */
 function beep(kind){ try{ if(kind==="ok") AuraFX.ok(); else if(kind==="bad") AuraFX.bad(); else if(kind==="win") AuraFX.fanfare(); else if(kind==="soft") AuraFX.soft(); }catch(e){} }
 function syncMute(){ try{ AuraFX.sync(); }catch(e){} }
+/* auto-advance after a correct answer (pauses with the 🔊 panel, any modal or a hidden tab) + music tempo */
+const AUTO_MS = 1500;
+function fxAuto(fn, ms, btn){ try{ AuraFX.autoAdvance(fn, ms, btn); }catch(e){ clearTimeout(autoT); autoT=setTimeout(fn, ms); } }
+function fxCancelAuto(){ clearTimeout(autoT); autoT=null; try{ AuraFX.cancelAuto(); }catch(e){} }
+function fxTempo(x){ try{ AuraFX.setTempo(x); }catch(e){} }
+function qTempo(i, n){ try{ return AuraFX.tempoForQuestion(i, n); }catch(e){ return 1; } }
 
 /* ===================== SMALL UI ===================== */
 let toastT=null;
@@ -1579,6 +1671,7 @@ let CUR = "home";
 function show(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active", s.id===id));
   CUR=id; syncAura(); syncMute();
+  if(id!=="play" && id!=="battle" && id!=="chart3") fxTempo(1);   /* music back to normal tempo off the play screens */
 }
 function img(key, alt, cls=""){ return ART[key] ? `<img class="${cls}" src="${ART[key]}" alt="${esc(alt)}" draggable="false">` : ""; }
 
@@ -1685,7 +1778,7 @@ function beginSession(o){
   show("play"); renderItem();
 }
 let autoT=null, nextGuardUntil=0;
-function clearTimers(){ clearTimeout(autoT); autoT=null; stopBattleTimer(); }
+function clearTimers(){ fxCancelAuto(); stopBattleTimer(); fxTempo(1); }
 function sessTag(){ return S.kind==="challenge" ? "Challenge" : `Part ${S.part} · ${S.title}`; }
 
 /* ---------- sentence card ---------- */
@@ -1713,8 +1806,9 @@ function setFb(el, cls, html){ el.className="fb "+cls; el.innerHTML=`<div class=
 /* ---------- play screen ---------- */
 function curItem(){ return S.items[S.i]; }
 function renderItem(){
-  clearTimeout(autoT);
+  fxCancelAuto();
   const it=curItem(), mode=S.modes[S.i], n=S.items.length;
+  fxTempo(qTempo(S.i, n));   /* gentle music lift over the last 3 questions */
   S.answered=false; S.firstTry=true; S.mode=mode;
   $("playTag").textContent = sessTag();
   $("playCount").textContent = `${S.i+1} / ${n}`;
@@ -1811,18 +1905,18 @@ function answerRight(anchor){
   flash(true); beep("ok");
   document.querySelectorAll("#tiles .conj-tile").forEach(t=>t.setAttribute("aria-disabled","true"));
   renderBuildDone();
-  showNext(3000);
+  showNext(AUTO_MS);
 }
 function renderBuildDone(){ if(S.mode==="build"){ const tray=$("tray"); if(tray) tray.querySelectorAll("button").forEach(b=>b.disabled=true); const ck=$("bCheck"); if(ck) ck.disabled=true; const cl=$("bClear"); if(cl) cl.disabled=true; } }
 function showNext(autoMs){
   $("playNextRow").classList.add("show"); nextGuardUntil=Date.now()+450;
   $("playNext").textContent = S.i+1<S.items.length ? "Next →" : "See results →";
   setTimeout(()=>$("playNext").focus({preventScroll:true}),30);
-  if(autoMs){ clearTimeout(autoT); autoT=setTimeout(()=>{ if(CUR==="play" && S && S.answered) nextItem(); }, autoMs); }
+  if(autoMs){ const s=S, idx=S.i; fxAuto(()=>{ if(CUR==="play" && S===s && S.answered && S.i===idx) nextItem(); }, autoMs, $("playNext")); }
 }
-$("playNext").onclick=()=>{ if(Date.now()<nextGuardUntil) return; nextItem(); };
+$("playNext").onclick=()=>{ if(Date.now()<nextGuardUntil || !S || !S.answered) return; nextItem(); };   /* skip ahead; never twice */
 function nextItem(){
-  clearTimeout(autoT);
+  fxCancelAuto();
   if(!S) return;
   S.i++;
   if(S.i>=S.items.length) finishSession(); else renderItem();
@@ -1847,7 +1941,7 @@ function judgeSwipe(saysRight){
   else bl.className="blank ok";
   setFb($("playFb"), ok?"ok":"bad", msg);
   $("swNo").disabled=true; $("swYes").disabled=true;
-  showNext(ok?3000:0);
+  showNext(ok?AUTO_MS:0);   /* right: move on by itself; wrong: wait for Next */
 }
 function bindSwipe(card){
   let sx=0, dx=0, down=false, pid=null;
@@ -1896,8 +1990,14 @@ function startBattle(){
   $("bossArt").textContent = S.kind==="challenge" ? "👾" : "🐉";
   show("battle"); renderBattleItem(); startBattleTimer();
 }
+function battleTempo(){
+  if(!S || !S.items) return;
+  const q = qTempo(S.i, S.items.length);
+  let t = 1; try{ if(SET.timer && S.left!=null) t = AuraFX.tempoForTime(S.left, S.items.length*SEC_PER_Q); }catch(e){}
+  fxTempo(Math.max(q, t));   /* faster as the battle clock runs out (and over the last questions) */
+}
 function renderBattleItem(){
-  clearTimeout(autoT);
+  fxCancelAuto();
   const it=curItem(), n=S.items.length;
   S.answered=false; S.firstTry=true; S.mode="battle";
   $("battleCount").textContent = `${S.i+1} / ${n}`;
@@ -1910,7 +2010,7 @@ function renderBattleItem(){
   opts.forEach((f,i)=>{ const b=document.createElement("button"); b.className="conj-tile"; b.lang="it"; b.dataset.f=f; b.style.cursor="pointer"; b.style.touchAction="manipulation"; b.innerHTML=`<span class="kbd" aria-hidden="true">${i+1}</span>${esc(f)}`; b.setAttribute("aria-label",f); b.onclick=()=>hitBattle(b); g.appendChild(b); });
   g.id="battleTiles";
   setFb($("battleFb"),"info","Hit the boss with the right form!<span class=\"kh\"> (keys 1–"+opts.length+")</span>");
-  syncTimerChip();
+  syncTimerChip(); battleTempo();
 }
 function hitBattle(tile){
   if(S.answered||S.timedOut||tile.classList.contains("tried")) return;
@@ -1926,7 +2026,7 @@ function hitBattle(tile){
     $("battleNextRow").classList.add("show"); nextGuardUntil=Date.now()+450;
     $("battleNext").textContent = S.i+1<S.items.length ? "Next →" : "See results →";
     setTimeout(()=>$("battleNext").focus({preventScroll:true}),30);
-    autoT=setTimeout(()=>{ if(CUR==="battle"&&S&&S.answered) nextBattle(); }, 3000);
+    const s=S, idx=S.i; fxAuto(()=>{ if(CUR==="battle" && S===s && S.answered && !S.timedOut && S.i===idx) nextBattle(); }, AUTO_MS, $("battleNext"));
   } else {
     S.firstTry && recordMiss(it,f); S.firstTry=false; S.streak=0;
     tile.classList.add("wrong"); setTimeout(()=>{ tile.classList.remove("wrong"); tile.classList.add("tried"); tile.setAttribute("aria-disabled","true"); },350);
@@ -1934,8 +2034,8 @@ function hitBattle(tile){
     setFb($("battleFb"),"bad","✗ "+whyWrongBody(it,f)+" Try again!"); flash(false); beep("bad");
   }
 }
-$("battleNext").onclick=()=>{ if(Date.now()<nextGuardUntil) return; nextBattle(); };
-function nextBattle(){ clearTimeout(autoT); if(!S) return; S.i++; if(S.i>=S.items.length) finishSession(); else renderBattleItem(); }
+$("battleNext").onclick=()=>{ if(Date.now()<nextGuardUntil || !S || !S.answered || S.timedOut) return; nextBattle(); };   /* skip ahead; never twice */
+function nextBattle(){ fxCancelAuto(); if(!S) return; S.i++; if(S.i>=S.items.length) finishSession(); else renderBattleItem(); }
 function startBattleTimer(){ stopBattleTimer(); battleLast=performance.now(); battleIv=setInterval(tickBattle,200); syncTimerChip(); }
 function stopBattleTimer(){ if(battleIv){ clearInterval(battleIv); battleIv=null; } }
 function timerPaused(){ return modalOpen() || AuraFX.isOpen() || document.hidden || CUR!=="battle" || (S&&S.answered); }
@@ -1943,7 +2043,7 @@ function tickBattle(){
   const now=performance.now(), dt=(now-battleLast)/1000; battleLast=now;
   if(!S||S.timedOut) return;
   if(SET.timer && !timerPaused()){ S.left=Math.max(0,S.left-dt); if(S.left<=0) return timeUp(); }
-  syncTimerChip();
+  syncTimerChip(); battleTempo();
 }
 function syncTimerChip(){
   const c=$("timerChip"); if(!S||S.left==null) return;
@@ -1956,12 +2056,12 @@ function syncTimerChip(){
 }
 $("timerChip").onclick=()=>{ SET.timer=!SET.timer; saveSet(); syncTimerChip(); toast(SET.timer?"Timer on (+2 aura per first-try hit)":"Timer off. No penalty!"); };
 function timeUp(){
-  S.timedOut=true; S.answered=true; clearTimeout(autoT);
+  S.timedOut=true; S.answered=true; fxCancelAuto();
   for(let j=S.i;j<S.items.length;j++){ if(j===S.i && S.misses.some(m=>m.it===S.items[j])) continue; S.misses.push({it:S.items[j], wrong:null}); }
   document.querySelectorAll("#battleTiles .conj-tile").forEach(t=>t.disabled=true);
   setFb($("battleFb"),"bad","⏰ Time's up! Questions you didn't answer count as missed. (You can turn the timer off: no penalty.)");
   syncTimerChip();
-  autoT=setTimeout(()=>finishSession(),1800);
+  const s=S; fxAuto(()=>{ if(S===s && CUR==="battle") finishSession(); }, 1800);
 }
 document.addEventListener("visibilitychange",()=>{ battleLast=performance.now(); });
 
@@ -1984,6 +2084,7 @@ function renderChart(){
   $("fillChart").innerHTML=h;
   $("chartCount").textContent=`${S.cell} / 24`;
   if(S.cell>=24) return;
+  fxTempo(qTempo(S.cell, 24));   /* gentle music lift over the last 3 cells */
   const verb=CH_VERBS[v], ans=IMPF[verb][q];
   const others = shuffle([0,1,2,3,4,5].filter(x=>x!==q)).slice(0,3).map(x=>IMPF[verb][x]);
   const presSame = PRES[verb][q];
@@ -2004,7 +2105,7 @@ function chooseChart(tile){
     if(S.cell<24 && S.cell%6===0) msg += ` Next column: ${chartTip(v+1)}`;
     else if(q===0) msg += ` ${IRR_TIP[verb]}`;
     renderChart(); setFb($("chartFb"),"ok",msg);
-    if(S.cell>=24){ setFb($("chartFb"),"ok","✓ Chart complete! 🎉"); setTimeout(()=>finishSession(),900); }
+    if(S.cell>=24){ setFb($("chartFb"),"ok","✓ Chart complete! 🎉"); const s=S; fxAuto(()=>{ if(S===s && CUR==="chart3") finishSession(); }, AUTO_MS); }
   } else {
     if(S.firstTry) S.misses.push({chart:true, verb, q, wrong:f});
     S.firstTry=false; S.streak=0; tile.classList.add("wrong"); setTimeout(()=>{ tile.classList.remove("wrong"); tile.classList.add("tried"); tile.setAttribute("aria-disabled","true"); },350);
@@ -2241,7 +2342,7 @@ window.__afTest = {
 };
 
 /* ===================== INIT ===================== */
-AuraFX.init({key:"auraTempi.v1.audio"});
+AuraFX.init({key:"auraTempi.v1.audio", paused:()=>modalOpen()});
 syncMute(); renderHome();
 
 </script>
