@@ -213,7 +213,10 @@ button:disabled{cursor:not-allowed}
 
 /* ---------- end ---------- */
 #end{text-align:center;gap:6px}
-.end-top{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:14px}
+.end-top{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:14px;padding-right:48px}
+#end .end-fx{position:absolute;top:8px;right:14px;z-index:2}
+.end-pts{font-size:18px;font-weight:700;color:var(--gold)}
+.end-pts b{font-size:20px}
 .end-art{height:84px;width:84px;display:grid;place-items:center;font-size:60px}
 .end-art img{max-height:84px;max-width:110px;object-fit:contain}
 #end h2{font-size:25px;line-height:1.2}
@@ -269,7 +272,7 @@ button:disabled{cursor:not-allowed}
 .modal{width:100%;max-width:460px;max-height:94%;overflow:auto;background:linear-gradient(160deg,#2a1747,#170d2a);border:1px solid var(--stroke);border-radius:20px;padding:14px 16px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .modal h2{font-size:22px;margin-bottom:4px}
 .modal p{font-size:16px;color:var(--muted);line-height:1.35}
-.savecode{font-family:ui-monospace,"DejaVu Sans Mono",monospace;font-size:30px;font-weight:900;letter-spacing:.08em;text-align:center;background:#0e0820;border:2px dashed var(--gold);color:var(--gold);border-radius:14px;padding:10px;margin:10px 0;user-select:all;-webkit-user-select:all}
+.savecode{font-family:ui-monospace,"DejaVu Sans Mono",monospace;font-size:26px;font-weight:900;letter-spacing:.08em;text-align:center;background:#0e0820;border:2px dashed var(--gold);color:var(--gold);border-radius:14px;padding:10px;margin:10px 0;user-select:all;-webkit-user-select:all}
 .modal .row{display:flex;gap:8px;margin-top:8px}
 .modal input{flex:1;min-width:0;font-size:20px;font-family:ui-monospace,"DejaVu Sans Mono",monospace;text-transform:uppercase;padding:10px 12px;border-radius:12px;border:1px solid var(--stroke);background:#0e0820;color:#fff}
 .sm-btn{font-size:17px;font-weight:800;padding:10px 14px;border-radius:12px;border:1px solid var(--neon2);background:rgba(0,245,212,.12);color:#fff;min-height:46px}
@@ -336,6 +339,48 @@ button:disabled{cursor:not-allowed}
 #challenge .summary{margin-top:8px}
 @media (max-height:780px){ #challenge .part-hero .pthumb{width:50px;height:50px} #challenge .part-hero h2{font-size:19px} #challenge .seg button{min-height:44px} }
 
+@media (max-width:520px){ .savecode{font-size:20px;letter-spacing:.04em} }
+
+/* ===== AURA FX (shared): sound panel, points pill, points burst ===== */
+.afx-backdrop{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(5,2,12,.78)}
+.afx-backdrop.show{display:flex}
+.afx-modal{width:100%;max-width:440px;background:#1d1030;border:2px solid #c44dff;border-radius:20px;padding:18px 16px 16px;color:#f5f0ff;box-shadow:0 10px 40px rgba(0,0,0,.6);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+.afx-modal h3{font-size:22px;margin:0 0 12px;text-align:center}
+.afx-row{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;margin:0 0 10px;padding:10px 12px;border-radius:16px;border:2px solid rgba(196,77,255,.55);background:#261640;color:#f5f0ff;text-align:left;font:inherit;cursor:pointer}
+.afx-row.on{border-color:#00f5d4;background:#12303a}
+.afx-ico{font-size:26px;flex:0 0 auto}
+.afx-txt{flex:1 1 auto;min-width:0}
+.afx-txt b{display:block;font-size:19px}
+.afx-txt small{display:block;font-size:15px;line-height:1.3;color:#d9d0ea;margin-top:2px}
+.afx-sw{flex:0 0 auto;width:54px;height:30px;border-radius:15px;background:#4a3a63;position:relative;transition:background .15s}
+.afx-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}
+.afx-row.on .afx-sw{background:#00c9ad}
+.afx-row.on .afx-knob{left:27px}
+.afx-state{flex:0 0 auto;width:34px;font-weight:800;font-size:17px;text-align:center}
+.afx-note{font-size:15px;color:#d9d0ea;text-align:center;margin:2px 0 12px}
+.afx-done{display:block;width:100%;min-height:52px;border-radius:14px;border:none;font:inherit;font-size:19px;font-weight:800;color:#fff;cursor:pointer;background:linear-gradient(135deg,#c44dff,#ff4d9e)}
+.afx-row:focus-visible,.afx-done:focus-visible{outline:3px solid #ffd166;outline-offset:2px}
+.pts-pill{font-weight:800;white-space:nowrap}
+.afx-bump{animation:afxBump .4s ease-out}
+@keyframes afxBump{0%{transform:scale(1)}35%{transform:scale(1.18)}100%{transform:scale(1)}}
+.afx-burst{position:fixed;z-index:950;width:0;height:0;pointer-events:none}
+.afx-pts{position:absolute;left:0;top:0;transform:translate(-50%,-50%);font:900 28px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#ffd166;text-align:center;white-space:nowrap;
+  padding:6px 12px;border-radius:14px;background:rgba(14,6,30,.9);border:2px solid rgba(255,209,102,.7);box-shadow:0 4px 16px rgba(0,0,0,.5);
+  text-shadow:0 0 8px rgba(255,209,102,.6);animation:afxRise .9s ease-out forwards}
+.afx-pts small{display:block;font-size:16px;font-weight:800;color:#fff;margin-top:4px;text-shadow:none}
+.afx-dot{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);animation:afxDot .6s ease-out forwards}
+@keyframes afxRise{0%{opacity:0;transform:translate(-50%,-60%) scale(.8)}15%{opacity:1;transform:translate(-50%,-100%) scale(1.06)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-165%) scale(1)}}
+@keyframes afxDot{0%{opacity:1;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1)}}
+@keyframes afxFade{0%{opacity:0}10%{opacity:1}75%{opacity:1}100%{opacity:0}}
+.afx-burst.still .afx-pts{transform:translate(-50%,-100%);animation:afxFade .9s linear forwards}
+@media (prefers-reduced-motion:reduce){
+  .afx-dot{display:none}
+  .afx-pts{transform:translate(-50%,-100%);animation:afxFade .9s linear forwards !important}
+  .afx-bump{animation:none}
+  .afx-sw,.afx-knob{transition:none}
+}
+@media (max-width:520px){ .afx-row{min-height:68px;gap:10px} .afx-txt small{font-size:14px} }
+
 </style>
 </head>
 <body>
@@ -343,8 +388,9 @@ button:disabled{cursor:not-allowed}
   <!-- HOME -->
   <section class="screen active" id="home" aria-label="Home">
     <div class="hud">
-      <div class="grp"><button class="icon-btn" data-act="mute" aria-label="Sound off. Turn sound on">🔇</button>
-        <span class="pill" aria-label="Aura points">✨ <span class="auraVal">0</span></span></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button>
+        <span class="pill" aria-label="Aura">✨ <span class="auraVal">0</span></span>
+        <span class="pill pts-pill" aria-label="Points">⭐ <span class="ptsVal">0</span></span></div>
       <div class="grp"><button class="icon-btn" data-act="save" aria-label="Save code and reset">💾</button>
         <button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
     </div>
@@ -363,7 +409,7 @@ button:disabled{cursor:not-allowed}
     <div class="hud">
       <div class="grp"><button class="icon-btn" data-act="home" aria-label="Back to home">←</button>
         <span class="pill">✨ <span class="auraVal">0</span></span></div>
-      <div class="grp"><button class="icon-btn" data-act="mute" aria-label="Sound off. Turn sound on">🔇</button>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button>
         <button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
     </div>
     <div class="part-hero" id="partHero"></div>
@@ -377,7 +423,8 @@ button:disabled{cursor:not-allowed}
     <div class="hud">
       <div class="grp"><button class="icon-btn" data-act="leave" aria-label="Leave this round">←</button>
         <span class="pill" aria-label="Streak"><span class="fire">🔥</span> <span id="streakVal">0</span></span></div>
-      <div class="grp"><span class="pill">✨ <span class="auraVal">0</span></span>
+      <div class="grp"><span class="pill pts-pill" aria-label="Points">⭐ <span class="ptsVal">0</span></span>
+        <button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button>
         <button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
     </div>
     <div class="part-head"><span class="part-tag" id="playTag">Part 1</span><span class="round-tag" id="playCount">1 / 10</span></div>
@@ -394,7 +441,8 @@ button:disabled{cursor:not-allowed}
     <div class="hud">
       <div class="grp"><button class="icon-btn" data-act="leave" aria-label="Leave this battle">←</button>
         <button class="pill timer-chip" id="timerChip" aria-label="Battle timer. Tap to turn it on or off">⏱ --</button></div>
-      <div class="grp"><span class="pill">✨ <span class="auraVal">0</span></span>
+      <div class="grp"><span class="pill pts-pill" aria-label="Points">⭐ <span class="ptsVal">0</span></span>
+        <button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button>
         <button class="icon-btn" data-act="help" aria-label="Open the verb chart (pauses the timer)">📋</button></div>
     </div>
     <div class="boss-row">
@@ -412,9 +460,10 @@ button:disabled{cursor:not-allowed}
   <!-- CHART (Part 3 round 1) -->
   <section class="screen" id="chart3" aria-label="Irregular imperfetto chart">
     <div class="hud">
-      <div class="grp"><button class="icon-btn" data-act="leave" aria-label="Leave the chart">←</button>
-        <span class="pill">✨ <span class="auraVal">0</span></span></div>
-      <div class="grp"><button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
+      <div class="grp"><button class="icon-btn" data-act="leave" aria-label="Leave the chart">←</button></div>
+      <div class="grp"><span class="pill pts-pill" aria-label="Points">⭐ <span class="ptsVal">0</span></span>
+        <button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button>
+        <button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
     </div>
     <div class="part-head"><span class="part-tag">Part 3 · Imperfetto (irregular)</span><span class="round-tag" id="chartCount">0 / 24</span></div>
     <div class="howto">Fill the chart. Tap the form that goes in the <b style="color:var(--gold)">gold</b> box.</div>
@@ -425,9 +474,11 @@ button:disabled{cursor:not-allowed}
 
   <!-- END -->
   <section class="screen" id="end" aria-label="Round results">
+    <button class="icon-btn end-fx" data-fx="panel" aria-label="Sound settings">🔊</button>
     <div class="end-top"><div class="end-art" id="endArt">🏆</div>
       <div><h2 id="endTitle">Round complete!</h2><div class="soft" id="endSub"></div></div></div>
     <div class="end-score" id="endScore">0/10</div>
+    <div class="end-pts" id="endPts"></div>
     <div class="soft" id="endMsg"></div>
     <div id="endReward"></div>
     <div class="lock-list" id="endList"></div>
@@ -439,7 +490,8 @@ button:disabled{cursor:not-allowed}
     <div class="hud">
       <div class="grp"><button class="icon-btn" data-act="home" aria-label="Back to home">←</button>
         <span class="pill">✨ <span class="auraVal">0</span></span></div>
-      <div class="grp"><button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button>
+        <button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
     </div>
     <div class="part-hero" id="chHero"></div>
     <div class="grow">
@@ -459,7 +511,7 @@ button:disabled{cursor:not-allowed}
     <div class="hud">
       <div class="grp"><button class="icon-btn" data-act="home" aria-label="Back to home">←</button>
         <span class="pill">✨ <span class="auraVal">0</span></span></div>
-      <div class="grp"></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
     </div>
     <div class="big-title" id="farmTitle">Your farm</div>
     <div id="farmBig"></div>
@@ -472,7 +524,7 @@ button:disabled{cursor:not-allowed}
   <section class="screen" id="cert" aria-label="Certificate">
     <div class="hud">
       <div class="grp"><button class="icon-btn" data-act="home" aria-label="Back to home">←</button></div>
-      <div class="grp"></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
     </div>
     <div class="name-row"><label for="certName">Your name for the certificate (only saved on this device):</label>
       <input id="certName" maxlength="24" autocomplete="off" placeholder="Type your name"></div>
@@ -497,10 +549,10 @@ button:disabled{cursor:not-allowed}
         <button class="icon-btn" data-act="closeModal" aria-label="Close">✕</button></div>
       <p>Write this code down. On another device, type it in to get your farm back. No login needed.</p>
       <div class="savecode" id="saveCode">FARM-0000-0000</div>
-      <p style="font-size:15px">It stores your finished rounds, best Challenge score and aura. It does <b>not</b> store your name.</p>
+      <p style="font-size:15px">It stores your finished rounds, best Challenge score, aura and points. It does <b>not</b> store your name.</p>
       <hr>
       <h2 style="font-size:19px">Restore from a code</h2>
-      <div class="row"><input id="restoreInput" aria-label="Save code" placeholder="FARM-XXXX-XXXX" autocomplete="off" spellcheck="false" maxlength="24">
+      <div class="row"><input id="restoreInput" aria-label="Save code" placeholder="FARM-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" maxlength="24">
         <button class="sm-btn" id="restoreBtn">Restore</button></div>
       <div class="msg" id="restoreMsg" role="status" aria-live="polite"></div>
       <hr>
@@ -561,6 +613,320 @@ const ART = {
 "fountain_locked":"data:image/webp;base64,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",
 "small_car_locked":"data:image/webp;base64,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"
 } /*ART_DATA*/;
+/* ===================== AURA FX (shared by both Aura Farm games) =====================
+   Sound effects, calm procedural background music, the 🔊 sound panel and the points burst.
+   Master copy: /workspace/apps/shared/aurafx/aurafx.js (each game's build step inlines it).
+   Everything is generated with the Web Audio API: no audio files and no network requests.
+   Every audio call is wrapped in try/catch; with no AudioContext everything becomes a no-op.
+   The AudioContext is only created after a real user gesture (browser autoplay rules). */
+const AuraFX = (function(){
+  "use strict";
+  const S = {sfx:true, music:false};          /* classroom defaults: sounds on, music off */
+  let KEY = "auraFX.v1";
+  const W = typeof window!=="undefined" ? window : {};
+  const AC_CLASS = W.AudioContext || W.webkitAudioContext || null;
+  function load(){ try{ const v = JSON.parse(W.localStorage.getItem(KEY)); if(v && typeof v==="object"){ if(typeof v.sfx==="boolean") S.sfx=v.sfx; if(typeof v.music==="boolean") S.music=v.music; } }catch(e){} }
+  function save(){ try{ W.localStorage.setItem(KEY, JSON.stringify({sfx:S.sfx, music:S.music})); }catch(e){} }
+
+  /* ---------------- audio graph ---------------- */
+  let ac=null, out=null, sfxBus=null, unlocked=false;
+  function gestureSeen(){ try{ return unlocked || !!(navigator.userActivation && navigator.userActivation.hasBeenActive); }catch(e){ return unlocked; } }
+  function limiter(c){ const k=c.createDynamicsCompressor(); try{ k.threshold.value=-10; k.knee.value=8; k.ratio.value=12; k.attack.value=0.004; k.release.value=0.3; }catch(e){} return k; }
+  function ctx(){
+    if(ac) return ac;
+    if(!AC_CLASS || !gestureSeen()) return null;
+    try{
+      ac = new AC_CLASS();
+      out = limiter(ac); out.connect(ac.destination);
+      sfxBus = ac.createGain(); sfxBus.gain.value = 1; sfxBus.connect(out);
+    }catch(e){ ac=null; }
+    return ac;
+  }
+  function resume(){ try{ const c=ctx(); if(c && c.state==="suspended"){ const p=c.resume(); if(p && p.catch) p.catch(()=>{}); } }catch(e){} }
+
+  /* one enveloped oscillator: soft attack, exponential decay, optional glide and low-pass */
+  function voice(c, dest, t, f, dur, o){
+    o = o || {};
+    const osc=c.createOscillator(), g=c.createGain();
+    osc.type = o.type || "sine";
+    osc.frequency.setValueAtTime(f, t);
+    if(o.glide) osc.frequency.exponentialRampToValueAtTime(o.glide, t+dur*0.8);
+    if(o.detune) osc.detune.setValueAtTime(o.detune, t);
+    const a=o.attack||0.005, v=o.vol||0.1;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(v, t+a);
+    if(o.hold) g.gain.setValueAtTime(v, t+a+o.hold);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    let node = osc;
+    if(o.lp){ const f2=c.createBiquadFilter(); f2.type="lowpass"; f2.frequency.setValueAtTime(o.lp, t); f2.Q.value=0.4; osc.connect(f2); node=f2; }
+    node.connect(g); g.connect(dest);
+    osc.start(t); osc.stop(t+dur+0.05);
+  }
+
+  /* ---------------- sound effects ---------------- */
+  const SFX = {
+    click(c,d,t){ voice(c,d,t,1100,0.06,{vol:0.1,attack:0.003,glide:700}); },
+    ok(c,d,t){      /* two-note chime, G5 then C6, with a soft bell partial */
+      [[784,0],[1046.5,0.1]].forEach(([f,dt])=>{ voice(c,d,t+dt,f,0.6,{vol:0.15,attack:0.004}); voice(c,d,t+dt,f*2,0.25,{vol:0.025,attack:0.004}); });
+    },
+    bad(c,d,t){     /* gentle low falling tone, filtered, no buzz */
+      voice(c,d,t,247,0.42,{type:"triangle",vol:0.12,attack:0.02,glide:196,lp:900});
+      voice(c,d,t,123.5,0.42,{vol:0.06,attack:0.02,glide:98});
+    },
+    fanfare(c,d,t){ /* C5 E5 G5, then a warm C major chord with C6 on top */
+      [523.25,659.25,783.99].forEach((f,i)=>voice(c,d,t+i*0.12,f,0.32,{type:"triangle",vol:0.1,attack:0.006,lp:2600}));
+      [523.25,659.25,783.99,1046.5].forEach((f,i)=>voice(c,d,t+0.38,f,1.3,{type:i===3?"sine":"triangle",vol:i===3?0.09:0.06,attack:0.01,lp:3000}));
+      voice(c,d,t+0.38,2093,0.5,{vol:0.02,attack:0.005});
+    },
+    soft(c,d,t){    /* "round over" without the fanfare (for a round that isn't Done yet) */
+      voice(c,d,t,587.33,0.5,{type:"triangle",vol:0.09,attack:0.01,lp:2000});
+      voice(c,d,t+0.16,440,0.8,{type:"triangle",vol:0.09,attack:0.01,lp:2000});
+    }
+  };
+  let lastClick=0;
+  function play(kind){
+    if(!S.sfx || !SFX[kind]) return;
+    try{
+      const c=ctx(); if(!c) return;
+      resume();
+      if(kind==="click"){ const n=c.currentTime; if(n-lastClick<0.035) return; lastClick=n; }
+      SFX[kind](c, sfxBus, c.currentTime+0.01);
+    }catch(e){}
+  }
+
+  /* ---------------- procedural music ----------------
+     68 BPM, F major. Warm pad chords (2 bars each), soft sine bass, a slow pentatonic melody
+     in 2-bar call-and-response phrases, and a light arpeggio in some sections.
+     Every 8 bars a new section picks another progression and which layers play, so it never
+     loops exactly but always stays in the same calm key. Original material. */
+  const BPM=68, BEAT=60/BPM, BAR=BEAT*4;
+  const mtof = m => 440*Math.pow(2,(m-69)/12);
+  const CH = {
+    F:  {pad:[53,57,60,64], bass:41, tones:[65,69,72,77,81]},  /* Fmaj7 */
+    Dm: {pad:[50,53,57,60], bass:38, tones:[62,65,69,72,74,77]},/* Dm7 */
+    Bb: {pad:[50,53,58,60], bass:46, tones:[62,65,72,74,77]},  /* Bb(add9) */
+    C:  {pad:[52,55,60,62], bass:36, tones:[67,72,74,79]},     /* Cadd9 */
+    Gm: {pad:[53,55,58,62], bass:43, tones:[67,74,77,79]},     /* Gm7 */
+    Am: {pad:[52,55,57,60], bass:45, tones:[69,72,79,81]}      /* Am7 */
+  };
+  const PROGS = [["F","Am","Bb","C"],["Dm","Bb","F","C"],["Bb","Am","Gm","C"],["F","Dm","Gm","Bb"],["Dm","Gm","Bb","C"],["F","C","Dm","Bb"]];
+  const MEL = [62,65,67,69,72,74,77,79,81];   /* F major pentatonic, D4 to A5 */
+  const RHY = [[0,1.5,3],[0,2],[0.5,2,3],[0,1,2.5],[1,2.5],[0,3],[0,1.5,2.5],[0,2,3]];
+  function rng(seed){ let a=seed>>>0; return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  function impulse(c, secs){
+    const n=Math.floor(c.sampleRate*secs), b=c.createBuffer(2,n,c.sampleRate);
+    for(let ch=0;ch<2;ch++){ const d=b.getChannelData(ch); let lp=0; for(let i=0;i<n;i++){ lp = lp*0.6 + (Math.random()*2-1)*0.4; d[i]=lp*Math.pow(1-i/n,2.6); } }
+    return b;
+  }
+  function Engine(c, dest, seed){
+    const R = rng(seed);
+    const pick = a => a[Math.floor(R()*a.length)];
+    /* graph: layers -> mix -> dest; sends -> reverb / echo -> mix */
+    const mix=c.createGain(); mix.gain.value=0.55; mix.connect(dest);
+    const rev=c.createConvolver(); rev.buffer=impulse(c,3.2); const revG=c.createGain(); revG.gain.value=0.5; rev.connect(revG); revG.connect(mix);
+    const dly=c.createDelay(2); dly.delayTime.value=BEAT*0.75; const fb=c.createGain(); fb.gain.value=0.32; const dlp=c.createBiquadFilter(); dlp.type="lowpass"; dlp.frequency.value=2200;
+    dly.connect(dlp); dlp.connect(fb); fb.connect(dly); const dG=c.createGain(); dG.gain.value=0.28; dlp.connect(dG); dG.connect(mix); dG.connect(rev);
+    function pan(v){ if(c.createStereoPanner){ const p=c.createStereoPanner(); p.pan.value=v; return p; } return c.createGain(); }
+    const padB=c.createGain(); padB.gain.value=1; padB.connect(mix); const padS=c.createGain(); padS.gain.value=0.6; padB.connect(padS); padS.connect(rev);
+    const bassB=c.createGain(); bassB.gain.value=1; bassB.connect(mix);
+    const melP=pan(-0.12), melB=c.createGain(); melB.connect(melP); melP.connect(mix); const melS=c.createGain(); melS.gain.value=0.45; melP.connect(melS); melS.connect(rev); melP.connect(dly);
+    const arpP=pan(0.22), arpB=c.createGain(); arpB.connect(arpP); arpP.connect(mix); const arpS=c.createGain(); arpS.gain.value=0.5; arpP.connect(arpS); arpS.connect(rev);
+
+    let bar=0, sec=null, lastProg=-1, mi=4, rhyA=null;
+    function plan(n){
+      let p; do{ p=Math.floor(R()*PROGS.length); }while(p===lastProg); lastProg=p;
+      if(n===0) return {prog:PROGS[0], mel:false, arp:false, intro:true};
+      const r=R();
+      if(r<0.12) return {prog:PROGS[p], mel:false, arp:false};         /* breathing space */
+      if(r<0.50) return {prog:PROGS[p], mel:true,  arp:false};
+      if(r<0.78) return {prog:PROGS[p], mel:false, arp:true};
+      return {prog:PROGS[p], mel:true, arp:true, sparseArp:true};
+    }
+    function pad(t, chord){
+      const dur=BAR*2, rel=2.4, f=c.createBiquadFilter(); f.type="lowpass"; f.Q.value=0.5;
+      f.frequency.setValueAtTime(650,t); f.frequency.linearRampToValueAtTime(1150,t+dur*0.55); f.frequency.linearRampToValueAtTime(720,t+dur+rel);
+      const g=c.createGain(); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(1,t+1.4); g.gain.setValueAtTime(1,t+dur); g.gain.linearRampToValueAtTime(0,t+dur+rel);
+      f.connect(g); g.connect(padB);
+      chord.pad.forEach((m,i)=>{ [[-7,"triangle",0.030],[7,"sine",0.034]].forEach(([dt,type,v])=>{
+        const o=c.createOscillator(), og=c.createGain(); o.type=type; o.frequency.value=mtof(m); o.detune.value=dt+(R()*4-2); og.gain.value=v*(i===0?1.1:1);
+        o.connect(og); og.connect(f); o.start(t); o.stop(t+dur+rel+0.1); }); });
+    }
+    function bass(t, chord, strong){
+      const o=c.createOscillator(), g=c.createGain(); o.type="sine"; o.frequency.value=mtof(chord.bass);
+      const v=strong?0.085:0.06; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+0.08); g.gain.exponentialRampToValueAtTime(v*0.35,t+BAR*0.9); g.gain.linearRampToValueAtTime(0,t+BAR+0.3);
+      o.connect(g); g.connect(bassB); o.start(t); o.stop(t+BAR+0.4);
+    }
+    function note(t, m, len, vel){
+      const f=mtof(m), g=c.createGain(); g.connect(melB);
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vel,t+0.025); g.gain.exponentialRampToValueAtTime(vel*0.4,t+len*0.6); g.gain.exponentialRampToValueAtTime(0.0001,t+len+0.9);
+      [[1,"sine",1],[2,"sine",0.18],[1,"triangle",0.22]].forEach(([mul,type,v],k)=>{ const o=c.createOscillator(), og=c.createGain(); o.type=type; o.frequency.value=f*mul; if(k===2) o.detune.value=5; og.gain.value=v; o.connect(og); og.connect(g); o.start(t); o.stop(t+len+1); });
+    }
+    function melody(t, chord, barInPhrase){
+      if(barInPhrase===0){ if(R()<0.2) { rhyA=null; return; } rhyA=pick(RHY); }
+      else if(!rhyA || R()<0.3) return;        /* the answer bar sometimes rests */
+      const rh = barInPhrase===0 ? rhyA : (R()<0.6 ? rhyA : pick(RHY));
+      rh.forEach((b,k)=>{
+        if(k===0){ let best=mi, bd=99; MEL.forEach((m,j)=>{ if(chord.tones.includes(m)){ const d=Math.abs(j-mi)+R()*0.8; if(d<bd){bd=d;best=j;} } }); mi=best; }
+        else { mi = Math.max(1, Math.min(MEL.length-2, mi + pick([-2,-1,-1,1,1,2,0]))); }
+        const next = k+1<rh.length ? rh[k+1] : 4, len = Math.max(0.6, Math.min(1.8, next-b))*BEAT*0.95;
+        note(t+b*BEAT+(R()*0.02), MEL[mi], len, 0.11+R()*0.03);
+      });
+    }
+    function arp(t, chord, sparse){
+      const ns = chord.pad.map(m=>m+12), pat = pick([[0,1,2,3,2,1,2,3],[0,2,1,3,0,2,1,3],[3,2,1,0,1,2,3,2]]);
+      for(let s=0;s<8;s++){
+        if(R() > (sparse?0.5:0.85)) continue;
+        const tt=t+s*BEAT/2, m=ns[pat[s]], o=c.createOscillator(), g=c.createGain(), f=c.createBiquadFilter();
+        o.type="triangle"; o.frequency.value=mtof(m); f.type="lowpass"; f.frequency.value=1800;
+        const v=0.045+R()*0.015; g.gain.setValueAtTime(0,tt); g.gain.linearRampToValueAtTime(v,tt+0.006); g.gain.exponentialRampToValueAtTime(0.0001,tt+0.42);
+        o.connect(f); f.connect(g); g.connect(arpB); o.start(tt); o.stop(tt+0.45);
+      }
+    }
+    function scheduleBar(t){
+      const inSec = bar%8; if(inSec===0) sec = plan(Math.floor(bar/8));
+      const chord = CH[sec.prog[Math.floor(inSec/2)]];
+      if(inSec%2===0) pad(t, chord);
+      bass(t, chord, inSec%2===0);
+      if(sec.mel && !(sec.intro)) melody(t, chord, inSec%2);
+      if(sec.intro && inSec>=4) melody(t, chord, inSec%2);
+      if(sec.arp) arp(t, chord, sec.sparseArp);
+      bar++;
+    }
+    return { scheduleBar, get bar(){ return bar; } };
+  }
+
+  let eng=null, mBus=null, timer=null, nextT=0, playing=false, hiddenPause=false;
+  const MUSIC_LEVEL = 0.5;   /* music bus level: clearly quieter than the effects */
+  function tick(){
+    try{
+      const c=ac; if(!c || !eng) return;
+      if(nextT < c.currentTime+0.05) nextT = c.currentTime+0.1;   /* never schedule in the past */
+      while(nextT < c.currentTime+1.5){ eng.scheduleBar(nextT); nextT += BAR; }
+    }catch(e){}
+  }
+  function musicStart(){
+    if(playing || !S.music || (typeof document!=="undefined" && document.hidden)) return;
+    try{
+      const c=ctx(); if(!c) return;
+      resume();
+      mBus=c.createGain(); mBus.gain.setValueAtTime(0,c.currentTime); mBus.gain.linearRampToValueAtTime(MUSIC_LEVEL,c.currentTime+3); mBus.connect(out);
+      eng=Engine(c, mBus, (Math.random()*4294967295)>>>0);
+      nextT=c.currentTime+0.15; playing=true; tick(); timer=setInterval(tick, 250);
+    }catch(e){ playing=false; }
+  }
+  function musicStop(fade){
+    if(!playing) return;
+    playing=false; clearInterval(timer); timer=null; eng=null;
+    const b=mBus; mBus=null;
+    try{ const t=ac.currentTime, f=fade==null?0.8:fade; b.gain.cancelScheduledValues(t); b.gain.setValueAtTime(b.gain.value,t); b.gain.linearRampToValueAtTime(0,t+f); setTimeout(()=>{ try{ b.disconnect(); }catch(e){} }, f*1000+150); }catch(e){}
+  }
+  /* offline render for tests: returns {sampleRate, channels:[Float32Array,...]} */
+  function renderMusic(secs, sr, seed){
+    const OC = W.OfflineAudioContext || W.webkitOfflineAudioContext;
+    if(!OC) return Promise.reject(new Error("no OfflineAudioContext"));
+    const c = new OC(2, Math.ceil(secs*sr), sr);
+    const lim = limiter(c); lim.connect(c.destination);
+    const bus = c.createGain(); bus.gain.setValueAtTime(0,0); bus.gain.linearRampToValueAtTime(MUSIC_LEVEL,3); bus.connect(lim);
+    const e = Engine(c, bus, seed==null?12345:seed);
+    for(let t=0.1; t<secs; t+=BAR) e.scheduleBar(t);
+    return c.startRendering().then(buf=>({sampleRate:buf.sampleRate, channels:[buf.getChannelData(0), buf.getChannelData(1)]}));
+  }
+  function renderSfx(kind, sr){
+    const OC = W.OfflineAudioContext || W.webkitOfflineAudioContext;
+    const c = new OC(1, Math.ceil(2*sr), sr), lim=limiter(c); lim.connect(c.destination);
+    SFX[kind](c, lim, 0.01);
+    return c.startRendering().then(buf=>buf.getChannelData(0));
+  }
+
+  /* ---------------- 🔊 panel ---------------- */
+  let opener=null;
+  function el(id){ return document.getElementById(id); }
+  function buildPanel(){
+    if(el("afxPanel")) return;
+    const d=document.createElement("div");
+    d.id="afxPanel"; d.className="afx-backdrop"; d.setAttribute("role","dialog"); d.setAttribute("aria-modal","true"); d.setAttribute("aria-labelledby","afxTitle");
+    d.innerHTML =
+      '<div class="afx-modal">'+
+      '<h3 id="afxTitle">🔊 Sound settings</h3>'+
+      '<button type="button" class="afx-row" id="afxSfx" role="switch"><span class="afx-ico" aria-hidden="true">🔔</span>'+
+        '<span class="afx-txt"><b>Sounds</b><small>Clicks, right and wrong answers, round complete. On at the start.</small></span>'+
+        '<span class="afx-sw" aria-hidden="true"><span class="afx-knob"></span></span><span class="afx-state"></span></button>'+
+      '<button type="button" class="afx-row" id="afxMusic" role="switch"><span class="afx-ico" aria-hidden="true">🎵</span>'+
+        '<span class="afx-txt"><b>Music</b><small>Calm background music. Off at the start: turn it on if you like.</small></span>'+
+        '<span class="afx-sw" aria-hidden="true"><span class="afx-knob"></span></span><span class="afx-state"></span></button>'+
+      '<p class="afx-note" id="afxNote"></p>'+
+      '<button type="button" class="afx-done" id="afxDone">Done</button></div>';
+    document.body.appendChild(d);
+    d.addEventListener("click", e=>{ if(e.target===d) close(); });
+    el("afxSfx").addEventListener("click", ()=>{ S.sfx=!S.sfx; save(); sync(); if(S.sfx) play("ok"); });
+    el("afxMusic").addEventListener("click", ()=>{ S.music=!S.music; save(); unlocked=true; if(S.music) musicStart(); else musicStop(); sync(); });
+    el("afxDone").addEventListener("click", close);
+  }
+  function isOpen(){ const p=el("afxPanel"); return !!(p && p.classList.contains("show")); }
+  function open(from){ buildPanel(); opener=from||document.activeElement; sync(); el("afxPanel").classList.add("show"); setTimeout(()=>{ const b=el("afxSfx"); if(b) b.focus(); },30); }
+  function close(){ const p=el("afxPanel"); if(!p || !p.classList.contains("show")) return; p.classList.remove("show"); try{ if(opener && opener.focus && document.contains(opener)) opener.focus(); }catch(e){} opener=null; }
+  function sync(){
+    const on = S.sfx||S.music;
+    document.querySelectorAll('[data-fx="panel"]').forEach(b=>{
+      b.textContent = on ? "🔊" : "🔇";
+      const lab = `Sound settings. Sounds ${S.sfx?"on":"off"}, music ${S.music?"on":"off"}`;
+      b.setAttribute("aria-label", lab); b.title = lab;
+    });
+    [["afxSfx",S.sfx],["afxMusic",S.music]].forEach(([id,v])=>{ const b=el(id); if(!b) return; b.setAttribute("aria-checked", String(v)); b.classList.toggle("on", v); b.querySelector(".afx-state").textContent = v ? "On" : "Off"; });
+    const n=el("afxNote"); if(n) n.textContent = AC_CLASS ? "Your choice is saved on this device." : "Sound isn't available in this browser, but the game works fine without it.";
+  }
+
+  /* ---------------- points burst ---------------- */
+  const DOTS = ["#ffd166","#00f5d4","#ff4d9e","#c44dff"];
+  function reduced(){ try{ return W.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } }
+  function burst(anchor, text, sub){
+    try{
+      let x=W.innerWidth/2, y=W.innerHeight/2;
+      if(anchor && anchor.getBoundingClientRect){ const r=anchor.getBoundingClientRect(); if(r.width||r.height){ x=r.left+r.width/2; y=r.top+Math.min(10, r.height/2); } }
+      x=Math.max(105,Math.min(W.innerWidth-105,x)); y=Math.max(90,Math.min(W.innerHeight-20,y));
+      const still=reduced(), w=document.createElement("div");
+      w.className="afx-burst"+(still?" still":""); w.setAttribute("aria-hidden","true"); w.style.left=x+"px"; w.style.top=y+"px";
+      let h='<div class="afx-pts">'+text+(sub?'<small>'+sub+'</small>':'')+'</div>';
+      if(!still) for(let i=0;i<12;i++){ const a=i/12*Math.PI*2+Math.random()*0.4, r=30+Math.random()*28;
+        h+=`<i class="afx-dot" style="--dx:${(Math.cos(a)*r).toFixed(1)}px;--dy:${(Math.sin(a)*r).toFixed(1)}px;--c:${DOTS[i%4]}"></i>`; }
+      w.innerHTML=h; document.body.appendChild(w); setTimeout(()=>w.remove(), 950);
+    }catch(e){}
+  }
+  function bump(node){ try{ if(!node || reduced()) return; node.classList.remove("afx-bump"); void node.offsetWidth; node.classList.add("afx-bump"); }catch(e){} }
+
+  /* ---------------- wiring ---------------- */
+  function onGesture(e){
+    if(e && e.isTrusted===false) return;
+    unlocked=true; resume();
+    if(S.music && !playing) musicStart();
+  }
+  function init(opts){
+    opts = opts || {};
+    if(opts.key) KEY=opts.key;
+    load();
+    try{
+      ["pointerdown","keydown","touchend"].forEach(ev=>document.addEventListener(ev, onGesture, true));
+      /* soft click on every button / tile press (the panel's own switches included) */
+      document.addEventListener("click", e=>{ const b=e.target && e.target.closest && e.target.closest("button,[role=button]"); if(b && !b.disabled) play("click"); }, true);
+      document.addEventListener("click", e=>{ const b=e.target && e.target.closest && e.target.closest('[data-fx="panel"]'); if(b){ e.preventDefault(); open(b); } });
+      /* while the panel is open, keys go to the panel only (no answering behind it) */
+      W.addEventListener("keydown", e=>{ if(!isOpen()) return; if(e.key==="Escape"){ e.preventDefault(); close(); } e.stopImmediatePropagation(); }, true);
+      document.addEventListener("visibilitychange", ()=>{
+        if(document.hidden){ if(playing){ hiddenPause=true; musicStop(0.25); } setTimeout(()=>{ try{ if(document.hidden && ac && !playing && ac.state==="running") ac.suspend().catch(()=>{}); }catch(e){} }, 400); }
+        else { if(ac && gestureSeen()) resume(); if(hiddenPause){ hiddenPause=false; musicStart(); } }
+      });
+    }catch(e){}
+    sync();
+  }
+  return {
+    init, play, sync, open, close, isOpen, burst, bump,
+    click:()=>play("click"), ok:()=>play("ok"), bad:()=>play("bad"), fanfare:()=>play("fanfare"), soft:()=>play("soft"),
+    get sfx(){ return S.sfx; }, get music(){ return S.music; },
+    state:()=>({sfx:S.sfx, music:S.music, playing, hasAudio:!!AC_CLASS, ctx:ac?ac.state:null, bar:eng?eng.bar:0, open:isOpen()}),
+    renderMusic, renderSfx, _musicStart:musicStart, _musicStop:musicStop
+  };
+})();
+
 /* ===================== VERB TABLES ===================== */
 /* person index: 0 io, 1 tu, 2 lui/lei, 3 noi, 4 voi, 5 loro */
 const PRES = {
@@ -896,10 +1262,11 @@ const store = {
 function readJSON(k){ try{ const v = JSON.parse(store.get(k)); return (v && typeof v==="object") ? v : null; }catch(e){ return null; } }
 const NROUNDS = 17;
 function cleanProgress(p){
-  const out = {v:1, r:new Array(NROUNDS).fill(false), aura:0, rb:{}};
+  const out = {v:1, r:new Array(NROUNDS).fill(false), aura:0, pts:0, rb:{}};
   if(!p) return out;
   if(Array.isArray(p.r)) for(let i=0;i<NROUNDS;i++) out.r[i] = p.r[i]===true;
   const a = Number(p.aura); out.aura = Number.isFinite(a) && a>0 ? Math.min(Math.floor(a), 999999) : 0;
+  const pt = Number(p.pts); out.pts = Number.isFinite(pt) && pt>0 ? Math.min(Math.floor(pt), 999999) : 0;
   if(p.rb && typeof p.rb==="object") for(const k in p.rb){ const v=p.rb[k]; if(v && Number.isFinite(v.s) && Number.isFinite(v.t) && v.t>0 && v.s>=0 && v.s<=v.t) out.rb[k]={s:v.s,t:v.t}; }
   return out;
 }
@@ -1103,43 +1470,53 @@ function challengePool(tenses,n){
 }
 const TENSE_LABEL = {pres:"Presente", impf:"Imperfetto", pp_e:"Passato prossimo + essere", pp_a:"Passato prossimo + avere"};
 
-/* ===================== SAVE CODE (FARM-XXXX-XXXX) ===================== */
+/* ===================== SAVE CODE ===================== */
+/* v1 (old, still accepted): FARM-XXXX-XXXX       = 7 payload chars + checksum
+   v2 (current):             FARM-XXXX-XXXX-XXXX  = the same 7 chars (version field = 2) + 4 chars of points/5 + checksum
+   payload chars 1-7 (35 bits): version 3 | rounds 17 | best 5 | length 2 | aura/50 8;  chars 8-11 (20 bits): points/5
+   checksum = (sum of w_i * v_i + 7) mod 32 with odd weights 1,3,5,... so every single-character typo is caught. */
 const B32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-const CK_W = [1,3,5,7,9,11,13];
-function encodeState(rounds, best, aura){
+const CK_W = [1,3,5,7,9,11,13,15,17,19,21];
+const PTS_MAX = 999999;
+function ck32(d){ return (d.reduce((s,x,i)=>s+CK_W[i]*x,0)+7)%32; }
+function encodeState(rounds, best, aura, pts){
   let mask=0; for(let i=0;i<NROUNDS;i++) if(rounds[i]) mask += 2**(NROUNDS-1-i);
   const lc = best.l===10?1:best.l===20?2:best.l===30?3:0;
   const bs = lc ? Math.max(0,Math.min(30,best.s|0)) : 0;
   const a50 = Math.max(0,Math.min(255,Math.floor((aura||0)/50)));
-  /* layout (35-bit payload): version 3 | rounds 17 | best 5 | length 2 | aura/50 8 */
-  let v = 1; v = v*2**17 + mask; v = v*32 + bs; v = v*4 + lc; v = v*256 + a50;
+  let v = 2; v = v*2**17 + mask; v = v*32 + bs; v = v*4 + lc; v = v*256 + a50;
   const d=[]; for(let i=0;i<7;i++){ d.unshift(v%32); v=Math.floor(v/32); }
-  const ck = (d.reduce((s,x,i)=>s+CK_W[i]*x,0)+7)%32;
-  const s = d.map(x=>B32[x]).join("") + B32[ck];
-  return "FARM-"+s.slice(0,4)+"-"+s.slice(4);
+  let p5 = Math.max(0, Math.min(Math.floor(PTS_MAX/5), Math.floor((pts||0)/5)));
+  const e=[]; for(let i=0;i<4;i++){ e.unshift(p5%32); p5=Math.floor(p5/32); }
+  const all = d.concat(e);
+  const s = all.map(x=>B32[x]).join("") + B32[ck32(all)];
+  return "FARM-"+s.slice(0,4)+"-"+s.slice(4,8)+"-"+s.slice(8);
 }
-function normalizeCode(raw){
-  let s = String(raw||"").toUpperCase().replace(/[\s\-_.]/g,"");
-  if(s.length===12 && s.startsWith("FARM")) s = s.slice(4);
-  return s.replace(/O/g,"0").replace(/[IL]/g,"1");
-}
-function decodeCode(raw){
-  const s = normalizeCode(raw);
-  if(s.length!==8) return null;
+function normalizeCode(raw){ return String(raw||"").toUpperCase().replace(/[\s\-_.]/g,"").replace(/O/g,"0").replace(/[IL]/g,"1"); }
+function decodeBody(s){
+  if(s.length!==8 && s.length!==12) return null;
   const d=[]; for(const ch of s){ const x=B32.indexOf(ch); if(x<0) return null; d.push(x); }
-  const ck = (d.slice(0,7).reduce((a,x,i)=>a+CK_W[i]*x,0)+7)%32;
-  if(ck!==d[7]) return null;
+  const n=d.length-1;
+  if(ck32(d.slice(0,n))!==d[n]) return null;
   let v=0; for(let i=0;i<7;i++) v = v*32 + d[i];
   const a50 = v%256; v=Math.floor(v/256);
   const lc = v%4; v=Math.floor(v/4);
   const bs = v%32; v=Math.floor(v/32);
   const mask = v%(2**17); v=Math.floor(v/2**17);
   const ver = v;
-  if(ver!==1) return null;
+  if(!((ver===1 && n===7) || (ver===2 && n===11))) return null;
   const l = [0,10,20,30][lc];
   if(bs>l) return null;
+  let pts=0; if(ver===2){ let p5=0; for(let i=7;i<11;i++) p5 = p5*32 + d[i]; pts = Math.min(PTS_MAX, p5*5); }
   const rounds=[]; for(let i=0;i<NROUNDS;i++) rounds.push(Math.floor(mask/2**(NROUNDS-1-i))%2===1);
-  return {rounds, best:{s:bs,l}, aura:a50*50};
+  return {rounds, best:{s:bs,l}, aura:a50*50, pts, ver};
+}
+function decodeCode(raw){
+  const s = normalizeCode(raw);
+  /* "FARM" is an optional prefix; a body may itself start with FARM, so try both readings */
+  const cands = s.startsWith("FARM") ? [s.slice(4), s] : [s];
+  for(const c of cands){ const d = decodeBody(c); if(d) return d; }
+  return null;
 }
 function betterBest(a,b){ /* true if a is better than b */
   if(!a.l) return false; if(!b.l) return true;
@@ -1149,34 +1526,33 @@ function mergeDecoded(d){
   for(let i=0;i<NROUNDS;i++) P.r[i] = P.r[i] || d.rounds[i];
   if(betterBest(d.best,BEST)) BEST = {s:d.best.s,l:d.best.l};
   P.aura = Math.max(P.aura, d.aura);
+  P.pts = Math.max(P.pts, d.pts||0);
   saveP(); saveBest();
 }
-function hasProgress(){ return P.r.some(Boolean) || P.aura>0 || BEST.l>0; }
+function hasProgress(){ return P.r.some(Boolean) || P.aura>0 || P.pts>0 || BEST.l>0; }
 
-/* ===================== SOUND (off by default) ===================== */
-let AC=null;
-function beep(kind){
-  if(SET.mute) return;
-  try{
-    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
-    const o=AC.createOscillator(), g=AC.createGain(); o.connect(g); g.connect(AC.destination);
-    const t=AC.currentTime, f = kind==="ok"?[660,880]:kind==="win"?[523,784]:[220,160];
-    o.type = kind==="bad"?"square":"triangle";
-    o.frequency.setValueAtTime(f[0],t); o.frequency.linearRampToValueAtTime(f[1],t+.12);
-    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.12,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+.22);
-    o.start(t); o.stop(t+.25);
-  }catch(e){}
-}
-function syncMute(){ document.querySelectorAll('[data-act="mute"]').forEach(b=>{ b.textContent = SET.mute?"🔇":"🔊"; b.setAttribute("aria-label", SET.mute?"Sound off. Turn sound on":"Sound on. Turn sound off"); }); }
+/* ===================== SOUND (AuraFX: Web Audio, sounds on / music off by default) ===================== */
+function beep(kind){ try{ if(kind==="ok") AuraFX.ok(); else if(kind==="bad") AuraFX.bad(); else if(kind==="win") AuraFX.fanfare(); else if(kind==="soft") AuraFX.soft(); }catch(e){} }
+function syncMute(){ try{ AuraFX.sync(); }catch(e){} }
 
 /* ===================== SMALL UI ===================== */
 let toastT=null;
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2600); }
 function flash(ok){ const f=$(ok?"flashOk":"flashBad"); f.classList.add("show"); setTimeout(()=>f.classList.remove("show"),220); }
-function syncAura(){ document.querySelectorAll(".auraVal").forEach(e=>e.textContent=P.aura); }
-function addAura(n, anchor){
+function syncAura(){ document.querySelectorAll(".auraVal").forEach(e=>e.textContent=P.aura); syncPts(); }
+/* ===================== POINTS (⭐, separate from aura) =====================
+   +10 for each answer that is right on the first try, +5 streak bonus from 3 in a row.
+   Saved with the progress (guarded storage) and in the save code. Never affects scores or Done. */
+const PTS_BASE = 10, PTS_STREAK = 5, PTS_STREAK_FROM = 3;
+function syncPts(){ document.querySelectorAll(".ptsVal").forEach(e=>e.textContent=P.pts); }
+function awardPoints(anchor){
+  const bonus = S && S.streak>=PTS_STREAK_FROM ? PTS_STREAK : 0, n = PTS_BASE + bonus;
+  P.pts = Math.min(999999, P.pts + n); if(S) S.pts = (S.pts||0) + n;
+  saveP(); syncPts();
+  try{ AuraFX.burst(anchor, "+"+PTS_BASE, bonus ? "🔥 +"+bonus+" streak bonus" : ""); document.querySelectorAll(".screen.active .pts-pill").forEach(p=>AuraFX.bump(p)); }catch(e){}
+}
+function addAura(n){
   P.aura += n; saveP(); syncAura();
-  if(anchor && n>0){ const r=anchor.getBoundingClientRect(), a=$("app").getBoundingClientRect(); const d=document.createElement("div"); d.className="aura-pop"; d.textContent="+"+n+" ✨"; d.style.left=(r.left-a.left+r.width/2-30)+"px"; d.style.top=(r.top-a.top-10)+"px"; $("app").appendChild(d); setTimeout(()=>d.remove(),720); }
 }
 let CUR = "home";
 function show(id){
@@ -1276,7 +1652,7 @@ function startRound(part, r){
 }
 function beginSession(o){
   clearTimers();
-  S = Object.assign({i:0, score:0, misses:[], streak:0, tries:0}, o);
+  S = Object.assign({i:0, score:0, misses:[], streak:0, tries:0, pts:0}, o);
   const n=S.items.length;
   if(S.style==="battle"){ startBattle(); return; }
   if(S.style==="mixed"){ const base=[]; for(let i=0;i<n;i++) base.push(["drag","build","swipe"][i%3]); S.modes=shuffle(base); }
@@ -1408,7 +1784,7 @@ function answerRight(anchor){
   const it=curItem(); S.answered=true;
   const bl=$("blank"); if(bl){ bl.textContent=it.ans; bl.className="blank ok snap"; }
   $("sentCard")?.classList.add("res-ok");
-  if(S.firstTry){ S.score++; S.streak++; addAura(10 + Math.min(S.streak,5)*2, anchor); } else addAura(3, anchor);
+  if(S.firstTry){ S.score++; S.streak++; addAura(10 + Math.min(S.streak,5)*2); awardPoints(anchor); } else addAura(3);
   $("streakVal").textContent=S.streak;
   setFb($("playFb"),"ok","✓ "+whyOkBody(it));
   flash(true); beep("ok");
@@ -1440,7 +1816,7 @@ function judgeSwipe(saysRight){
   setTimeout(()=>{ card.style.transform=""; },260);
   $(saysRight?"stYes":"stNo").classList.add("show"); setTimeout(()=>{ $("stYes")?.classList.remove("show"); $("stNo")?.classList.remove("show"); },650);
   const bl=$("blank");
-  if(ok){ S.score++; S.streak++; addAura(10+Math.min(S.streak,5)*2, card); flash(true); beep("ok"); card.classList.add("res-ok"); }
+  if(ok){ S.score++; S.streak++; addAura(10+Math.min(S.streak,5)*2); awardPoints(bl||card); flash(true); beep("ok"); card.classList.add("res-ok"); }
   else { S.streak=0; recordMiss(it, S.cand); flash(false); beep("bad"); card.classList.add("res-bad"); }
   $("streakVal").textContent=S.streak;
   let msg;
@@ -1524,7 +1900,7 @@ function hitBattle(tile){
     S.hp--; $("hpFill").style.width=(S.hp/S.items.length*100)+"%";
     const hf=$("hitFlash"); hf.classList.remove("show"); void hf.offsetWidth; hf.classList.add("show");
     $("bossArt").classList.remove("shake"); void $("bossArt").offsetWidth; $("bossArt").classList.add("shake");
-    if(S.firstTry){ S.score++; S.streak++; addAura(10+(SET.timer?2:0), tile); } else addAura(3, tile);
+    if(S.firstTry){ S.score++; S.streak++; addAura(10+(SET.timer?2:0)); awardPoints(tile); } else addAura(3);
     setFb($("battleFb"),"ok","✓ "+whyOkBody(it)); flash(true); beep("ok");
     $("battleNextRow").classList.add("show"); nextGuardUntil=Date.now()+450;
     $("battleNext").textContent = S.i+1<S.items.length ? "Next →" : "See results →";
@@ -1541,7 +1917,7 @@ $("battleNext").onclick=()=>{ if(Date.now()<nextGuardUntil) return; nextBattle()
 function nextBattle(){ clearTimeout(autoT); if(!S) return; S.i++; if(S.i>=S.items.length) finishSession(); else renderBattleItem(); }
 function startBattleTimer(){ stopBattleTimer(); battleLast=performance.now(); battleIv=setInterval(tickBattle,200); syncTimerChip(); }
 function stopBattleTimer(){ if(battleIv){ clearInterval(battleIv); battleIv=null; } }
-function timerPaused(){ return modalOpen() || document.hidden || CUR!=="battle" || (S&&S.answered); }
+function timerPaused(){ return modalOpen() || AuraFX.isOpen() || document.hidden || CUR!=="battle" || (S&&S.answered); }
 function tickBattle(){
   const now=performance.now(), dt=(now-battleLast)/1000; battleLast=now;
   if(!S||S.timedOut) return;
@@ -1601,7 +1977,7 @@ function chooseChart(tile){
   if(tile.classList.contains("tried")||S.cell>=24) return;
   const v=Math.floor(S.cell/6), q=S.cell%6, verb=CH_VERBS[v], ans=IMPF[verb][q], f=tile.dataset.f;
   if(f===ans){
-    if(S.firstTry){ S.score++; addAura(5,tile); }
+    if(S.firstTry){ S.score++; S.streak++; addAura(5); awardPoints(tile); }
     S.cell++; flash(true); beep("ok");
     let msg = `✓ ${its(verb)}, ${PRON[q]} → ${itb(ans)}.`;
     if(S.cell<24 && S.cell%6===0) msg += ` Next column: ${chartTip(v+1)}`;
@@ -1610,7 +1986,7 @@ function chooseChart(tile){
     if(S.cell>=24){ setFb($("chartFb"),"ok","✓ Chart complete! 🎉"); setTimeout(()=>finishSession(),900); }
   } else {
     if(S.firstTry) S.misses.push({chart:true, verb, q, wrong:f});
-    S.firstTry=false; tile.classList.add("wrong"); setTimeout(()=>{ tile.classList.remove("wrong"); tile.classList.add("tried"); tile.setAttribute("aria-disabled","true"); },350);
+    S.firstTry=false; S.streak=0; tile.classList.add("wrong"); setTimeout(()=>{ tile.classList.remove("wrong"); tile.classList.add("tried"); tile.setAttribute("aria-disabled","true"); },350);
     const qi = IMPF[verb].indexOf(f);
     let msg;
     if(qi>=0) msg = `✗ ${itb(f)} is the ${PRON_EN[qi]} form. This row is ${PRON[q]}: ${itb(ans)}.`;
@@ -1645,6 +2021,7 @@ function renderEnd(){
   $("endTitle").textContent = isCh ? (R.pass?"Challenge complete!":"Challenge over") : (R.pass?"Round complete!":"Nice try!");
   $("endSub").textContent = isCh ? `Challenge · ${R.total} questions` : `Part ${S.part} · ${S.kind==="chart"?"Fill the chart":S.title}`;
   $("endScore").textContent = `${R.score}/${R.total}`;
+  $("endPts").innerHTML = `⭐ <b>+${S.pts||0}</b> points this round · ${P.pts} total`;
   let msg = S.timedOut ? "⏰ Time ran out. " : "";
   if(isCh) msg += R.pass ? `You scored 60% or more.${R.newBest?" New best score! 🏆":""}` : `Get ${R.need}/${R.total} (60%) to finish the Challenge.${R.newBest?" New best score!":""}`;
   else msg += R.pass ? `<span class="done-badge">Done ✓</span> ${R.roundNew?"Round finished: +50 aura!":"You already finished this round."}` : `Get ${R.need}/${R.total} right on your first try to mark this round Done. Play again!`;
@@ -1667,7 +2044,7 @@ function renderEnd(){
   $("endActions").querySelectorAll("button").forEach(b=>b.onclick=()=>endAction(b.dataset.end));
   show("end");
   setTimeout(()=>$("endActions").querySelector("button")?.focus({preventScroll:true}),50);
-  beep(R.pass?"win":"bad");
+  beep(R.pass?"win":"soft");
 }
 function endAction(a){
   const s=S;
@@ -1727,7 +2104,7 @@ function renderCert(){
     <div class="c-to">Awarded to</div><div class="c-name">${name?esc(name):"&nbsp;"}</div>
     <div class="c-for">${all?"for completing all 6 parts: presente, imperfetto and passato prossimo.":`for completing ${n} of 6 parts.`}</div>
     <div class="c-parts">${PARTS.map((p,i)=>`<span class="${e[i]?"y":"n"}">${p.n}. ${p.title}</span>`).join("")}</div>
-    <div class="c-stats"><span>🏆 Best Challenge: ${BEST.l?`${BEST.s}/${BEST.l}`:"not played yet"}</span><span>✨ Aura: ${P.aura}</span><span>📅 ${date}</span></div>`;
+    <div class="c-stats"><span>🏆 Best Challenge: ${BEST.l?`${BEST.s}/${BEST.l}`:"not played yet"}</span><span>✨ Aura: ${P.aura}</span><span>⭐ Points: ${P.pts}</span><span>📅 ${date}</span></div>`;
   renderFarm($("certFarm"));
 }
 $("certName").addEventListener("input",()=>{ const v=$("certName").value.slice(0,24); if(v.trim()) store.set(K.name,v.trim()); else store.del(K.name); renderCert(); });
@@ -1775,8 +2152,8 @@ function openHelp(){
   openModal("helpModal");
 }
 /* ---------- save / restore / reset ---------- */
-function openSave(){ $("saveCode").textContent=encodeState(P.r,BEST,P.aura); $("restoreInput").value=""; $("restoreMsg").textContent=""; $("restoreMsg").className="msg"; openModal("saveModal"); }
-function refreshAll(){ $("saveCode").textContent=encodeState(P.r,BEST,P.aura); syncAura(); if(CUR==="home") renderHome(); else if(CUR==="part") openPart(CUR_PART); else if(CUR==="challenge") openChallenge(); }
+function openSave(){ $("saveCode").textContent=encodeState(P.r,BEST,P.aura,P.pts); $("restoreInput").value=""; $("restoreMsg").textContent=""; $("restoreMsg").className="msg"; openModal("saveModal"); }
+function refreshAll(){ $("saveCode").textContent=encodeState(P.r,BEST,P.aura,P.pts); syncAura(); if(CUR==="home") renderHome(); else if(CUR==="part") openPart(CUR_PART); else if(CUR==="challenge") openChallenge(); }
 $("restoreBtn").onclick=()=>{
   let d=null; try{ d=decodeCode($("restoreInput").value); }catch(e){ d=null; }
   const m=$("restoreMsg");
@@ -1786,7 +2163,7 @@ $("restoreBtn").onclick=()=>{
   else apply();
 };
 $("restoreInput").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); $("restoreBtn").click(); } });
-$("resetBtn").onclick=()=>askConfirm("Reset my progress?","This erases your finished rounds, farm items, aura, best Challenge score and name <b>on this device</b>. Your sound and Challenge settings stay. Write down your save code first if you want to keep it!","Reset",true,()=>{
+$("resetBtn").onclick=()=>askConfirm("Reset my progress?","This erases your finished rounds, farm items, aura, points, best Challenge score and name <b>on this device</b>. Your sound and Challenge settings stay. Write down your save code first if you want to keep it!","Reset",true,()=>{
   P=cleanProgress(null); BEST={s:0,l:0}; store.del(K.progress); store.del(K.best); store.del(K.name);
   refreshAll(); const m=$("restoreMsg"); m.className="msg ok"; m.textContent="Progress reset. Your farm starts fresh.";
 });
@@ -1801,8 +2178,7 @@ function leaveSession(){
 document.addEventListener("click",e=>{
   const b=e.target.closest("[data-act]"); if(!b) return;
   const a=b.dataset.act;
-  if(a==="mute"){ SET.mute=!SET.mute; saveSet(); syncMute(); if(!SET.mute) beep("ok"); toast(SET.mute?"Sound off":"Sound on"); }
-  else if(a==="help") openHelp();
+  if(a==="help") openHelp();
   else if(a==="save") openSave();
   else if(a==="home"){ clearTimers(); renderHome(); }
   else if(a==="leave") leaveSession();
@@ -1833,17 +2209,18 @@ document.addEventListener("keydown",e=>{
 window.__afTest = {
   state:()=>({screen:CUR, kind:S&&S.kind, mode:S&&S.mode, i:S&&S.i, n:S&&(S.total||S.items.length), answered:S&&S.answered, cand:S&&S.cand,
     ans: S && S.kind==="chart" ? (S.cell<24?chartAns():null) : (S&&S.items&&S.items[S.i] ? S.items[S.i].ans : null),
-    item: S&&S.items&&S.items[S.i] ? S.items[S.i].id : null, score:S&&S.score, result:S&&S.result, pieces:S&&S.pieces?S.pieces.map(p=>p.t):null}),
+    item: S&&S.items&&S.items[S.i] ? S.items[S.i].id : null, score:S&&S.score, pts:S&&S.pts, streak:S&&S.streak, result:S&&S.result, pieces:S&&S.pieces?S.pieces.map(p=>p.t):null}),
   progress:()=>JSON.parse(JSON.stringify({P,BEST,SET})),
   items:()=>ALL_ITEMS.map(it=>({id:it.id,key:it.key,part:it.part,tense:it.tense,verb:it.verb,who:it.who,p:it.p,frame:it.frame,s:it.s,gloss:it.gloss,sc:it.sc,ans:it.ans,
     cands:candidates(it).map(c=>c.f), ok:whyOkBody(it), wrong:candidates(it).map(c=>[c.f,whyWrongBody(it,c.f)])})),
   pieces:id=>{ const it=ALL_ITEMS.find(x=>x.id===id); return splitForm(it,it.ans).map(p=>p.t); },
   buildPieces:id=>{ const it=ALL_ITEMS.find(x=>x.id===id); return buildPieces(it); },
-  encode:(r,b,a)=>encodeState(r,b,a), decode:c=>decodeCode(c), normalize:c=>normalizeCode(c),
+  encode:(r,b,a,p)=>encodeState(r,b,a,p), decode:c=>decodeCode(c), normalize:c=>normalizeCode(c),
   chart:()=>({IMPF, PRES})
 };
 
 /* ===================== INIT ===================== */
+AuraFX.init({key:"auraTempi.v1.audio"});
 syncMute(); renderHome();
 
 </script>
