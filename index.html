@@ -473,6 +473,11 @@ button:disabled{cursor:not-allowed}
 /* audit: certificate still fits without scrolling now that all its text is >= 16px */
 @media (max-height:740px){ .cert{padding:10px 14px} .cert .c-farm{max-width:280px;margin:6px auto 4px} }
 @media (max-width:600px){ .cert{padding:10px 12px} .cert .c-name{font-size:28px} .cert .c-for{margin:2px 0 4px} .cert .c-farm{max-width:270px} }
+/* Part 11 row on the certificate: one centered line; the farm picture gives up a little height so everything still fits */
+.cert .c-parts.pirr{display:block;text-align:center;max-width:none;margin-top:4px}
+@media (max-height:800px){ .cert .c-farm{max-width:250px} }
+@media (max-height:740px){ .cert .c-farm{max-width:220px;margin:4px auto 2px} }
+@media (max-width:600px){ .cert .c-farm{max-width:205px} }
 
 /* ===== AURA FX (shared): sound panel, points pill, points burst ===== */
 .afx-backdrop{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(5,2,12,.78)}
@@ -1754,6 +1759,81 @@ const PRES_T = Object.fromEntries(Object.entries({
   volere:"voglio vuoi vuole vogliamo volete vogliono"}).map(([v,f])=>[v,f.split(" ")]));
 function presOf(v){ return PRES[v] || PRES_T[v] || null; }
 
+/* ===================== PRESENTE (IRREGULAR) SECTION: DATA (Part 11) =====================
+   Only three verbs: essere, avere, andare. One verb per round, then a short mix.
+   PRES.essere is in data.js; PRES.avere and PRES.andare are in data_fut.js.
+   [verb, who|null, person, sentence, English gloss, scene, options]
+   options: x  = hand-picked forms of ANOTHER of the three verbs, offered ONLY in the mixed review (each is ungrammatical in its sentence)
+            xw = why that other verb is wrong here (English)
+            e  = 1 for an avere expression (avere fame, sete, freddo, caldo, sonno, paura, ragione, anni) */
+const PIRR_VERBS = ["essere","avere","andare"];
+const XW = {
+  adj:"To say what someone is like or how someone is (tired, happy, nice), Italian uses <b lang=\"it\">essere</b>.",
+  place:"To say where someone <i>is</i>, Italian uses <b lang=\"it\">essere</b>.",
+  expr:"For how you feel (and for being right), Italian says you <i>have</i> it: <b lang=\"it\">avere fame</b> (hungry), <b lang=\"it\">sete</b> (thirsty), <b lang=\"it\">freddo</b> (cold), <b lang=\"it\">caldo</b> (hot), <b lang=\"it\">sonno</b> (sleepy), <b lang=\"it\">paura</b> (afraid), <b lang=\"it\">ragione</b> (right).",
+  age:"Italian says how many years you <i>have</i>: <b lang=\"it\">avere sedici anni</b> (to be sixteen).",
+  go:"The sentence says where someone <i>goes</i>, so it needs <b lang=\"it\">andare</b> (to go)."
+};
+const RAW_PIRR = {
+"11-1":[ /* essere */
+ ["essere","luca",0,"Io ___ stanco dopo la partita.","I am tired after the game.","calcio",{x:["ho"],xw:"adj"}],
+ ["essere",null,1,"Tu ___ di Napoli?","Are you from Naples?",null],
+ ["essere",null,2,"Adesso lei ___ a casa.","She is at home now.","a_casa",{x:["ha"],xw:"place"}],
+ ["essere",null,2,"Lui ___ molto simpatico.","He is very nice.",null,{x:["ha"],xw:"adj"}],
+ ["essere",null,3,"Noi ___ in classe con l'insegnante.","We are in class with the teacher.","a_scuola"],
+ ["essere",null,4,"Voi ___ pronti per l'esame?","Are you all ready for the test?","compiti"],
+ ["essere",null,5,"Loro ___ amiche da tanti anni.","They have been friends for many years.",null],
+ ["essere",null,5,"Adesso loro ___ al parco con il cane.","They are at the park with the dog now.","al_parco",{x:["hanno"],xw:"place"}],
+ ["essere","sara",0,"Io ___ molto contenta oggi.","I am very happy today.",null,{x:["ho"],xw:"adj"}],
+ ["essere","giulia_sara",3,"Noi ___ in pizzeria con Marco.","We are at the pizzeria with Marco.","in_pizzeria"],
+ ["essere","marco",1,"Marco, tu ___ in ritardo!","Marco, you are late!",null],
+ ["essere",null,5,"Loro ___ italiani.","They are Italian.",null],
+ ["essere",null,2,"Lei ___ alta e simpatica.","She is tall and nice.",null,{x:["ha"],xw:"adj"}],
+ ["essere","marco_giulia",4,"Marco e Giulia, voi ___ in classe insieme?","Marco and Giulia, are you in class together?","a_scuola"]
+],
+"11-2":[ /* avere (+ avere expressions) */
+ ["avere",null,0,"Io ___ un cane e due gatti.","I have a dog and two cats.",null],
+ ["avere","sara",1,"Sara, tu ___ una penna?","Sara, do you have a pen?","scrivere"],
+ ["avere","marco",2,"Marco ___ una bici nuova.","Marco has a new bike.",null],
+ ["avere",null,3,"Oggi noi ___ un esame di storia.","Today we have a history test.","compiti"],
+ ["avere",null,4,"Voi ___ i libri di italiano?","Do you all have the Italian books?","leggere"],
+ ["avere","marco_luca",5,"Marco e Luca ___ lezione di musica il lunedì.","Marco and Luca have music class on Mondays.","musica"],
+ ["avere","giulia",2,"Giulia ___ sedici anni.","Giulia is sixteen.",null,{e:1,x:["è"],xw:"age"}],
+ ["avere","luca",0,"Io ___ molta fame.","I am very hungry.","mangiare",{e:1,x:["sono"],xw:"expr"}],
+ ["avere",null,1,"Tu ___ sete? Ecco l'acqua.","Are you thirsty? Here's the water.","bere",{e:1,x:["sei"],xw:"expr"}],
+ ["avere","sara",2,"Sara ___ freddo: vuole una giacca.","Sara is cold: she wants a jacket.",null,{e:1}],
+ ["avere",null,3,"D'estate noi ___ sempre caldo.","In summer we are always hot.","al_mare",{e:1}],
+ ["avere","marco",2,"Marco ___ sonno: va a letto.","Marco is sleepy: he's going to bed.","dormire",{e:1,x:["è"],xw:"expr"}],
+ ["avere","giulia_sara",5,"Giulia e Sara ___ paura del buio.","Giulia and Sara are afraid of the dark.",null,{e:1,x:["sono"],xw:"expr"}],
+ ["avere","luca",1,"Luca, tu ___ ragione!","Luca, you are right!",null,{e:1,x:["sei"],xw:"expr"}],
+ ["avere",null,4,"Voi ___ fame? C'è la pizza!","Are you all hungry? There's pizza!","in_pizzeria",{e:1,x:["siete"],xw:"expr"}]
+],
+"11-3":[ /* andare */
+ ["andare",null,0,"Ogni mattina io ___ a scuola in autobus.","Every morning I go to school by bus.","a_scuola"],
+ ["andare","giulia",1,"Giulia, tu ___ al cinema stasera?","Giulia, are you going to the movies tonight?","al_cinema"],
+ ["andare","marco",2,"Ogni sabato Marco ___ al parco.","Every Saturday Marco goes to the park.","al_parco",{x:["ha"],xw:"go"}],
+ ["andare",null,3,"Domenica noi ___ al mare.","On Sunday we're going to the beach.","al_mare"],
+ ["andare",null,4,"Voi ___ in pizzeria stasera?","Are you all going to the pizzeria tonight?","in_pizzeria"],
+ ["andare","giulia_sara",5,"Giulia e Sara ___ a scuola a piedi.","Giulia and Sara go to school on foot.","a_scuola",{x:["hanno"],xw:"go"}],
+ ["andare","sara",2,"Sara ___ in biblioteca dopo la scuola.","Sara goes to the library after school.","leggere"],
+ ["andare","luca",0,"Io ___ in montagna con mio padre.","I go to the mountains with my dad.","in_montagna",{x:["ho"],xw:"go"}],
+ ["andare","marco_luca",3,"Noi ___ alla stazione: il treno parte alle dieci.","We're going to the station: the train leaves at ten.","alla_stazione"],
+ ["andare","marco",1,"Marco, tu dove ___ stasera?","Marco, where are you going tonight?",null],
+ ["andare",null,5,"Loro ___ a casa alle cinque.","They go home at five.","a_casa"],
+ ["andare","marco_giulia",4,"Marco e Giulia, voi ___ alla festa di Sara domenica?","Marco and Giulia, are you going to Sara's party on Sunday?",null],
+ ["andare","luca",2,"Luca ___ a letto presto.","Luca goes to bed early.","dormire"],
+ ["andare",null,0,"Stasera io ___ a mangiare la pizza con gli amici.","Tonight I'm going to eat pizza with my friends.","in_pizzeria"]
+]
+};
+Object.assign(RAW, RAW_PIRR);
+Object.assign(RAW_TENSE, {"11":"pirr"});
+/* why each verb looks the way it does (English, for feedback + the 📋 chart) */
+const PIRR_TIP = {
+  essere:"<b lang=\"it\">essere</b> (to be) is irregular in every form: <span lang=\"it\">sono, sei, è, siamo, siete, sono</span>. <b lang=\"it\">sono</b> is both io and loro, and <b lang=\"it\">è</b> (is) has an accent, so it isn't <b lang=\"it\">e</b> (and).",
+  avere:"<b lang=\"it\">avere</b> (to have): <span lang=\"it\">ho, hai, ha, abbiamo, avete, hanno</span>. The <b>h</b> is silent; it tells <b lang=\"it\">ho</b> (I have) apart from <b lang=\"it\">o</b> (or), and <b lang=\"it\">ha</b> (has) apart from <b lang=\"it\">a</b> (to).",
+  andare:"<b lang=\"it\">andare</b> (to go): <span lang=\"it\">vado, vai, va, vanno</span> start with <b>v-</b>; only <span lang=\"it\">andiamo</span> and <span lang=\"it\">andate</span> keep <b>and-</b>."
+};
+
 /* ===================== HELPERS ===================== */
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -1771,7 +1851,7 @@ const store = {
   del(k){ try{ window.localStorage.removeItem(k); }catch(e){} }
 };
 function readJSON(k){ try{ const v = JSON.parse(store.get(k)); return (v && typeof v==="object") ? v : null; }catch(e){ return null; } }
-const NROUNDS = 29;   /* 17 Tempi rounds (parts 1-5) + 12 Futuro rounds (parts 7-10), appended so old bit positions never move */
+const NROUNDS = 33;   /* 17 Tempi rounds (parts 1-5) + 12 Futuro rounds (parts 7-10) + 4 Presente (irregular) rounds (part 11), appended so old bit positions never move */
 function cleanProgress(p){
   const out = {v:1, r:new Array(NROUNDS).fill(false), aura:0, pts:0, rb:{}};
   if(!p) return out;
@@ -1809,7 +1889,7 @@ function agree(verb,g,pl){ const b=PART[verb]; return b.slice(0,-1) + (pl ? (g==
 /* compound tenses whose participle agrees with the subject (essere verbs) */
 function agrees(tense,verb){ return tense==="pp_e" || ((tense==="trap"||tense==="fant") && !!ESS_VERBS[verb]); }
 function form(tense,verb,q,g){
-  if(tense==="pres") return PRES[verb][q];
+  if(tense==="pres"||tense==="pirr") return PRES[verb][q];
   if(tense==="impf") return IMPF[verb][q];
   if(tense==="fut") return futStem(verb)+FUT_END[q];
   if(tense==="pp_e") return ESS[q]+" "+agree(verb,g,q>=3);
@@ -1824,6 +1904,8 @@ function mkItem(key,i,r){
   const it = {id:key+"."+(i+1), key, part, tense:o.t||RAW_TENSE_KEY[key]||RAW_TENSE[part], verb, who, p, s, gloss, sc};
   if(part===9){ it.pair=true; it.why=o.w; it.q=!!o.q; }   /* futuro vs presente: the tense itself is tested */
   if(o.u) it.use=o.u;
+  if(o.x){ it.x=o.x; it.xw=o.xw; }   /* Part 11: cross-verb distractors, used only in the mixed review */
+  if(o.e) it.expr=true;
   it.fx = part>=7;                                           /* Futuro section item */
   it.irr = it.tense==="impf" && !!IRR_STEM[verb];
   it.frame = !who ? "pron" : ([2,5].includes(p) ? "named" : [0,3].includes(p) ? "speaker" : "address");
@@ -1838,6 +1920,8 @@ function allowedPersons(it){
   let qs = it.frame==="named" ? [0,2,3,5] : [0,1,2,3,4,5];
   /* tu + presente of an -are verb: the lui/lei form is also the tu imperative ("Adesso tu ascolta!"), so it is not offered */
   if(it.tense==="pres" && it.p===1 && VCLASS[it.verb]==="are") qs = qs.filter(q=>q!==2);
+  /* same for andare: va / va' is also the tu imperative ("Va' a casa!") */
+  if(it.tense==="pirr" && it.p===1 && it.verb==="andare") qs = qs.filter(q=>q!==2);
   return qs.filter(q=>q!==it.p);
 }
 /* every distractor candidate: other persons of the same verb+tense (+ agreement variants with essere) */
@@ -1856,14 +1940,17 @@ function candidates(it){
   } else {
     for(const q of allowedPersons(it)) add(form(it.tense,it.verb,q,it.g), q, it.g);
   }
+  if(it.mix && it.x) for(const f of it.x) add(f, it.p, it.g);   /* Part 11 mixed review: hand-picked forms of another verb */
   return out;
 }
 function pickDistractors(it, k=5){
   const c = candidates(it); if(!c.length) return [];
   if(agrees(it.tense,it.verb) || (it.pair && !it.altAns)){ const first=c[0]; return [first, ...shuffle(c.slice(1)).slice(0,k-1)]; }
+  if(it.mix && it.x && k>1){ const xs=c.filter(x=>it.x.includes(x.f)); return xs.concat(shuffle(c.filter(x=>!it.x.includes(x.f))).slice(0,k-xs.length)); }   /* the cross-verb trap is always on the board */
   return shuffle(c).slice(0,k);
 }
 function describe(it,f){
+  if(it.tense==="pirr"){ for(const v of [it.verb, ...PIRR_VERBS.filter(x=>x!==it.verb)]) for(let q=0;q<6;q++) if(PRES[v][q]===f) return {q,g:it.g,t:"pirr",v}; return null; }
   const tenses = it.pair ? [it.tense, otherTense(it.tense)] : [it.tense];
   for(const t of tenses) for(let q=0;q<6;q++) for(const g of (agrees(t,it.verb)?["m","f"]:[it.g])) if(form(t,it.verb,q,g)===f) return {q,g,t};
   return null;
@@ -1935,6 +2022,7 @@ function whyOkBody(it,f){
     return `${itb(it.verb)} takes ${itb(auxName(it))}. ${name} of ${its(auxName(it))} (${itb(aux)}) + participle${irr}` +
       (e ? `, which agrees with ${agreeWho(it)}: -${part.slice(-1)} → ${itb(it.ans)}.` : `, which does not change: ${itb(it.ans)}.`) + tail;
   }
+  if(it.tense==="pirr") return pirrOk(it);
   if(it.tense==="pres"){
     return `${subjPhrase(it)}. ${itb(it.verb)} is ${CLS_LABEL[cls]}: ${PRON[it.p]} → -${PRES_END[cls][it.p]}, so ${itb(it.ans)}${presNote(it)}.`;
   }
@@ -1957,6 +2045,7 @@ function whyOkBody(it,f){
 }
 function whyWrongBody(it,f){
   const d = describe(it,f);
+  if(it.tense==="pirr") return pirrWrong(it,f,d);
   if(!d) return `${itb(f)} is not a real form of ${itb(it.verb)} here. ${subjPhrase(it)}: ${itb(it.ans)}.`;
   if(it.pair){
     const both = it.altAns ? ` (or ${itb(it.altAns)})` : "";
@@ -1977,12 +2066,32 @@ function whyWrongBody(it,f){
   return `${itb(f)} is the ${PRON_EN[d.q]} form. ${subjPhrase(it)}: ${itb(it.ans)}.`;
 }
 function isRealForm(it,f){ return !!describe(it,f); }
+/* ---------- Part 11: presente of essere / avere / andare ---------- */
+function pronsOf(v,f){ const qs=[]; PRES[v].forEach((x,q)=>{ if(x===f) qs.push(q); }); return qs.map(q=>PRON_EN[q]).join(" and "); }
+function pirrOk(it){
+  const v=it.verb, base=`${subjPhrase(it)}. ${itb(v)} (${VERB_EN[v]}) is irregular in the presente: ${PRON[it.p]} → ${itb(it.ans)}.`;
+  if(it.expr) return base+` ${XW[it.xw==="age"?"age":"expr"]}`;
+  if(v==="essere" && it.ans==="è") return base+` Don't forget the accent: ${itb("è")} means “is”, ${its("e")} means “and”.`;
+  if(v==="essere" && it.ans==="sono") return base+` (${itb("sono")} is both io and loro.)`;
+  if(v==="avere" && it.p!==3 && it.p!==4) return base+` The ${"<b>h</b>"} is silent: you write it, but you don't say it.`;
+  if(v==="andare") return base+(it.p===3||it.p===4 ? ` Only noi and voi keep ${its("and-")}.` : ` io, tu, lui/lei and loro start with ${its("v-")}: ${its("vado, vai, va, vanno")}.`);
+  return base;
+}
+function pirrWrong(it,f,d){
+  const tail = `${subjPhrase(it)}: ${itb(it.ans)}.`;
+  if(!d) return `${itb(f)} is not a form of ${itb(it.verb)}. ${tail}`;
+  if(d.v!==it.verb){
+    const why = it.xw && it.x && it.x.includes(f) ? XW[it.xw]+(it.xw==="expr"||it.xw==="age"?` So use ${its("avere")}, not ${its("essere")}.`:"") : `This sentence needs ${itb(it.verb)} (${VERB_EN[it.verb]}).`;
+    return `${itb(f)} is ${its(d.v)} (${VERB_EN[d.v]}). ${why} ${tail}`;
+  }
+  return `${itb(f)} is the ${pronsOf(it.verb,f)} form of ${its(it.verb)}. ${tail}`;
+}
 
 /* ===================== BUILD PIECES ===================== */
 function splitForm(it,f){
   const d = describe(it,f); if(!d) return [{t:f}];
   const q=d.q;
-  if(it.pair) return [{t:f}];
+  if(it.pair||it.tense==="pirr") return [{t:f}];
   if(it.tense==="fut"){ const e=FUT_END[q]; return [{t:f.slice(0,-e.length)},{t:e}]; }
   if(it.tense==="trap"||it.tense==="fant"){
     const [aux,part] = f.split(" ");
@@ -2039,10 +2148,14 @@ const PARTS = [
   {n:9, fut:true, title:"Futuro or presente?", sub:"di solito · fra dieci anni · quando", item:"clock_balloon", itemName:"Clock balloon", emoji:"🎈", tenseHelp:"fut",
    rounds:[{k:"9-1",t:"Time clues",d:"di solito, adesso, fra dieci anni, domani…",it:1},{k:"9-2",t:"quando / se",d:"quando + futuro · di solito, quando…",it:1}]},
   {n:10, fut:true, bonus:true, title:"Extra learning (bonus)", sub:"trapassato prossimo · futuro anteriore", item:"rainbow", itemName:"Rainbow", emoji:"🌈", tenseHelp:"bonus",
-   rounds:[{k:"10-1",t:"Trapassato prossimo",d:"ero partito · avevo finito",it:1},{k:"10-2",t:"Futuro anteriore",d:"avrò finito · sarà partito",it:1}]}
+   rounds:[{k:"10-1",t:"Trapassato prossimo",d:"ero partito · avevo finito",it:1},{k:"10-2",t:"Futuro anteriore",d:"avrò finito · sarà partito",it:1}]},
+  /* ---------- PRESENTE (IRREGULAR) section: only essere, avere, andare ---------- */
+  {n:11, pirr:true, title:"Presente (irregular)", sub:"sono · ho · vado", item:"rooster", itemName:"Rooster", emoji:"🐓", tenseHelp:"pirr",
+   rounds:[{k:"11-1",t:"essere",d:"sono, sei, è, siamo, siete, sono",it:1},{k:"11-2",t:"avere",d:"ho, hai, ha, abbiamo, avete, hanno + avere fame, sete…",it:1},
+     {k:"11-3",t:"andare",d:"vado, vai, va, andiamo, andate, vanno",it:1},{k:"11-4",t:"Mixed review",d:"essere + avere + andare"}]}
 ];
-const CORE_PARTS = PARTS.slice(0,6), FUT_PARTS = PARTS.slice(6);
-const ROUND_OFFSET = [0,4,7,9,13,17,17,21,25,27]; /* bit offsets: parts 1–5 = bits 0–16 (unchanged); part 6 has no rounds; parts 7–10 = bits 17–28 */
+const CORE_PARTS = PARTS.slice(0,6), FUT_PARTS = PARTS.slice(6,10);
+const ROUND_OFFSET = [0,4,7,9,13,17,17,21,25,27,29]; /* bit offsets: parts 1–5 = bits 0–16 (unchanged); part 6 has no rounds; parts 7–10 = bits 17–28; part 11 = bits 29–32 */
 function roundIndex(part,r){ return ROUND_OFFSET[part-1]+r; }
 function roundDone(part,r){ return !!P.r[roundIndex(part,r)]; }
 function partDone(n){
@@ -2050,7 +2163,7 @@ function partDone(n){
   return PARTS[n-1].rounds.every((_,r)=>roundDone(n,r));
 }
 function earned(){ return CORE_PARTS.map(p=>partDone(p.n)); }       /* the 6 Tempi items (certificate of completion + night farm) */
-function allEarned(){ return PARTS.map(p=>partDone(p.n)); }        /* all 10 (Futuro items + bonus) */
+function allEarned(){ return PARTS.map(p=>partDone(p.n)); }        /* all 11 (Futuro items + bonus + Presente irregular) */
 function allDone(){ return earned().every(Boolean); }
 function futDone(){ return [7,8,9].every(partDone); }
 function roundPool(k){
@@ -2061,6 +2174,10 @@ function roundPool(k){
   if(k==="8-3") return shuffle(shuffle(ITEMS["8-x"]).slice(0,3).concat(shuffle([...ITEMS["8-1"],...ITEMS["8-2"]]).slice(0,7)));
   if(k==="9-1"){ const by=c=>shuffle(ITEMS["9-1"].filter(c)); return shuffle(by(i=>i.tense==="pres").slice(0,4).concat(by(i=>i.tense==="fut"&&!i.altAns).slice(0,3), by(i=>!!i.altAns).slice(0,3))); }
   if(k==="9-2"){ const by=c=>shuffle(ITEMS["9-2"].filter(c)); return shuffle(by(i=>i.tense==="fut").slice(0,6).concat(by(i=>i.tense==="pres").slice(0,4))); }
+  if(k==="11-4"){   /* 3 essere + 4 avere + 3 andare; at least 2 per verb carry a cross-verb trap */
+    const pick=(kk,n)=>{ const a=shuffle(ITEMS[kk]), wx=a.filter(i=>i.x), nx=a.filter(i=>!i.x); const first=wx.slice(0,2); return first.concat(shuffle(wx.slice(2).concat(nx)).slice(0,n-first.length)); };
+    return shuffle([...pick("11-1",3),...pick("11-2",4),...pick("11-3",3)]).map(i=>Object.assign({},i,{mix:true}));
+  }
   return shuffle(ITEMS[k]).slice(0,10);
 }
 const CH_TENSES = [
@@ -2077,7 +2194,7 @@ function challengePool(tenses,n){
   while(out.length<n){ const pl=pools[i%pools.length]; const idx=Math.floor(i/pools.length)%pl.length; out.push(pl[idx]); i++; }
   return shuffle(out);
 }
-const TENSE_LABEL = {pres:"Presente", impf:"Imperfetto", pp_e:"Passato prossimo + essere", pp_a:"Passato prossimo + avere", fut:"Futuro", trap:"Trapassato", fant:"Futuro anteriore"};
+const TENSE_LABEL = {pirr:"Presente", pres:"Presente", impf:"Imperfetto", pp_e:"Passato prossimo + essere", pp_a:"Passato prossimo + avere", fut:"Futuro", trap:"Trapassato", fant:"Futuro anteriore"};
 
 /* ===================== SAVE CODE ===================== */
 /* v1 (old, still accepted): FARM-XXXX-XXXX       = 7 payload chars + checksum
@@ -2087,14 +2204,15 @@ const TENSE_LABEL = {pres:"Presente", impf:"Imperfetto", pp_e:"Passato prossimo 
                              Written only when a Futuro round is done, so a device without Futuro progress still gets the shorter v2 code.
    checksum = (sum of w_i * v_i + 7) mod 32 with odd weights 1,3,5,... so every single-character typo is caught. */
 const B32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-const CK_W = [1,3,5,7,9,11,13,15,17,19,21,23,25,27];
-const OLD_ROUNDS = 17, FUT_BITS = 12;
+const CK_W = [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29];
+const OLD_ROUNDS = 17, FUT_BITS = 12, PIRR_BITS = 4;
 const PTS_MAX = 999999;
 function ck32(d){ return (d.reduce((s,x,i)=>s+CK_W[i]*x,0)+7)%32; }
 function encodeState(rounds, best, aura, pts){
   let mask=0; for(let i=0;i<OLD_ROUNDS;i++) if(rounds[i]) mask += 2**(OLD_ROUNDS-1-i);
   let fmask=0; for(let i=0;i<FUT_BITS;i++) if(rounds[OLD_ROUNDS+i]) fmask += 2**(14-i);   /* 15 bits, top 12 used */
-  const ver = fmask ? 3 : 2;
+  let pmask=0; for(let i=0;i<PIRR_BITS;i++) if(rounds[OLD_ROUNDS+FUT_BITS+i]) pmask += 2**(4-i);   /* 5 bits, top 4 used */
+  const ver = pmask ? 4 : fmask ? 3 : 2;
   const lc = best.l===10?1:best.l===20?2:best.l===30?3:0;
   const bs = lc ? Math.max(0,Math.min(30,best.s|0)) : 0;
   const a50 = Math.max(0,Math.min(255,Math.floor((aura||0)/50)));
@@ -2102,14 +2220,15 @@ function encodeState(rounds, best, aura, pts){
   const d=[]; for(let i=0;i<7;i++){ d.unshift(v%32); v=Math.floor(v/32); }
   let p5 = Math.max(0, Math.min(Math.floor(PTS_MAX/5), Math.floor((pts||0)/5)));
   const e=[]; for(let i=0;i<4;i++){ e.unshift(p5%32); p5=Math.floor(p5/32); }
-  if(ver===3){ let f=fmask; const x=[]; for(let i=0;i<3;i++){ x.unshift(f%32); f=Math.floor(f/32); } e.push(...x); }
+  if(ver>=3){ let f=fmask; const x=[]; for(let i=0;i<3;i++){ x.unshift(f%32); f=Math.floor(f/32); } e.push(...x); }
+  if(ver===4) e.push(pmask);
   const all = d.concat(e);
   const s = all.map(x=>B32[x]).join("") + B32[ck32(all)];
-  return "FARM-"+s.slice(0,4)+"-"+s.slice(4,8)+"-"+s.slice(8,12)+(s.length>12?"-"+s.slice(12):"");
+  return "FARM-"+s.slice(0,4)+"-"+s.slice(4,8)+"-"+s.slice(8,12)+(s.length>12?"-"+s.slice(12):"");   /* v4: FARM-XXXX-XXXX-XXXX-XXXX */
 }
 function normalizeCode(raw){ return String(raw||"").toUpperCase().replace(/[\s\-_.]/g,"").replace(/O/g,"0").replace(/[IL]/g,"1"); }
 function decodeBody(s){
-  if(s.length!==8 && s.length!==12 && s.length!==15) return null;
+  if(s.length!==8 && s.length!==12 && s.length!==15 && s.length!==16) return null;
   const d=[]; for(const ch of s){ const x=B32.indexOf(ch); if(x<0) return null; d.push(x); }
   const n=d.length-1;
   if(ck32(d.slice(0,n))!==d[n]) return null;
@@ -2119,13 +2238,15 @@ function decodeBody(s){
   const bs = v%32; v=Math.floor(v/32);
   const mask = v%(2**17); v=Math.floor(v/2**17);
   const ver = v;
-  if(!((ver===1 && n===7) || (ver===2 && n===11) || (ver===3 && n===14))) return null;
+  if(!((ver===1 && n===7) || (ver===2 && n===11) || (ver===3 && n===14) || (ver===4 && n===15))) return null;
   const l = [0,10,20,30][lc];
   if(bs>l) return null;
   let pts=0; if(ver>=2){ let p5=0; for(let i=7;i<11;i++) p5 = p5*32 + d[i]; pts = Math.min(PTS_MAX, p5*5); }
-  let fmask=0; if(ver===3){ for(let i=11;i<14;i++) fmask = fmask*32 + d[i]; if(fmask%8) return null; }   /* spare bits must be 0 */
+  let fmask=0; if(ver>=3){ for(let i=11;i<14;i++) fmask = fmask*32 + d[i]; if(fmask%8) return null; }   /* spare bits must be 0 */
   const rounds=[]; for(let i=0;i<OLD_ROUNDS;i++) rounds.push(Math.floor(mask/2**(OLD_ROUNDS-1-i))%2===1);
-  if(ver===3) for(let i=0;i<FUT_BITS;i++) rounds.push(Math.floor(fmask/2**(14-i))%2===1);   /* v1/v2 codes: 17 rounds (Futuro bits = not done) */
+  let pmask=0; if(ver===4){ pmask=d[14]; if(pmask%2) return null; }   /* spare bit must be 0 */
+  if(ver>=3) for(let i=0;i<FUT_BITS;i++) rounds.push(Math.floor(fmask/2**(14-i))%2===1);   /* v1/v2 codes: 17 rounds (Futuro bits = not done) */
+  if(ver===4) for(let i=0;i<PIRR_BITS;i++) rounds.push(Math.floor(pmask/2**(4-i))%2===1);   /* older codes: Part 11 bits = not done */
   return {rounds, best:{s:bs,l}, aura:a50*50, pts, ver};
 }
 function decodeCode(raw){
@@ -2192,7 +2313,7 @@ const FARM_H_NIGHT = [.50,.38,.42,.48,.44,.36];
 let UID=0;
 function lockSVG(){ return `<svg class="lock" viewBox="-11 -11 22 22" aria-hidden="true"><circle r="10" fill="#221438" stroke="#c44dff" stroke-width="1.5"/><path d="M-3.5 -1 V-4 A3.5 3.5 0 0 1 3.5 -4 V-1" stroke="#e2a6ff" stroke-width="1.8" fill="none"/><rect x="-5" y="-1" width="10" height="7" rx="1.5" fill="#e2a6ff"/></svg>`; }
 /* Futuro items: only drawn once earned (the scene stays uncluttered); the bonus rainbow sits behind everything */
-const FUT_SPOT = {7:"left:66%;height:17%", 8:"left:34.5%;height:31%", 9:"left:79%;height:40%"};
+const FUT_SPOT = {7:"left:66%;height:17%", 8:"left:34.5%;height:31%", 9:"left:79%;height:40%", 11:"left:51%;height:20%"};
 function rainbowSVG(night){
   const cols=["#ff5c7a","#ffa94d","#ffd166","#39ff88","#4dabf7","#9775fa"];
   return `<svg class="rainbow${night?" night":""}" viewBox="0 0 480 170" preserveAspectRatio="none" aria-hidden="true">${cols.map((c,i)=>`<path d="M${150+i*7} 170 A${150-i*7} ${140-i*7} 0 0 1 ${450-i*7} 170" stroke="${c}" stroke-width="7" fill="none"/>`).join("")}</svg>`;
@@ -2218,21 +2339,22 @@ function farmInner(){
     const inner = ART[key] ? `<img src="${ART[key]}" alt="${p.itemName}${on?"":" (not earned yet)"}" draggable="false">` : `<span class="emoji-it" style="${on?"":"filter:grayscale(1);opacity:.5"}">${p.emoji}</span>`;
     h += `<div class="it${on?"":" locked"}" style="left:${cx}%;width:${100/6-1}%;height:${hh*100}%">${inner}${on?"":lockSVG()}</div>`;
   });
-  [7,8,9].forEach(n=>{ if(!fe[n-1]) return; const p=PARTS[n-1];
+  [7,8,9,11].forEach(n=>{ if(!fe[n-1]) return; const p=PARTS[n-1];
     const inner = ART[p.item] ? `<img src="${ART[p.item]}" alt="${p.itemName}" draggable="false">` : `<span class="emoji-it">${p.emoji}</span>`;
     h += `<div class="it fx-it${n===9?" sky":""}" data-fx-item="${n}" style="${FUT_SPOT[n]}">${inner}</div>`; });
   return h;
 }
-function farmCount(){ const fe=allEarned(); return {n:fe.slice(0,9).filter(Boolean).length, bonus:fe[9]}; }
+const FARM_TOTAL = 10;   /* Parts 1-9 + Part 11 (the bonus rainbow is extra) */
+function farmCount(){ const fe=allEarned(); return {n:fe.slice(0,9).filter(Boolean).length+(fe[10]?1:0), bonus:fe[9]}; }
 function renderFarm(el){
   const e=earned(), {n,bonus}=farmCount(), extra=bonus?" + the bonus rainbow":"";
   el.classList.add("farm"); el.classList.toggle("night", e[5]);
   el.innerHTML = farmInner();
-  el.setAttribute("aria-label", el.tagName==="BUTTON" ? `Open your farm: ${n} of 9 items${extra}` : `Your farm: ${n} of 9 items${extra}${e[5]?", at night":""}`);
+  el.setAttribute("aria-label", el.tagName==="BUTTON" ? `Open your farm: ${n} of ${FARM_TOTAL} items${extra}` : `Your farm: ${n} of ${FARM_TOTAL} items${extra}${e[5]?", at night":""}`);
 }
 
 /* ===================== HOME ===================== */
-function nextPart(){ for(const p of PARTS) if(!partDone(p.n)) return p.n; return 0; }
+function nextPart(){ for(const p of PARTS) if(!p.bonus && !partDone(p.n)) return p.n; for(const p of PARTS) if(!partDone(p.n)) return p.n; return 0; }   /* the optional bonus comes last */
 function renderHome(){
   renderFarm($("farmHome"));
   const np = nextPart();
@@ -2244,8 +2366,9 @@ function renderHome(){
     else { const d=p.rounds.filter((_,r)=>roundDone(p.n,r)).length; bar=`<div class="rail"><div class="fill" style="width:${d/p.rounds.length*100}%"></div></div><span>${d}/${p.rounds.length}</span>`; }
     const th = img(p.item+(done?"":"_locked"), p.itemName+(done?"":" (not earned yet)")) || p.emoji;
     const head = p.n===7 ? `<div class="sec-head" id="futHead"><span class="sec-name">🔮 Futuro</span><span class="sec-sub">The future tense: a whole new section</span><button class="sm-btn" data-act="book" aria-label="Open the Futuro charts">📖 Charts</button></div>` : "";
+    const head2 = p.n===11 ? `<div class="sec-head pirr" id="pirrHead"><span class="sec-name">🧩 Presente (irregular)</span><span class="sec-sub">essere · avere · andare, one verb at a time</span><button class="sm-btn" data-act="pirrchart" aria-label="Open the irregular presente charts">📋 Charts</button></div>` : "";
     const lbl = p.bonus ? `BONUS · PART ${p.n}` : `PART ${p.n}`;
-    return head + `<button class="part-card${p.n===np?" current":""}${p.fut?" fut":""}${p.bonus?" bonus":""}" data-part="${p.n}" aria-label="${p.bonus?"Bonus, ":""}Part ${p.n}: ${p.title}${done?", done":""}">
+    return head + head2 + `<button class="part-card${p.n===np?" current":""}${p.fut?" fut":""}${p.pirr?" pirr":""}${p.bonus?" bonus":""}" data-part="${p.n}" aria-label="${p.bonus?"Bonus, ":""}Part ${p.n}: ${p.title}${done?", done":""}">
       <div class="pthumb">${th}</div>
       <div><div class="pnum">${lbl} ${done?'<span class="done-badge">Done ✓</span>':""}</div><h3>${p.title}</h3><div class="psub"${p.n!==6?' lang="it"':""}>${p.sub}</div><div class="pbar">${bar}</div></div></button>`;
   }).join("");
@@ -2261,7 +2384,7 @@ $("farmHome").onclick = ()=>openFarm();
 let CUR_PART = 1;
 const STYLE_LABEL = {mixed:"Mixed", type:"Type it", swipe:"Swipe", drag:"Drag / Tap", build:"Build", battle:"Battle"};
 /* Part 9 tests the tense choice: build pieces would give it away, so Build becomes Type there */
-function effStyle(part, st){ return part===9 && st==="build" ? "type" : st; }
+function effStyle(part, st){ return (part===9||part===11) && st==="build" ? "type" : st; }
 function styleChipsHTML(sel, noBuild){ return STYLES.filter(s=>!(noBuild&&s==="build")).map(s=>`<button class="chip${s===sel?" on":""}" data-style="${s}" aria-pressed="${s===sel}">${STYLE_LABEL[s]}</button>`).join("") + `<button class="chip toggle${SET.timer?" on":""}" data-timer="1" aria-pressed="${SET.timer}">⏱ Battle timer: ${SET.timer?"On":"Off"}</button>`; }
 function bindStyleChips(box, getSel, setSel, rerender){
   box.querySelectorAll("[data-style]").forEach(b=>b.onclick=()=>{ setSel(b.dataset.style); saveSet(); rerender(); box.querySelector(`[data-style="${b.dataset.style}"]`)?.focus(); });
@@ -2276,7 +2399,7 @@ function openPart(n){
     <div class="soft">${done?`You earned the ${p.itemName}!`:`Finish every round to earn the ${p.itemName}.`}${p.bonus?" Optional: it is not needed for your certificate.":""}</div>
     ${p.bonus?`<button class="sm-btn teach-btn" id="openTeach">📘 Teaching card</button>`:""}</div>`;
   if(p.bonus) $("openTeach").onclick=()=>openTeach(null);
-  const chips = ()=>{ $("styleChips").innerHTML = styleChipsHTML(effStyle(n,SET.style), n===9); bindStyleChips($("styleChips"),()=>SET.style,s=>SET.style=s,chips); };
+  const chips = ()=>{ $("styleChips").innerHTML = styleChipsHTML(effStyle(n,SET.style), n===9||n===11); bindStyleChips($("styleChips"),()=>SET.style,s=>SET.style=s,chips); };
   chips();
   $("roundList").innerHTML = p.rounds.map((r,i)=>{
     const d=roundDone(n,i), b=P.rb[r.k];
@@ -2302,10 +2425,11 @@ function beginSession(o){
   S = Object.assign({i:0, score:0, misses:[], streak:0, tries:0, pts:0}, o);
   const n=S.items.length;
   if(S.style==="battle"){ startBattle(); return; }
-  setFx(S.part>=7);
+  setFx(S.part>=7 && S.part<=10);
   if(S.style==="mixed"){
     /* Futuro section: at least 4 of 10 answers are TYPED (forced recall); Part 9 has no build pieces */
-    const pat = !(S.part>=7) ? ["drag","build","swipe"] : S.part===9 ? ["type","drag","type","swipe","drag"] : ["type","drag","build","type","swipe"];
+    /* Part 11 (irregular presente): whole-word forms, so no build pieces; 4 of 10 answers are typed */
+    const pat = S.part===11 ? ["type","drag","swipe","drag","type"] : !(S.part>=7) ? ["drag","build","swipe"] : S.part===9 ? ["type","drag","type","swipe","drag"] : ["type","drag","build","type","swipe"];
     const base=[]; for(let i=0;i<n;i++) base.push(pat[i%pat.length]); S.modes=shuffle(base);
   }
   else S.modes = new Array(n).fill(S.style);
@@ -2428,6 +2552,7 @@ function checkBuild(){
 }
 function buildHint(it){
   if(it.pair) return `${it.why}.`;
+  if(it.tense==="pirr") return `${subjPhrase(it)}. ${its(it.verb)} is irregular: check its chart (📋 Help).`;
   if(it.tense==="fut") return `${futRuleHint(it)} Ending for ${PRON[it.p]}: ${itb("-"+FUT_END[it.p])}.`;
   if(it.tense==="trap"||it.tense==="fant") return `Use the ${it.tense==="trap"?"imperfetto":"futuro"} of ${its(auxName(it))} + the participle${ESS_VERBS[it.verb]?` (it agrees with ${agreeWho(it)})`:""}.`;
   if(it.tense==="pres") return `${subjPhrase(it)}: ${PRON[it.p]} → -${PRES_END[VCLASS[it.verb]][it.p]}.`;
@@ -2771,7 +2896,7 @@ $("chStart").onclick=()=>startChallenge();
 function openFarm(){
   const e=allEarned(), {n,bonus}=farmCount();
   setFx(false);
-  $("farmTitle").textContent = n===9 ? (bonus?"🎉 Your farm is complete + rainbow!":"🎉 Your farm is complete!") : `Your farm: ${n} of 9 items`;
+  $("farmTitle").textContent = n===FARM_TOTAL ? (bonus?"🎉 Your farm is complete + rainbow!":"🎉 Your farm is complete!") : `Your farm: ${n} of ${FARM_TOTAL} items`;
   $("farmBig").innerHTML = `<div class="farm" id="farmBigArt" role="img"></div>`;
   renderFarm($("farmBigArt"));
   $("earnedGrid").innerHTML = PARTS.map((p,i)=>{ const pic = img(p.item+(e[i]?"":"_locked"),p.itemName+(e[i]?"":" (not earned yet)")) || `<span class="emoji-e" style="${e[i]?"":"filter:grayscale(1);opacity:.45"}" role="img" aria-label="${p.itemName}${e[i]?"":" (not earned yet)"}">${p.emoji}</span>`;
@@ -2782,7 +2907,7 @@ $("farmCert").onclick=()=>openCert();
 
 /* ===================== CERTIFICATE ===================== */
 function openCert(){ $("certName").value=getName(); renderCert(); show("cert"); }
-const CERT_SHORT={7:"Futuro",8:"Futuro roots",9:"Futuro or presente?"};
+const CERT_SHORT={7:"Futuro",8:"Futuro roots",9:"Futuro or presente?",11:"Presente (irregular)"};
 function renderCert(){
   const e=earned(), n=e.filter(Boolean).length, all=n===6, name=$("certName").value.trim(), fe=allEarned(), fd=futDone();
   const date=new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
@@ -2794,6 +2919,7 @@ function renderCert(){
     <div class="c-parts">${CORE_PARTS.map((p,i)=>`<span class="${e[i]?"y":"n"}">${p.n}. ${p.title}</span>`).join("")}</div>
     <div class="c-sec">Futuro${fd?" ✓":""}</div>
     <div class="c-parts fut">${FUT_PARTS.map(p=>`<span class="${fe[p.n-1]?"y":"n"}${p.bonus?" bonus":""}">${p.bonus?"★ Extra learning (bonus)":p.n+". "+CERT_SHORT[p.n]}</span>`).join("")}</div>
+    <div class="c-parts pirr"><span class="${fe[10]?"y":"n"}">11. ${CERT_SHORT[11]}</span></div>
     <div class="c-stats"><span>🏆 Best Challenge: ${BEST.l?`${BEST.s}/${BEST.l}`:"not played yet"}</span><span>✨ Aura: ${P.aura}</span><span>⭐ Points: ${P.pts}</span><span>📅 ${date}</span></div>`;
   renderFarm($("certFarm"));
 }
@@ -2828,11 +2954,15 @@ const HELP = {
       <div class="chart-note">Regular: <b>-are → -ato</b>, <b>-ere → -uto</b>, <b>-ire → -ito</b>.<br>Irregular: <span lang="it">fare → fatto, vedere → visto, prendere → preso, scrivere → scritto, leggere → letto, bere → bevuto, aprire → aperto</span>.</div></div></div>
     <p class="chart-note">Time words for the passato prossimo: <b lang="it">ieri</b> (yesterday), <b lang="it">l'anno scorso</b> (last year), <b lang="it">sabato scorso</b> (last Saturday).</p>`
 };
-const HELP_TABS=[["pres","Presente"],["impf","Imperfetto"],["pp","Passato prossimo"],["fut","Futuro"],["futroots","Futuro roots"],["impfroots","Imperfetto roots"],["bonus","Bonus tenses"]];
+HELP.pirr=()=>`<div class="chart-grid">${conjCard("essere (to be)",PRES.essere,"<b lang=\"it\">sono</b> = io and loro. <b lang=\"it\">è</b> (is) has an accent; <span lang=\"it\">e</span> = and.")}${conjCard("avere (to have)",PRES.avere,"The <b>h</b> is silent: <b lang=\"it\">ho</b> (I have) vs <span lang=\"it\">o</span> (or), <b lang=\"it\">ha</b> (has) vs <span lang=\"it\">a</span> (to).")}${conjCard("andare (to go)",PRES.andare,"<span lang=\"it\">vado, vai, va, vanno</span> start with <b>v-</b>. Only <span lang=\"it\">andiamo, andate</span> keep <b>and-</b>.")}
+    <div class="chart-card"><h4>avere expressions</h4><table>${[["avere fame","to be hungry"],["avere sete","to be thirsty"],["avere freddo","to be cold"],["avere caldo","to be hot"],["avere sonno","to be sleepy"],["avere paura","to be afraid"],["avere ragione","to be right"],["avere sedici anni","to be sixteen"]].map(([a,b])=>`<tr><td lang="it">${a}</td><td>${b}</td></tr>`).join("")}</table>
+      <div class="chart-note">English says “I <i>am</i> hungry”, Italian says “I <i>have</i> hunger”: <b lang="it">ho fame</b>, not <s lang="it">sono fame</s>.</div></div></div>`;
+const HELP_TABS=[["pres","Presente"],["pirr","Presente (irregular)"],["impf","Imperfetto"],["pp","Passato prossimo"],["fut","Futuro"],["futroots","Futuro roots"],["impfroots","Imperfetto roots"],["bonus","Bonus tenses"]];
 function openHelp(force){
   let tab="pres";
   const it = S && (CUR==="play"||CUR==="battle") ? curItem() : null;
-  if(it) tab = it.pair||it.tense==="fut" ? (it.part===8?"futroots":"fut") : it.tense==="trap"||it.tense==="fant" ? "bonus" : it.tense==="pres"?"pres":it.tense==="impf"?"impf":"pp";
+  if(it && it.tense==="pirr") tab="pirr";
+  else if(it) tab = it.pair||it.tense==="fut" ? (it.part===8?"futroots":"fut") : it.tense==="trap"||it.tense==="fant" ? "bonus" : it.tense==="pres"?"pres":it.tense==="impf"?"impf":"pp";
   else if(CUR==="chart3") tab="impf";
   else if(CUR==="rchart") tab="futroots";
   else if(CUR==="teach") tab="bonus";
@@ -2873,6 +3003,7 @@ document.addEventListener("click",e=>{
   const a=b.dataset.act;
   if(a==="help") openHelp();
   else if(a==="book") openHelp("fut");
+  else if(a==="pirrchart") openHelp("pirr");
   else if(a==="save") openSave();
   else if(a==="home"){ clearTimers(); renderHome(); }
   else if(a==="leave") leaveSession();
@@ -2928,7 +3059,8 @@ window.__afTest = {
   progress:()=>JSON.parse(JSON.stringify({P,BEST,SET})),
   items:()=>ALL_ITEMS.map(it=>({id:it.id,key:it.key,part:it.part,tense:it.tense,verb:it.verb,who:it.who,p:it.p,frame:it.frame,s:it.s,gloss:it.gloss,sc:it.sc,ans:it.ans,
     alt:it.altAns||null, pair:!!it.pair, q:!!it.q, use:it.use||null, why:it.why||null, okAlt:it.altAns?whyOkBody(it,it.altAns):null,
-    cands:candidates(it).map(c=>c.f), ok:whyOkBody(it), wrong:candidates(it).map(c=>[c.f,whyWrongBody(it,c.f)])})),
+    cands:candidates(it).map(c=>c.f), ok:whyOkBody(it), wrong:candidates(it).map(c=>[c.f,whyWrongBody(it,c.f)]),
+    x:it.x||null, xw:it.xw||null, expr:!!it.expr, mixwrong:(it.x||[]).map(f=>[f,whyWrongBody(Object.assign({},it,{mix:true}),f)])})),
   pieces:id=>{ const it=ALL_ITEMS.find(x=>x.id===id); return splitForm(it,it.ans).map(p=>p.t); },
   buildPieces:id=>{ const it=ALL_ITEMS.find(x=>x.id===id); return buildPieces(it); },
   encode:(r,b,a,p)=>encodeState(r,b,a,p), decode:c=>decodeCode(c), normalize:c=>normalizeCode(c),
