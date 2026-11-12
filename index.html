@@ -555,6 +555,115 @@ button:disabled{cursor:not-allowed}
 @keyframes afxAuto{to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){ .afx-auto::after{display:none} }
 
+/* TQ-QUIZ-CSS-BEGIN (graded quizzes + Passato prossimo vs. imperfetto, added 2026-11-12) */
+.tq-hide{display:none!important}
+.tq-center{text-align:center}
+.tq-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:10px;padding:2px 2px 8px;-webkit-overflow-scrolling:touch}
+.tq-scroll>*{flex:0 0 auto}
+.tq-badge{display:inline-block;font-size:16px;font-weight:900;letter-spacing:.02em;color:#04211d;background:var(--neon2);padding:1px 8px;border-radius:7px;white-space:nowrap;margin-left:4px;text-transform:none}
+.tq-badge.taken{background:#9ffff0}
+.part-card.tq-ppi{border-color:rgba(0,245,212,.7);background:linear-gradient(135deg,rgba(0,245,212,.12),rgba(255,255,255,.02))}
+.sec-head.sec-tqppi{background:linear-gradient(90deg,rgba(0,245,212,.18),rgba(196,77,255,.10));border-color:rgba(0,245,212,.65)}
+.sec-head.sec-tqppi .sec-name{color:var(--neon2)}
+.round-card.tq-quizcard{border:2px solid var(--neon2);background:linear-gradient(135deg,rgba(0,245,212,.16),rgba(0,245,212,.04))}
+.round-card.tq-quizcard .rnum{background:var(--neon2);color:#04211d;font-size:20px}
+.round-card.tq-quizcard h3{color:#bffcf2}
+.round-card.tq-quizcard.locked{border-color:var(--bad)}
+.tq-rlist{flex:0 0 auto;overflow:visible;padding-top:0}
+.tq-namebar{flex:0 0 auto;display:flex;align-items:center;gap:8px;background:rgba(0,245,212,.10);border:1px solid rgba(0,245,212,.55);border-radius:14px;padding:6px 12px;font-size:17px;font-weight:700;margin-bottom:6px;min-width:0}
+.tq-namebar .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tq-namebar .lk{margin-left:auto;font-size:16px;color:var(--muted);white-space:nowrap;font-weight:700}
+.tq-label{display:block;font-weight:800;font-size:18px;margin-bottom:6px}
+.tq-input{width:100%;min-height:52px;font:inherit;font-size:21px;padding:10px 14px;border-radius:14px;border:2px solid var(--neon2);background:#0e0820;color:#fff}
+.tq-input:focus{outline:3px solid var(--gold);outline-offset:1px}
+.tq-input[readonly]{background:rgba(0,245,212,.08);border-color:rgba(0,245,212,.55)}
+.tq-input.bad{border-color:var(--bad)}
+.tq-input:disabled{opacity:.8}
+.tq-input::placeholder{color:#a99bc4}
+.tq-box{background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:16px;padding:10px 14px;font-size:16px;line-height:1.4}
+.tq-box h3{font-size:19px;margin-bottom:6px}
+.tq-box ul{padding-left:20px}
+.tq-box li{margin:3px 0}
+.tq-pick{width:100%;display:grid;grid-template-columns:60px 1fr;gap:12px;align-items:center;background:linear-gradient(135deg,rgba(0,245,212,.16),rgba(0,245,212,.04));border:2px solid var(--neon2);border-radius:18px;padding:10px 12px;text-align:left}
+.tq-pick .th{width:60px;height:60px;border-radius:14px;display:grid;place-items:center;background:rgba(0,0,0,.25);font-size:32px}
+.tq-pick h3{font-size:19px;margin-bottom:2px}
+.tq-pick p{font-size:16px;color:var(--muted);line-height:1.3}
+.tq-pick .tq-mech{color:var(--neon2)}
+.tq-pick.locked{border-color:var(--bad)}
+.tq-mech{font-size:16px;font-weight:900;letter-spacing:.06em;color:var(--neon2);text-transform:uppercase}
+.tq-card{background:linear-gradient(160deg,#2a1548,#140a28);border:1px solid var(--stroke);border-radius:20px;padding:12px 14px;text-align:center}
+.tq-dir{font-size:17px;color:var(--text);margin:4px 0 6px;line-height:1.35}
+.tq-who{font-size:17px;font-weight:800;color:var(--gold);margin-bottom:2px}
+.tq-who:empty{display:none}
+.tq-it{font-size:25px;font-weight:800;line-height:1.35;overflow-wrap:break-word}
+.tq-it .blank{display:inline-block;min-width:84px;min-height:1.2em;border-bottom:3px solid var(--neon2);color:var(--neon2);padding:0 4px}
+.tq-it .inf{color:#e2a6ff;font-weight:700}
+.tq-it .wrong{text-decoration:underline;text-decoration-color:var(--bad);text-decoration-thickness:3px;text-underline-offset:5px;color:#ffd3dc}
+.tq-it .mark{text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:3px;text-underline-offset:5px;color:var(--gold)}
+.tq-en{font-size:18px;color:var(--text);margin-top:6px}
+.tq-en.big{font-size:23px;font-weight:800}
+.tq-en .tag{color:#e2a6ff;font-weight:700}
+.tq-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tq-opts:empty{display:none}
+.tq-opts.reasons{grid-template-columns:1fr}
+.tq-opt{min-height:54px;padding:8px 10px;border-radius:14px;background:linear-gradient(160deg,#3a2060,#1e1038);border:2px solid var(--stroke);font-size:21px;font-weight:800;color:var(--text);line-height:1.25}
+.tq-opts.reasons .tq-opt{font-size:17px;font-weight:700;text-align:left;padding:10px 12px}
+.tq-opt.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}
+.tq-opt.right{border-color:var(--ok);background:linear-gradient(160deg,#1f5a3e,#123524)}
+.tq-opt.tried{opacity:.5;border-color:var(--bad);text-decoration:line-through}
+.tq-opt:disabled{cursor:default}
+.tq-fb{min-height:52px;border-radius:14px;padding:9px 12px;font-size:17px;line-height:1.4;text-align:left;border:1px solid transparent;color:var(--muted)}
+.tq-fb:empty{display:none}
+.tq-fb.ok{background:rgba(57,255,136,.1);border-color:rgba(57,255,136,.5);color:#dcffe8}
+.tq-fb.bad{background:rgba(255,92,122,.12);border-color:rgba(255,92,122,.55);color:#ffe3e8}
+.tq-fb.info{background:rgba(255,255,255,.05);border-color:var(--stroke);color:var(--text)}
+.tq-fb.warn{background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.6);color:#fff3d1}
+.tq-fb b[lang="it"]{color:#fff}
+.tq-fb .t{font-weight:900;font-size:18px;display:block;margin-bottom:2px}
+.tq-fb .cor{display:block;margin-top:4px}
+#tqDock{display:flex;flex-direction:column;gap:8px}
+.tq-acc{display:flex;gap:8px;justify-content:center}
+.tq-actions{display:flex;gap:10px}
+.tq-actions>button{flex:1;min-height:52px}
+.tq-actions .big-btn{padding:12px 14px}
+.tq-res{background:linear-gradient(160deg,#2a1548,#140a28);border:1px solid var(--stroke);border-radius:20px;padding:12px 14px;text-align:center}
+.tq-resq{display:inline-block;font-size:16px;font-weight:900;letter-spacing:.05em;color:var(--neon2);background:rgba(0,245,212,.12);padding:3px 10px;border-radius:8px}
+.tq-score{font-size:46px;font-weight:900;color:var(--gold);line-height:1.1;margin-top:4px}
+.tq-meta{font-size:17px;color:var(--text);margin-top:4px;line-height:1.4}
+.tq-coderow{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.tq-try{font-size:17px;font-weight:900;color:#0a0614;background:var(--gold);padding:4px 10px;border-radius:8px}
+.tq-code{display:inline-block;font:800 28px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;color:#0a0614;background:var(--neon2);padding:4px 14px;border-radius:10px}
+.tq-miss{list-style:none;padding:0;margin:0;text-align:left}
+.tq-miss li{border-top:1px solid rgba(255,255,255,.12);padding:8px 2px;font-size:16px;line-height:1.4}
+.tq-miss .p{font-weight:800;color:var(--text)}
+.tq-miss .y{color:#ffc2cd}
+.tq-miss .c{color:#b9ffd3}
+.tq-miss .h{color:var(--gold);font-weight:700}
+.tq-miss .w{color:var(--text)}
+.tq-lockbig{font-size:56px;text-align:center}
+.tq-shotimg{display:block;margin:8px auto 0;max-width:100%;max-height:52vh;width:auto;height:auto;border-radius:12px;border:1px solid var(--stroke);background:#140a22}
+.tq-copytext{min-height:160px;font-size:16px;margin-top:8px}
+.tq-mlabel{font-size:17px;font-weight:700;display:block;margin-top:10px}
+.tq-minput{font-size:20px}
+.tq-alllist{display:flex;flex-direction:column;gap:8px}
+.tq-arow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;text-align:left;background:linear-gradient(135deg,rgba(0,245,212,.10),rgba(255,255,255,.02));border:1px solid rgba(0,245,212,.55);border-radius:14px;padding:8px 12px;min-height:56px}
+.tq-arow .l{font-size:16px;font-weight:900;color:var(--neon2)}
+.tq-arow h3{font-size:17px;line-height:1.2}
+.tq-arow .s{font-size:16px;color:var(--muted);text-align:right;white-space:nowrap}
+.tq-tips h3{margin-bottom:4px}
+.tq-tipgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tq-tip{border-radius:12px;padding:8px 10px;border:1px solid var(--stroke);background:rgba(0,0,0,.2)}
+.tq-tip h4{font-size:17px;margin-bottom:2px}
+.tq-tip.pp h4{color:var(--gold)}
+.tq-tip.im h4{color:var(--neon2)}
+.tq-tip p{font-size:16px;line-height:1.35;color:var(--text)}
+.tq-tip p.ex{color:#e8dcff;margin-top:4px}
+.tq-tipnote{font-size:16px;margin-top:8px;line-height:1.4}
+#tqsec .part-hero{margin-bottom:0}
+@media (max-width:520px){ .tq-tipgrid{grid-template-columns:1fr} .tq-it{font-size:23px} .tq-score{font-size:40px} .tq-acc{gap:6px} .tq-opt{font-size:19px} }
+@media (max-height:700px){ .tq-card{padding:8px 12px} .tq-dir{margin:2px 0 4px} .tq-it{font-size:22px} .tq-namebar{padding:4px 12px;margin-bottom:4px} }
+/* TQ-QUIZ-CSS-END */
+
 </style>
 </head>
 <body>
@@ -565,7 +674,7 @@ button:disabled{cursor:not-allowed}
       <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button>
         <span class="pill" aria-label="Aura">✨ <span class="auraVal">0</span></span>
         <span class="pill pts-pill" aria-label="Points">⭐ <span class="ptsVal">0</span></span></div>
-      <div class="grp"><button class="icon-btn" data-act="save" aria-label="Save code and reset">💾</button>
+      <div class="grp"><button class="icon-btn" data-act="quizzes" aria-label="All graded quizzes">📝</button><button class="icon-btn" data-act="save" aria-label="Save code and reset">💾</button>
         <button class="icon-btn" data-act="help" aria-label="Open the verb chart">📋</button></div>
     </div>
     <button class="farm" id="farmHome" aria-label="Open your farm"></button>
@@ -791,6 +900,200 @@ button:disabled{cursor:not-allowed}
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="flash-ok" id="flashOk"></div><div class="flash-bad" id="flashBad"></div>
+  <!-- TQ-QUIZ-HTML-BEGIN (graded quizzes + Passato prossimo vs. imperfetto, added 2026-11-12) -->
+  <!-- NEW SECTION: passato prossimo vs. imperfetto -->
+  <section class="screen" id="tqsec" aria-label="Passato prossimo vs. imperfetto">
+    <div class="hud">
+      <div class="grp"><button class="icon-btn" data-act="home" aria-label="Back to home">←</button>
+        <span class="pill">✨ <span class="auraVal">0</span></span></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
+    </div>
+    <div class="tq-scroll">
+      <div class="part-hero"><div class="pthumb" aria-hidden="true">⚖️</div>
+        <div class="grow1"><div class="part-tag" style="display:inline-block">Midterm skill</div><h2>Passato prossimo vs. imperfetto</h2>
+        <div class="soft">Which past tense? Learn the clues, practice, then take the graded quiz.</div></div></div>
+      <div class="tq-box tq-tips">
+        <h3>How to choose</h3>
+        <div class="tq-tipgrid">
+          <div class="tq-tip pp"><h4>Passato prossimo</h4><p>A finished event: it happened once, or it has a clear end.</p>
+            <p class="ex" lang="it">ieri · una volta · all'improvviso · l'anno scorso · per una settimana · in cinque minuti</p>
+            <p class="ex" lang="it">Ieri <b>ho pulito</b> la cucina.</p></div>
+          <div class="tq-tip im"><h4>Imperfetto</h4><p>Background, habits and descriptions: how things were, what used to happen.</p>
+            <p class="ex" lang="it">da piccolo/a · ogni estate · di solito · sempre · mentre</p>
+            <p class="ex" lang="it">Da piccola <b>abitavo</b> in una casa grande.</p></div>
+        </div>
+        <p class="tq-tipnote">Together: <span lang="it">Mentre <b>cercavamo</b> un appartamento, <b>abbiamo trovato</b> un annuncio.</span> The imperfetto is the background; the passato prossimo is the event that happens.</p>
+      </div>
+      <div class="round-list tq-rlist" id="tqSecList"></div>
+    </div>
+  </section>
+
+  <!-- ALL QUIZZES -->
+  <section class="screen" id="tqall" aria-label="All quizzes">
+    <div class="hud">
+      <div class="grp"><button class="icon-btn" data-act="home" aria-label="Back to home">←</button><span class="pill">📝 Quizzes</span></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
+    </div>
+    <div class="tq-scroll">
+      <p class="soft">Each part ends with a graded quiz. Practice the part first, then take its quiz. You have 2 tries per quiz on this device.</p>
+      <div id="tqAllList" class="tq-alllist"></div>
+      <button class="ghost-btn" id="tqAllTeacher">Teacher tools</button>
+    </div>
+  </section>
+
+  <!-- QUIZ START (one quiz) -->
+  <section class="screen" id="tqhome" aria-label="Quiz">
+    <div class="hud">
+      <div class="grp"><button class="icon-btn" id="tqHomeBack" aria-label="Back">←</button><span class="pill">📝 Quiz</span></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
+    </div>
+    <div class="tq-scroll">
+      <div>
+        <label class="tq-label" for="tqNameIn">Your name (first and last)</label>
+        <input id="tqNameIn" class="tq-input" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="40" placeholder="Type your name here">
+        <p class="soft" id="tqNameNote" style="margin-top:6px">Type your name first. It locks when the quiz starts and shows on your result.</p>
+      </div>
+      <div id="tqPickBox"></div>
+      <div class="tq-box">
+        <h3>How the quiz works</h3>
+        <ul>
+          <li>No hints and no chart. The accent buttons <span lang="it">à è é ì ò ù</span> are always there.</li>
+          <li>Accents count: an answer without the right accent is wrong.</li>
+          <li>Right on the first try = 1 point.</li>
+          <li>Wrong? You see why and the right answer. Then you get one more try for ½ point.</li>
+          <li>At the end, tap 📸 Screenshot and upload the picture to Google Classroom.</li>
+          <li>You have 2 tries on this device. A try counts as soon as you start it.</li>
+        </ul>
+      </div>
+      <button class="ghost-btn" id="tqLastBtn">See my last result</button>
+      <button class="ghost-btn" id="tqTeacherBtn">Teacher tools</button>
+      <p class="soft" id="tqStoreNote" style="display:none">Note: this browser isn't saving quiz tries, so they reset if the page reloads.</p>
+    </div>
+  </section>
+
+  <!-- QUIZ PLAY (graded quiz or practice) -->
+  <section class="screen" id="tqplay" aria-label="Quiz question">
+    <div class="hud">
+      <div class="grp"><button class="icon-btn" id="tqLeave" aria-label="Leave">←</button><span class="pill" id="tqCount">Question 1 of 10</span></div>
+      <div class="grp"><span class="pill pts-pill tq-pts" aria-label="Points">⭐ <span class="ptsVal">0</span></span>
+        <button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
+    </div>
+    <div class="tq-namebar" id="tqNameBar"><span aria-hidden="true">👤</span><span class="nm tqNameShow"></span><span class="lk">🔒 locked</span></div>
+    <div class="progress-rail"><div class="progress-fill" id="tqProg"></div></div>
+    <div class="tq-scroll" id="tqBody">
+      <div class="tq-card">
+        <div class="tq-mech" id="tqType">TYPE THE VERB</div>
+        <div class="tq-dir" id="tqDir"></div>
+        <div class="tq-who" id="tqWho"></div>
+        <div class="tq-it" id="tqPrompt" lang="it"></div>
+        <div class="tq-en" id="tqEn"></div>
+      </div>
+      <div class="tq-opts" id="tqOpts" role="group" aria-label="Choices"></div>
+      <div class="tq-fb" id="tqFb" aria-live="polite"></div>
+    </div>
+    <div class="type-dock" id="tqDock">
+      <div id="tqTypeWrap"><input id="tqIn" class="tq-input" type="text" lang="it" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="Your answer" placeholder="Type your answer"></div>
+      <div class="acc-row tq-acc" id="tqAcc" role="group" aria-label="Accent buttons"></div>
+      <div class="tq-actions">
+        <button class="ghost-btn" id="tqClear" type="button">⌫ Clear</button>
+        <button class="big-btn" id="tqCheck" type="button">Check ✓</button>
+        <button class="big-btn tq-hide" id="tqRetry" type="button">Try again for ½ point</button>
+        <button class="big-btn tq-hide" id="tqNext" type="button">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ RESULT -->
+  <section class="screen" id="tqend" aria-label="Quiz result">
+    <div class="hud">
+      <div class="grp"><button class="icon-btn" id="tqEndBack" aria-label="Back">←</button><span class="pill" id="tqEndPill">📝 Quiz result</span></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
+    </div>
+    <div class="tq-namebar" id="tqEndName"><span aria-hidden="true">👤</span><span class="nm" id="tqEndNameTxt"></span><span class="lk">🔒 locked</span></div>
+    <div class="tq-scroll" id="tqEndBody">
+      <div class="tq-res" id="tqResCard">
+        <div class="tq-resq" id="tqResQuiz">QUIZ</div>
+        <div class="tq-score" id="tqResScore">0 / 10</div>
+        <div class="tq-meta" id="tqResMeta"></div>
+        <div class="tq-coderow" id="tqCodeRow"><span class="tq-try" id="tqResTry">Try 1 of 2</span><span class="tq-code" id="tqResCode">-----</span></div>
+        <div class="tq-meta" id="tqCodeNote">Verification code for your teacher</div>
+      </div>
+      <div class="tq-actions" id="tqShotRow">
+        <button class="big-btn" id="tqShot" type="button">📸 Screenshot</button>
+        <button class="ghost-btn" id="tqCopy" type="button">Copy text</button>
+      </div>
+      <p class="soft tq-center" id="tqShotNote">📸 Screenshot saves a picture of this result. Upload that picture to your Google Classroom assignment.</p>
+      <div class="tq-fb" id="tqEndFb" aria-live="polite" style="display:none"></div>
+      <div class="tq-box"><h3 id="tqMissHead">Missed items</h3><ul class="tq-miss" id="tqMissList"></ul></div>
+      <div class="tq-actions" id="tqEndActs"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ LOCKED -->
+  <section class="screen" id="tqlock" aria-label="Quiz locked">
+    <div class="hud">
+      <div class="grp"><button class="icon-btn" id="tqLockBack" aria-label="Back">←</button><span class="pill">🔒 Quiz locked</span></div>
+      <div class="grp"><button class="icon-btn" data-fx="panel" aria-label="Sound settings">🔊</button></div>
+    </div>
+    <div class="tq-namebar"><span aria-hidden="true">👤</span><span class="nm tqNameShow"></span><span class="lk">🔒 locked</span></div>
+    <div class="tq-scroll">
+      <div class="tq-lockbig" aria-hidden="true">🔒</div>
+      <div class="tq-box tq-center"><h3 id="tqLockTitle">This quiz is locked</h3><p>You used both tries on this device. Ask your teacher to unlock it.</p></div>
+      <div class="tq-box">
+        <label class="tq-label" for="tqLockCode">Teacher code</label>
+        <div class="tq-actions"><input id="tqLockCode" class="tq-input" type="password" inputmode="numeric" autocomplete="off" maxlength="8" style="flex:1;min-width:0"><button class="big-btn" id="tqLockGo" type="button" style="flex:0 0 auto;width:auto">Unlock</button></div>
+        <div class="tq-fb" id="tqLockFb" aria-live="polite" style="margin-top:8px"></div>
+      </div>
+      <button class="ghost-btn" id="tqLockLast">See my last result</button>
+      <button class="ghost-btn" id="tqLockPractice">Practice this part (not graded)</button>
+    </div>
+  </section>
+
+  <!-- QUIZ MODALS (same look as the game's other modals) -->
+  <div class="modal-back" id="tqStartModal" role="dialog" aria-modal="true" aria-labelledby="tqStartTitle">
+    <div class="modal">
+      <h2 id="tqStartTitle">Ready to start?</h2>
+      <p id="tqStartInfo"></p>
+      <div class="row"><button class="sm-btn" id="tqStartNo" style="flex:1">Not yet</button><button class="sm-btn" id="tqStartYes" style="flex:1">Start quiz</button></div>
+    </div>
+  </div>
+  <div class="modal-back" id="tqLeaveModal" role="alertdialog" aria-modal="true" aria-labelledby="tqLeaveTitle">
+    <div class="modal">
+      <h2 id="tqLeaveTitle">Leave the quiz?</h2>
+      <p>If you leave now, this try still counts. Questions you didn't answer get 0 points, and you go to your result.</p>
+      <div class="row"><button class="sm-btn" id="tqLeaveNo" style="flex:1">Stay in the quiz</button><button class="sm-btn danger" id="tqLeaveYes" style="flex:1">Leave and finish</button></div>
+    </div>
+  </div>
+  <div class="modal-back" id="tqTeacherModal" role="dialog" aria-modal="true" aria-labelledby="tqTeacherTitle">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h2 id="tqTeacherTitle">Teacher tools</h2>
+        <button class="icon-btn" data-act="closeModal" aria-label="Close">✕</button></div>
+      <label class="tq-mlabel" for="tqTCode">Unlock this device (teacher code)</label>
+      <div class="row"><input id="tqTCode" class="tq-minput" type="password" inputmode="numeric" autocomplete="off" maxlength="8"><button class="sm-btn" id="tqTUnlock" type="button">Unlock</button></div>
+      <p>Resets the 2 tries on every quiz and unlocks the name field.</p>
+      <label class="tq-mlabel" for="tqTCheck">Check a student's verification code</label>
+      <div class="row"><input id="tqTCheck" class="tq-minput" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="10" placeholder="e.g. T7KQ-M4"><button class="sm-btn" id="tqTCheckGo" type="button">Check</button></div>
+      <div class="tq-fb" id="tqTFb" aria-live="polite" style="margin-top:10px"></div>
+    </div>
+  </div>
+  <div class="modal-back" id="tqShotModal" role="dialog" aria-modal="true" aria-labelledby="tqShotTitle">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h2 id="tqShotTitle">📸 Your screenshot</h2>
+        <button class="icon-btn" data-act="closeModal" aria-label="Close">✕</button></div>
+      <p id="tqShotMsg">The picture was saved to your Downloads. Upload it to your Google Classroom assignment.</p>
+      <p>If it didn't download: press and hold the picture (phone) or right-click it (Chromebook) and choose “Save image”.</p>
+      <img class="tq-shotimg" id="tqShotImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Picture of your quiz result">
+    </div>
+  </div>
+  <div class="modal-back" id="tqCopyModal" role="dialog" aria-modal="true" aria-labelledby="tqCopyTitle">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h2 id="tqCopyTitle">Copy your result</h2>
+        <button class="icon-btn" data-act="closeModal" aria-label="Close">✕</button></div>
+      <p>Copying is blocked on this device. Select all the text below and copy it.</p>
+      <textarea class="tq-input tq-copytext" id="tqCopyText" readonly></textarea>
+    </div>
+  </div>
+  <!-- TQ-QUIZ-HTML-END -->
 </div>
 
 <script>
@@ -2546,7 +2849,7 @@ function partCard(n, np){
   const badge = done ? '<span class="done-badge">Done ✓</span>' : got ? '<span class="got-badge">Item earned 🎁</span>' : "";
   return `<button class="part-card${n===np?" current":""}${p.fut?" fut":""}${p.pirr||p.eaa?" pirr":""}${p.bonus?" bonus":""}${p.qb?" qb":""}" data-part="${n}" aria-label="${p.qb?"Bonus round":partLabel(n)}: ${p.title}${done?", done":""}">
       <div class="pthumb">${th}</div>
-      <div><div class="pnum">${lbl} ${badge}</div><h3>${p.title}</h3><div class="psub"${n!==6&&!p.qb?' lang="it"':""}>${p.sub}</div><div class="pbar">${bar}</div></div></button>`;
+      <div><div class="pnum">${lbl}${tqBadge(n)} ${badge}</div><h3>${p.title}</h3><div class="psub"${n!==6&&!p.qb?' lang="it"':""}>${p.sub}</div><div class="pbar">${bar}</div></div></button>`;
 }
 function renderHome(){
   renderFarm($("farmHome"));
@@ -2555,6 +2858,7 @@ function renderHome(){
   $("partList").innerHTML = SECTIONS.map(sec=>`<div class="sec-head sec-${sec.k}" id="sec-${sec.k}"><span class="sec-name">${sec.name}</span><span class="sec-sub">${sec.sub}</span>${SEC_BTN[sec.k]||""}</div>` +
     sec.parts.map(n=>partCard(n,np)).join("")).join("");
   $("partList").querySelectorAll(".part-card").forEach(b=>b.onclick=()=>{ const n=+b.dataset.part; n===6?openChallenge():openPart(n); });
+  tqHomeHook();   /* graded quizzes: the new "Passato prossimo vs. imperfetto" section (quiz.js) */
   $("btnContinue").textContent = np===0 ? "🌙 See your farm" : np===6 ? "▶ Play the Challenge" : np===10 ? "▶ Extra learning" : PARTS[np-1].qb ? "▶ Continue: ✨ Bonus round" : `▶ Continue: ${partLabel(np)}`;
   show("home");
 }
@@ -2594,6 +2898,7 @@ function openPart(n){
       <div class="rstat">${d?'<span class="done-badge">Done ✓</span>':"Not done"}${b?`<br>Best ${b.s}/${b.t}`:""}</div><div class="play" aria-hidden="true">▶</div></button>`;
   }).join("");
   $("roundList").querySelectorAll(".round-card").forEach(b=>b.onclick=()=>startRound(n,+b.dataset.r));
+  tqPartHook(n);   /* the part's graded quiz card, after the practice rounds (quiz.js) */
   show("part");
 }
 
@@ -3199,6 +3504,7 @@ document.addEventListener("click",e=>{
   else if(a==="book") openHelp("fut");
   else if(a==="pirrchart") openHelp("pirr");
   else if(a==="save") openSave();
+  else if(a==="quizzes") tqOpenAll();
   else if(a==="home"){ clearTimers(); renderHome(); }
   else if(a==="leave") leaveSession();
   else if(a==="closeModal"){ const m=b.closest(".modal-back"); if(m) closeModal(m.id); }
@@ -3240,6 +3546,7 @@ window.addEventListener("popstate", ()=>{
   if(CUR==="home") return;
   if(["play","battle","chart3","rchart"].includes(CUR)) leaveSession();
   else if(CUR==="teach") openPart(10);
+  else if(/^tq/.test(CUR)) tqOnBack();
   else if(CUR==="end"){ const s=S; clearTimers(); if(s && s.kind==="challenge") openChallenge(); else if(s && s.part) openPart(s.part); else renderHome(); }
   else { clearTimers(); renderHome(); }
   if(CUR!=="home") armBack();
@@ -3262,6 +3569,1179 @@ window.__afTest = {
   chart:()=>({IMPF, PRES}),
   fut:()=>({ROOT_CHART, IMPF_ROOTS, FUT_IRR, stems:Object.fromEntries(Object.keys(FUT_IRR).map(v=>[v,futStem(v)]))}),
   helpText:t=>{ const d=document.createElement("div"); d.innerHTML=HELP[t](); return d.innerText; }
+};
+
+/* =========================================================
+   TEMPI QUIZZES (added 2026-11-12): one graded quiz per verb part + the new
+   "Passato prossimo vs. imperfetto" section (practice + quiz).
+   Markup in why / notes: {Italian} becomes <b lang="it">Italian</b>; plain text for the screenshot drops the braces.
+   Every answer is checked by tests/check_quiz_italian.py against an independent Python conjugator.
+   ========================================================= */
+/* ---------- small conjugator: only used to EXPLAIN a wrong answer ("fanno = presente, loro") ---------- */
+const TQ_ESS_VERBS = ["essere","andare","venire","arrivare","partire","uscire","entrare","tornare","restare","nascere","rimanere","diventare"];
+const TQ_ISC = ["capire","finire","pulire","preferire"];
+const TQ_PRES_IRR = {
+  essere:["sono","sei","è","siamo","siete","sono"], avere:["ho","hai","ha","abbiamo","avete","hanno"],
+  andare:["vado","vai","va","andiamo","andate","vanno"], fare:["faccio","fai","fa","facciamo","fate","fanno"],
+  bere:["bevo","bevi","beve","beviamo","bevete","bevono"], dire:["dico","dici","dice","diciamo","dite","dicono"],
+  uscire:["esco","esci","esce","usciamo","uscite","escono"], venire:["vengo","vieni","viene","veniamo","venite","vengono"],
+  sapere:["so","sai","sa","sappiamo","sapete","sanno"], rimanere:["rimango","rimani","rimane","rimaniamo","rimanete","rimangono"]
+};
+const TQ_IMPF_IRR = { essere:["ero","eri","era","eravamo","eravate","erano"], fare:"fac", bere:"bev", dire:"dic" };
+const TQ_FUT_ROOT = { essere:"sar", avere:"avr", andare:"andr", sapere:"sapr", vedere:"vedr", vivere:"vivr", venire:"verr", rimanere:"rimarr",
+  bere:"berr", fare:"far", dire:"dir", stare:"star", dare:"dar", potere:"potr", dovere:"dovr" };
+const TQ_PART_IRR = { essere:"stato", fare:"fatto", vedere:"visto", prendere:"preso", scrivere:"scritto", leggere:"letto", bere:"bevuto",
+  aprire:"aperto", venire:"venuto", nascere:"nato", rimanere:"rimasto", vivere:"vissuto", dire:"detto" };
+const TQ_FUT_END = ["ò","ai","à","emo","ete","anno"];
+const TQ_PERS = ["io (I)","tu (you)","lui/lei (he/she)","noi (we)","voi (you all)","loro (they)"];
+const TQ_AUX = { pp:{e:["sono","sei","è","siamo","siete","sono"], a:["ho","hai","ha","abbiamo","avete","hanno"]},
+  trap:{e:["ero","eri","era","eravamo","eravate","erano"], a:["avevo","avevi","aveva","avevamo","avevate","avevano"]},
+  fant:{e:["sarò","sarai","sarà","saremo","sarete","saranno"], a:["avrò","avrai","avrà","avremo","avrete","avranno"]} };
+const TQ_TNAME = { pres:"presente", impf:"imperfetto", fut:"futuro", pp:"passato prossimo", trap:"trapassato prossimo", fant:"futuro anteriore" };
+function tqClass(v){ return v.endsWith("are") ? "are" : v.endsWith("ere") ? "ere" : TQ_ISC.includes(v) ? "isc" : "ire"; }
+function tqPres(v){
+  if(TQ_PRES_IRR[v]) return TQ_PRES_IRR[v];
+  const c=tqClass(v), st=v.slice(0,-3);
+  const E={are:["o","i","a","iamo","ate","ano"], ere:["o","i","e","iamo","ete","ono"], ire:["o","i","e","iamo","ite","ono"], isc:["isco","isci","isce","iamo","ite","iscono"]}[c];
+  return E.map(e=>{
+    if(c==="are" && e.startsWith("i")){ if(st.endsWith("i")) return st+e.slice(1); if(/[cg]$/.test(st)) return st+"h"+e; }
+    return st+e;
+  });
+}
+function tqImpf(v){
+  const irr=TQ_IMPF_IRR[v]; if(Array.isArray(irr)) return irr;
+  const st = irr || v.slice(0,-3), vow = irr ? "e" : v.slice(-3,-2);
+  return ["vo","vi","va","vamo","vate","vano"].map(e=>st+vow+e);
+}
+function tqFutRoot(v){
+  if(TQ_FUT_ROOT[v]) return TQ_FUT_ROOT[v];
+  if(v.endsWith("are")){ let st=v.slice(0,-3); if(/[cg]i$/.test(st)) st=st.slice(0,-1); else if(/[cg]$/.test(st)) st+="h"; return st+"er"; }
+  return v.slice(0,-1);
+}
+function tqFut(v){ const r=tqFutRoot(v); return TQ_FUT_END.map(e=>r+e); }
+function tqPart(v){ if(TQ_PART_IRR[v]) return TQ_PART_IRR[v]; const c=tqClass(v); return v.slice(0,-3)+(c==="are"?"ato":c==="ere"?"uto":"ito"); }
+function tqAgree(pp, g, pl){ return pp.slice(0,-1) + (pl ? (g==="f"?"e":"i") : (g==="f"?"a":"o")); }
+/* every form of a verb, with a short English description of each */
+function tqForms(v){
+  const out=[];
+  const add=(f,d)=>{ if(!out.some(x=>x.f===f && x.d===d)) out.push({f,d}); };
+  tqPres(v).forEach((f,i)=>add(f,`the presente, ${TQ_PERS[i]} form`));
+  tqImpf(v).forEach((f,i)=>add(f,`the imperfetto, ${TQ_PERS[i]} form`));
+  tqFut(v).forEach((f,i)=>add(f,`the futuro, ${TQ_PERS[i]} form`));
+  const e=TQ_ESS_VERBS.includes(v), pp=tqPart(v);
+  ["pp","trap","fant"].forEach(t=>{
+    const aux=TQ_AUX[t][e?"e":"a"];
+    aux.forEach((a,i)=>{
+      if(!e){ add(a+" "+pp, `the ${TQ_TNAME[t]}, ${TQ_PERS[i]} form`); return; }
+      const pl=i>=3;
+      [["m",pl?"boys or a mixed group":"a boy"],["f",pl?"girls only":"a girl"]].forEach(([g,who])=>add(a+" "+tqAgree(pp,g,pl), `the ${TQ_TNAME[t]}, ${TQ_PERS[i]} form for ${who}`));
+    });
+  });
+  return out;
+}
+function tqDescribe(v, f){
+  const all=tqForms(v).filter(x=>x.f===f);
+  if(!all.length) return "";
+  if(all.length===1) return all[0].d;
+  return all.map(x=>x.d).join(", or ");
+}
+
+/* ---------- the quizzes ---------- */
+const TQ_DIR = {
+  pick:"Tap the right form, then Check.",
+  fix:"One verb in this sentence is wrong (it is underlined). Type the correct form.",
+  en2it:"Write this sentence in Italian.",
+  why:"Why is the underlined verb in this tense? Tap the reason, then Check."
+};
+const TQ_QUIZZES = [
+{ id:101, key:"q1", fixTense:"presente", part:1, tense:"pres", title:"Presente", dir:"Type the presente of the verb in parentheses.", items:[
+  {t:"type", s:"Ogni sera io ___ la cena con la mamma.", inf:"cucinare", ans:"cucino", en:"Every evening I cook dinner with Mom.",
+   why:"{cucinare} is an -are verb. For {io}, drop -are and add -o: {cucino}."},
+  {t:"type", s:"Adesso noi ___ la musica in camera.", inf:"ascoltare", ans:"ascoltiamo", en:"Right now we are listening to music in the bedroom.",
+   why:"For {noi}, every regular verb ends in -iamo: {ascoltiamo}."},
+  {t:"pick", s:"Ogni giorno Marco ___ un libro.", inf:"leggere", opts:["legge","leggi","leggono","leggo"], ans:"legge", en:"Every day Marco reads a book.",
+   why:"Marco = {lui}. {leggere} is an -ere verb, so {lui} ends in -e: {legge}."},
+  {t:"type", s:"Di solito tu ___ fino alle otto?", inf:"dormire", ans:"dormi", en:"Do you usually sleep until eight?",
+   why:"For {tu}, the ending is -i: {dormi}."},
+  {t:"type", s:"Ogni sabato Giulia ___ la sua camera.", inf:"pulire", ans:"pulisce", en:"Every Saturday Giulia cleans her room.",
+   why:"{pulire} adds -isc- in the presente (not in noi and voi). Giulia = {lei}: {pulisce}."},
+  {t:"fix", s:"Ogni giorno Marco e Luca scrivano un'email.", wrong:"scrivano", inf:"scrivere", ans:"scrivono", en:"Every day Marco and Luca write an email.",
+   why:"-ano is the ending for -are verbs. {scrivere} is an -ere verb, so {loro} ends in -ono: {scrivono}."},
+  {t:"en2it", en:"We live in Naples.", tag:"presente", inf:"abitare", ans:"abitiamo", answers:["Abitiamo a Napoli.","Noi abitiamo a Napoli."],
+   why:"“We live” = {abitiamo} ({abitare}, {noi} ending -iamo). With a city, “in” is {a}: {a Napoli}."},
+  {t:"pick", s:"Adesso voi ___ la TV in soggiorno.", inf:"guardare", opts:["guardate","guardiamo","guardano","guardi"], ans:"guardate", en:"Right now you all are watching TV in the living room.",
+   why:"For {voi}, -are verbs end in -ate: {guardate}."},
+  {t:"type", s:"Il sabato Sara e Giulia ___ i piatti dopo la cena.", inf:"lavare", ans:"lavano", en:"On Saturdays Sara and Giulia wash the dishes after dinner.",
+   why:"Sara e Giulia = {loro}. -are verbs end in -ano for {loro}: {lavano}."},
+  {t:"fix", s:"Di solito noi puliscono la cucina insieme.", wrong:"puliscono", inf:"pulire", ans:"puliamo", en:"Usually we clean the kitchen together.",
+   why:"{puliscono} is the {loro} form. For {noi}, there is no -isc-: {puliamo}."}
+]},
+{ id:102, key:"q11", fixTense:"presente", part:11, tense:"pres", title:"Presente (irregular)", dir:"Type the presente of the verb in parentheses.", items:[
+  {t:"type", s:"Adesso Marco ___ a scuola.", inf:"essere", ans:"è", en:"Right now Marco is at school.",
+   why:"Marco = {lui}, and {lui} + {essere} = {è} (he is). It needs the accent: {e} without it means “and”."},
+  {t:"pick", s:"Noi ___ fame: è mezzogiorno!", inf:"avere", opts:["abbiamo","siamo","avete","hanno"], ans:"abbiamo", en:"We're hungry: it's noon!",
+   why:"Italian says {avere fame} (literally “to have hunger”). For {noi}: {abbiamo}.",
+   notes:{"siamo":"{siamo} is {essere}. For hunger, Italian uses {avere}: {abbiamo fame}."}},
+  {t:"type", s:"Ogni sabato io ___ al cinema con Luca.", inf:"andare", ans:"vado", en:"Every Saturday I go to the movies with Luca.",
+   why:"{andare} is irregular. For {io}: {vado}."},
+  {t:"type", s:"Giulia e Sara ___ sedici anni.", inf:"avere", ans:"hanno", en:"Giulia and Sara are sixteen.",
+   why:"For age, Italian uses {avere}. For {loro}: {hanno} (silent h, double n)."},
+  {t:"fix", s:"Luca, tu sei sete?", wrong:"sei", inf:"avere", ans:"hai", en:"Luca, are you thirsty?",
+   why:"Italian says {avere sete} (literally “to have thirst”), not {essere}. For {tu}: {hai}."},
+  {t:"en2it", en:"She is at home.", tag:"presente", inf:"essere", ans:"è", answers:["È a casa.","Lei è a casa."],
+   why:"“She is” = {lei è}. {è} needs the accent: {e} without it means “and”. “At home” = {a casa}."},
+  {t:"pick", s:"Adesso voi ___ al parco?", inf:"andare", opts:["andate","andiamo","vanno","vai"], ans:"andate", en:"Are you all going to the park now?",
+   why:"For {voi}, {andare} keeps and-: {andate}."},
+  {t:"type", s:"Giulia, adesso tu ___ stanca?", inf:"essere", ans:"sei", en:"Giulia, are you tired now?",
+   why:"For {tu}, {essere} is {sei}."},
+  {t:"fix", s:"Oggi Marco e Luca va al mare.", wrong:"va", inf:"andare", ans:"vanno", en:"Today Marco and Luca are going to the beach.",
+   why:"{va} is the {lui/lei} form. Marco e Luca = {loro}: {vanno} (double n)."},
+  {t:"type", s:"Io ___ paura del buio.", inf:"avere", ans:"ho", en:"I'm afraid of the dark.",
+   why:"Italian says {avere paura}. For {io}: {ho}, with a silent h ({o} without h means “or”)."}
+]},
+{ id:103, key:"q4", fixTense:"passato prossimo", part:4, tense:"pp", title:"Passato prossimo + essere", dir:"Type the passato prossimo of the verb in parentheses.", items:[
+  {t:"type", s:"Ieri Giulia ___ al mare.", inf:"andare", ans:"è andata", en:"Yesterday Giulia went to the beach.",
+   why:"{andare} takes {essere}, so the participle agrees with Giulia (one girl): {è andata}."},
+  {t:"type", s:"Sabato scorso Marco e Luca ___ tardi.", inf:"tornare", ans:"sono tornati", en:"Last Saturday Marco and Luca came back late.",
+   why:"{tornare} takes {essere}. Marco e Luca are two boys, so -i: {sono tornati}."},
+  {t:"pick", s:"L'anno scorso Giulia e Sara ___ per Roma.", inf:"partire", opts:["sono partite","sono partiti","è partita","siamo partite"], ans:"sono partite", en:"Last year Giulia and Sara left for Rome.",
+   why:"{partire} takes {essere}. Giulia e Sara are two girls, so -e: {sono partite}."},
+  {t:"type", who:"Sara", s:"Ieri io ___ a casa tutto il giorno.", inf:"rimanere", ans:"sono rimasta", en:"Yesterday I stayed home all day.",
+   why:"{rimanere} takes {essere} and has the participle {rimasto}. Sara is speaking (one girl), so -a: {sono rimasta}.",
+   notes:{"sono restata":"{sono restata} is from {restare}. Here the verb is {rimanere}, participle {rimasto}: {sono rimasta}."}},
+  {t:"fix", s:"Ieri sera Sara è uscito con gli amici.", wrong:"è uscito", inf:"uscire", ans:"è uscita", en:"Last night Sara went out with her friends.",
+   why:"With {essere}, the participle agrees. Sara is one girl, so -a: {è uscita}."},
+  {t:"en2it", en:"Luca was born in 2009.", tag:"passato prossimo", inf:"nascere", ans:"è nato", answers:["Luca è nato nel 2009."],
+   why:"{nascere} takes {essere}, and its participle is irregular: {nato}. Luca is a boy: {è nato}. “In 2009” = {nel 2009}."},
+  {t:"type", s:"Stamattina Marco e Giulia ___ in classe alle otto.", inf:"entrare", ans:"sono entrati", en:"This morning Marco and Giulia went into class at eight.",
+   why:"{entrare} takes {essere}. A boy and a girl together = a mixed group, so -i: {sono entrati}."},
+  {t:"pick", who:"Luca", s:"Ieri io ___ a scuola a piedi.", inf:"venire", opts:["sono venuto","sono venuta","è venuto","sono venuti"], ans:"sono venuto", en:"Yesterday I came to school on foot.",
+   why:"{venire} takes {essere} and has the participle {venuto}. Luca is speaking (one boy): {sono venuto}."},
+  {t:"fix", s:"La settimana scorsa Giulia e Sara sono arrivati a Milano.", wrong:"sono arrivati", inf:"arrivare", ans:"sono arrivate", en:"Last week Giulia and Sara arrived in Milan.",
+   why:"Giulia e Sara are girls only, so the participle ends in -e: {sono arrivate}. -i is for boys or a mixed group."},
+  {t:"type", s:"Giulia, a che ora ___ ieri sera?", inf:"tornare", ans:"sei tornata", en:"Giulia, what time did you get back last night?",
+   why:"You are talking to Giulia ({tu}, one girl): {sei tornata}."}
+]},
+{ id:104, key:"q5", fixTense:"passato prossimo", part:5, tense:"pp", title:"Passato prossimo + avere", dir:"Type the passato prossimo of the verb in parentheses.", items:[
+  {t:"type", s:"Ieri io ___ la cucina.", inf:"pulire", ans:"ho pulito", en:"Yesterday I cleaned the kitchen.",
+   why:"{pulire} takes {avere}. -ire → -ito: {ho pulito}."},
+  {t:"type", s:"Sabato scorso Marco ___ la pasta per tutti.", inf:"cucinare", ans:"ha cucinato", en:"Last Saturday Marco cooked pasta for everyone.",
+   why:"{cucinare} takes {avere}. -are → -ato: {ha cucinato}."},
+  {t:"pick", s:"Ieri sera noi ___ un film.", inf:"vedere", opts:["abbiamo visto","hanno visto","avete visto","ho visto"], ans:"abbiamo visto", en:"Last night we saw a movie.",
+   why:"{vedere} has the irregular participle {visto}. For {noi}: {abbiamo visto}."},
+  {t:"type", s:"L'estate scorsa Giulia ___ tre libri.", inf:"leggere", ans:"ha letto", en:"Last summer Giulia read three books.",
+   why:"{leggere} has the irregular participle {letto}. Giulia = {lei}: {ha letto}."},
+  {t:"fix", s:"Ieri Sara ha scritta una lettera.", wrong:"ha scritta", inf:"scrivere", ans:"ha scritto", en:"Yesterday Sara wrote a letter.",
+   why:"With {avere}, the participle does not change to match the subject: {ha scritto}."},
+  {t:"en2it", en:"We did our homework.", tag:"passato prossimo", inf:"fare", ans:"abbiamo fatto",
+   answers:["Abbiamo fatto i compiti.","Noi abbiamo fatto i compiti.","Abbiamo fatto i nostri compiti.","Noi abbiamo fatto i nostri compiti."],
+   why:"“We did” = {abbiamo fatto} ({fare} → {fatto}). Homework = {i compiti}."},
+  {t:"type", s:"Domenica scorsa Luca ___ fino alle dieci.", inf:"dormire", ans:"ha dormito", en:"Last Sunday Luca slept until ten.",
+   why:"{dormire} takes {avere}. -ire → -ito: {ha dormito}."},
+  {t:"pick", s:"Stamattina tu ___ la finestra?", inf:"aprire", opts:["hai aperto","ha aperto","avete aperto","ho aperto"], ans:"hai aperto", en:"Did you open the window this morning?",
+   why:"{aprire} has the irregular participle {aperto}. For {tu}: {hai aperto}."},
+  {t:"type", s:"Ieri Marco e Luca ___ un'aranciata.", inf:"bere", ans:"hanno bevuto", en:"Yesterday Marco and Luca drank an orange soda.",
+   why:"{bere} has the participle {bevuto}. Marco e Luca = {loro}: {hanno bevuto}."},
+  {t:"fix", s:"L'anno scorso Giulia e Sara hanno studiate il francese.", wrong:"hanno studiate", inf:"studiare", ans:"hanno studiato", en:"Last year Giulia and Sara studied French.",
+   why:"With {avere}, the participle stays -o, even for two girls: {hanno studiato}."}
+]},
+{ id:105, key:"q13", fixTense:"passato prossimo", part:13, tense:"pp", title:"essere · avere · andare (passato prossimo)", dir:"Type the passato prossimo of the verb in parentheses.", items:[
+  {t:"type", s:"Ieri Giulia ___ a casa tutto il giorno.", inf:"essere", ans:"è stata", en:"Yesterday Giulia was at home all day.",
+   why:"{essere} takes {essere} as its helper, and its participle is {stato}. Giulia is one girl: {è stata}."},
+  {t:"type", s:"L'anno scorso noi ___ un cane.", inf:"avere", ans:"abbiamo avuto", en:"Last year we had a dog.",
+   why:"{avere} takes {avere}: {abbiamo avuto}. With {avere}, the participle does not change."},
+  {t:"pick", s:"Sabato scorso Marco e Luca ___ al cinema.", inf:"andare", opts:["sono andati","sono andate","siamo andati","è andato"], ans:"sono andati", en:"Last Saturday Marco and Luca went to the movies.",
+   why:"{andare} takes {essere}. Marco e Luca are two boys: {sono andati}."},
+  {t:"type", s:"Ieri io ___ molta fame.", inf:"avere", ans:"ho avuto", en:"Yesterday I was very hungry.",
+   why:"Hunger uses {avere}: {ho avuto fame}. With {avere}, the participle does not change."},
+  {t:"fix", s:"Ieri Sara è stato malata.", wrong:"è stato", inf:"essere", ans:"è stata", en:"Yesterday Sara was sick.",
+   why:"With {essere} as the helper, the participle agrees. Sara is one girl: {è stata}."},
+  {t:"en2it", who:"Luca", en:"Last year I went to Italy.", tag:"passato prossimo", inf:"andare", ans:"sono andato",
+   answers:["L'anno scorso sono andato in Italia.","L'anno scorso io sono andato in Italia.","Sono andato in Italia l'anno scorso.","Io sono andato in Italia l'anno scorso."],
+   why:"Luca is a boy, so “I went” = {sono andato}. “Last year” = {l'anno scorso}. With a country, “to” is {in}: {in Italia}."},
+  {t:"type", s:"Giulia e Sara, ___ a Roma l'estate scorsa?", inf:"essere", ans:"siete state", en:"Giulia and Sara, were you in Rome last summer?",
+   why:"You are talking to two girls ({voi}): {siete state}."},
+  {t:"pick", s:"Ieri tu ___ un bel voto?", inf:"avere", opts:["hai avuto","ha avuto","hanno avuto","ho avuto"], ans:"hai avuto", en:"Did you get a good grade yesterday?",
+   why:"For {tu}: {hai avuto}."},
+  {t:"type", s:"La settimana scorsa Marco ___ a Milano.", inf:"andare", ans:"è andato", en:"Last week Marco went to Milan.",
+   why:"{andare} takes {essere}. Marco is one boy: {è andato}."},
+  {t:"fix", s:"Ieri Marco e Giulia sono state al parco.", wrong:"sono state", inf:"essere", ans:"sono stati", en:"Yesterday Marco and Giulia were at the park.",
+   why:"A boy and a girl together = a mixed group, so -i: {sono stati}. -e is for girls only."}
+]},
+{ id:106, key:"q2", fixTense:"imperfetto", part:2, tense:"impf", title:"Imperfetto (regular)", dir:"Type the imperfetto of the verb in parentheses.", items:[
+  {t:"type", s:"Da piccola, Giulia ___ in una casa grande.", inf:"abitare", ans:"abitava", en:"As a little girl, Giulia lived in a big house.",
+   why:"Imperfetto of -are verbs: -avo, -avi, -ava… Giulia = {lei}: {abitava}."},
+  {t:"type", s:"Da piccoli, noi ___ i cartoni animati ogni mattina.", inf:"guardare", ans:"guardavamo", en:"As kids, we watched cartoons every morning.",
+   why:"For {noi}: {guardavamo} (-avamo)."},
+  {t:"pick", s:"Quando ero piccolo, io ___ molto.", inf:"dormire", opts:["dormivo","dormiva","dormivi","dormivamo"], ans:"dormivo", en:"When I was little, I slept a lot.",
+   why:"For {io}, the imperfetto ends in -vo: {dormivo}."},
+  {t:"type", s:"Da piccoli, ogni estate Marco e Luca ___ al mare.", inf:"andare", ans:"andavano", en:"As kids, every summer Marco and Luca went to the beach.",
+   why:"{andare} is regular in the imperfetto. For {loro}: {andavano}."},
+  {t:"fix", s:"Da piccolo, Luca leggevano tanti fumetti.", wrong:"leggevano", inf:"leggere", ans:"leggeva", en:"As a little boy, Luca read lots of comics.",
+   why:"{leggevano} is the {loro} form. Luca = {lui}: {leggeva}."},
+  {t:"en2it", en:"We used to live in Naples.", tag:"imperfetto", inf:"abitare", ans:"abitavamo", answers:["Abitavamo a Napoli.","Noi abitavamo a Napoli."],
+   why:"“Used to” = imperfetto. For {noi}: {abitavamo}. With a city, “in” is {a}."},
+  {t:"type", s:"Da bambini, voi ___ con la nonna ogni domenica?", inf:"cucinare", ans:"cucinavate", en:"As kids, did you all cook with Grandma every Sunday?",
+   why:"For {voi}: {cucinavate} (-avate)."},
+  {t:"pick", s:"Da piccola, Sara ___ il pianoforte.", inf:"studiare", opts:["studiava","studiavi","studiavano","studiavo"], ans:"studiava", en:"As a little girl, Sara studied piano.",
+   why:"Sara = {lei}: {studiava}."},
+  {t:"type", s:"Quando eravamo piccoli, noi ___ le lettere ai nonni.", inf:"scrivere", ans:"scrivevamo", en:"When we were little, we wrote letters to our grandparents.",
+   why:"-ere verbs: -evo, -evi, -eva… For {noi}: {scrivevamo}."},
+  {t:"fix", s:"Da piccoli, Giulia e Marco pulivamo la cucina con il papà.", wrong:"pulivamo", inf:"pulire", ans:"pulivano", en:"As kids, Giulia and Marco cleaned the kitchen with Dad.",
+   why:"Giulia e Marco = {loro}: {pulivano}. There is no -isc- in the imperfetto."}
+]},
+{ id:107, key:"q3", fixTense:"imperfetto", part:3, tense:"impf", title:"Imperfetto (irregular)", dir:"Type the imperfetto of the verb in parentheses.", items:[
+  {t:"type", s:"Da piccola, Giulia ___ molto timida.", inf:"essere", ans:"era", en:"As a little girl, Giulia was very shy.",
+   why:"{essere} is irregular: {ero, eri, era, eravamo, eravate, erano}. Giulia = {lei}: {era}."},
+  {t:"type", s:"Da piccoli, noi ___ colazione alle sette.", inf:"fare", ans:"facevamo", en:"As kids, we had breakfast at seven.",
+   why:"{fare} uses the root fac- + the -ere endings. For {noi}: {facevamo}."},
+  {t:"pick", s:"Da piccolo, Luca ___ il latte ogni sera.", inf:"bere", opts:["beveva","bevevano","bevevi","bevevo"], ans:"beveva", en:"As a little boy, Luca drank milk every evening.",
+   why:"{bere} uses the root bev-. Luca = {lui}: {beveva}."},
+  {t:"type", s:"Quando eri piccolo, tu ___ sempre la verità?", inf:"dire", ans:"dicevi", en:"When you were little, did you always tell the truth?",
+   why:"{dire} uses the root dic-. For {tu}: {dicevi}."},
+  {t:"fix", s:"Da piccoli, Marco e Luca eravamo grandi amici.", wrong:"eravamo", inf:"essere", ans:"erano", en:"As kids, Marco and Luca were great friends.",
+   why:"{eravamo} is the {noi} form. Marco e Luca = {loro}: {erano}."},
+  {t:"en2it", en:"We were at home.", tag:"imperfetto", inf:"essere", ans:"eravamo", answers:["Eravamo a casa.","Noi eravamo a casa."],
+   why:"For {noi}, {essere} in the imperfetto is {eravamo}. “At home” = {a casa}."},
+  {t:"type", s:"Quando ero piccola, ogni estate i nonni ___ una grande festa.", inf:"fare", ans:"facevano", en:"When I was little, every summer my grandparents threw a big party.",
+   why:"I nonni = {loro}. Root fac- + -evano: {facevano}."},
+  {t:"pick", s:"Da piccola, tu ___ sempre «grazie»?", inf:"dire", opts:["dicevi","diceva","dicevate","dicevo"], ans:"dicevi", en:"As a little girl, did you always say “thank you”?",
+   why:"For {tu}: {dicevi}."},
+  {t:"type", s:"Da piccola, io ___ sempre stanca la sera.", inf:"essere", ans:"ero", en:"As a little girl, I was always tired in the evening.",
+   why:"For {io}, {essere} in the imperfetto is {ero}."},
+  {t:"fix", s:"Da piccoli, voi bevevamo tanta acqua?", wrong:"bevevamo", inf:"bere", ans:"bevevate", en:"As kids, did you all drink lots of water?",
+   why:"{bevevamo} is the {noi} form. For {voi}: {bevevate}."}
+]},
+{ id:108, key:"q15", fixTense:"imperfetto", part:15, tense:"impf", title:"essere · avere · andare (imperfetto)", dir:"Type the imperfetto of the verb in parentheses.", items:[
+  {t:"type", s:"Da piccolo, Marco ___ un cane.", inf:"avere", ans:"aveva", en:"As a little boy, Marco had a dog.",
+   why:"{avere} is regular in the imperfetto. Marco = {lui}: {aveva}."},
+  {t:"type", s:"Da piccoli, ogni estate noi ___ in montagna.", inf:"andare", ans:"andavamo", en:"As kids, every summer we went to the mountains.",
+   why:"For {noi}: {andavamo}."},
+  {t:"pick", s:"Da piccole, Giulia e Sara ___ sempre insieme.", inf:"essere", opts:["erano","eravamo","era","eravate"], ans:"erano", en:"As little girls, Giulia and Sara were always together.",
+   why:"Giulia e Sara = {loro}: {erano}."},
+  {t:"type", s:"Da piccolo, io ___ paura del buio.", inf:"avere", ans:"avevo", en:"As a little boy, I was afraid of the dark.",
+   why:"Fear uses {avere}: {avere paura}. For {io}: {avevo}."},
+  {t:"fix", s:"Da piccola, Sara andavano a scuola a piedi.", wrong:"andavano", inf:"andare", ans:"andava", en:"As a little girl, Sara walked to school.",
+   why:"{andavano} is the {loro} form. Sara = {lei}: {andava}."},
+  {t:"en2it", en:"I used to have a cat.", tag:"imperfetto", inf:"avere", ans:"avevo", answers:["Avevo un gatto.","Io avevo un gatto."],
+   why:"“Used to” = imperfetto. For {io}: {avevo}. “A cat” = {un gatto}."},
+  {t:"type", s:"Da bambini, voi ___ al parco ogni domenica?", inf:"andare", ans:"andavate", en:"As kids, did you all go to the park every Sunday?",
+   why:"For {voi}: {andavate}."},
+  {t:"pick", s:"Quando io avevo sei anni, tu ___ dieci anni.", inf:"avere", opts:["avevi","aveva","avevo","avevate"], ans:"avevi", en:"When I was six, you were ten.",
+   why:"Age uses {avere}. For {tu}: {avevi}."},
+  {t:"type", s:"Da piccolo, Luca ___ molto timido.", inf:"essere", ans:"era", en:"As a little boy, Luca was very shy.",
+   why:"Luca = {lui}: {era}."},
+  {t:"fix", s:"Da piccoli, Marco e Luca aveva sempre fame.", wrong:"aveva", inf:"avere", ans:"avevano", en:"As kids, Marco and Luca were always hungry.",
+   why:"{aveva} is the {lui/lei} form. Marco e Luca = {loro}: {avevano}."}
+]},
+{ id:109, key:"q7", fixTense:"futuro", part:7, tense:"fut", title:"Futuro (regular)", dir:"Type the futuro of the verb in parentheses.", items:[
+  {t:"type", s:"Domani io ___ la cucina.", inf:"pulire", ans:"pulirò", en:"Tomorrow I will clean the kitchen.",
+   why:"Futuro = the infinitive without the final -e + the endings: {pulir-} + {-ò} = {pulirò}."},
+  {t:"type", s:"La settimana prossima noi ___ per l'esame.", inf:"studiare", ans:"studieremo", en:"Next week we will study for the test.",
+   why:"-are verbs change a to e in the futuro: {studier-} + {-emo} = {studieremo}."},
+  {t:"pick", s:"Domani sera Marco ___ la pasta.", inf:"cucinare", opts:["cucinerà","cucinerò","cucineranno","cucinerai"], ans:"cucinerà", en:"Tomorrow evening Marco will cook pasta.",
+   why:"Marco = {lui}: {cucinerà}."},
+  {t:"type", s:"Sabato prossimo Giulia e Sara ___ il treno per Roma.", inf:"prendere", ans:"prenderanno", en:"Next Saturday Giulia and Sara will take the train to Rome.",
+   why:"{prender-} + {-anno} = {prenderanno} (double n)."},
+  {t:"fix", s:"Domani noi mangerete la pizza.", wrong:"mangerete", inf:"mangiare", ans:"mangeremo", en:"Tomorrow we will eat pizza.",
+   why:"{mangerete} is the {voi} form. For {noi}: {mangeremo}."},
+  {t:"en2it", en:"Next year I will write a book.", tag:"futuro", inf:"scrivere", ans:"scriverò",
+   answers:["L'anno prossimo scriverò un libro.","L'anno prossimo io scriverò un libro.","Scriverò un libro l'anno prossimo.","Io scriverò un libro l'anno prossimo."],
+   why:"“I will write” = {scriverò}. “Next year” = {l'anno prossimo}."},
+  {t:"type", s:"Fra due anni tu ___ in Italia.", inf:"abitare", ans:"abiterai", en:"In two years you will live in Italy.",
+   why:"a → e: {abiter-} + {-ai} = {abiterai}."},
+  {t:"pick", s:"Domani voi ___ la lezione con attenzione.", inf:"ascoltare", opts:["ascolterete","ascolteremo","ascolteranno","ascolterai"], ans:"ascolterete", en:"Tomorrow you all will listen to the lesson carefully.",
+   why:"For {voi}: {ascolterete}."},
+  {t:"type", s:"Domani Luca ___ il conto.", inf:"pagare", ans:"pagherà", en:"Tomorrow Luca will pay the bill.",
+   why:"-gare verbs add h to keep the hard g: {pagher-} + {-à} = {pagherà}."},
+  {t:"fix", s:"Fra un mese Marco e Luca dormirò in tenda.", wrong:"dormirò", inf:"dormire", ans:"dormiranno", en:"In a month Marco and Luca will sleep in a tent.",
+   why:"{dormirò} is the {io} form. Marco e Luca = {loro}: {dormiranno}."}
+]},
+{ id:110, key:"q8", fixTense:"futuro", part:8, tense:"fut", title:"Futuro (irregular roots)", dir:"Type the futuro of the verb in parentheses.", items:[
+  {t:"type", s:"Domani io ___ i compiti.", inf:"fare", ans:"farò", en:"Tomorrow I will do my homework.",
+   why:"{fare} keeps the a: root {far-}. For {io}: {farò}."},
+  {t:"type", s:"L'anno prossimo noi ___ in Italia.", inf:"andare", ans:"andremo", en:"Next year we will go to Italy.",
+   why:"{andare} drops a vowel: root {andr-}. For {noi}: {andremo}."},
+  {t:"pick", s:"Fra dieci anni Giulia ___ molto famosa.", inf:"essere", opts:["sarà","sarò","saranno","sarai"], ans:"sarà", en:"In ten years Giulia will be very famous.",
+   why:"{essere} has the root {sar-}. Giulia = {lei}: {sarà}."},
+  {t:"type", s:"Domani sera Marco ___ alla festa.", inf:"venire", ans:"verrà", en:"Tomorrow evening Marco will come to the party.",
+   why:"{venire} has a double r: root {verr-}. Marco = {lui}: {verrà}."},
+  {t:"fix", s:"Domani loro farà i compiti.", wrong:"farà", inf:"fare", ans:"faranno", en:"Tomorrow they will do their homework.",
+   why:"{farà} is the {lui/lei} form. For {loro}: {faranno} (double n)."},
+  {t:"en2it", en:"Tomorrow we will see Luca.", tag:"futuro", inf:"vedere", ans:"vedremo",
+   answers:["Domani vedremo Luca.","Domani noi vedremo Luca.","Vedremo Luca domani.","Noi vedremo Luca domani."],
+   why:"{vedere} drops a vowel: root {vedr-}. “We will see” = {vedremo}."},
+  {t:"type", s:"Fra un anno tu ___ guidare.", inf:"sapere", ans:"saprai", en:"In a year you will know how to drive.",
+   why:"{sapere} drops a vowel: root {sapr-}. For {tu}: {saprai}."},
+  {t:"pick", s:"Sabato prossimo voi ___ a casa?", inf:"rimanere", opts:["rimarrete","rimarremo","rimarranno","rimarrai"], ans:"rimarrete", en:"Will you all stay home next Saturday?",
+   why:"{rimanere} has a double r: root {rimarr-}. For {voi}: {rimarrete}."},
+  {t:"type", s:"Domani Giulia e Sara ___ una spremuta.", inf:"bere", ans:"berranno", en:"Tomorrow Giulia and Sara will drink a fresh juice.",
+   why:"{bere} has a double r: root {berr-}. For {loro}: {berranno}."},
+  {t:"type", s:"L'anno prossimo io ___ una bici nuova.", inf:"avere", ans:"avrò", en:"Next year I will have a new bike.",
+   why:"{avere} drops a vowel: root {avr-}. For {io}: {avrò}."}
+]},
+{ id:111, key:"q9", part:9, tense:"futpres", title:"Futuro or presente?", dir:"Presente or futuro? Read the time clue, then type the verb.", items:[
+  {t:"pick", s:"Di solito io ___ colazione alle sette.", inf:"fare", opts:["faccio","farò","fa","farà"], ans:"faccio", en:"Usually I have breakfast at seven.",
+   why:"{di solito} (usually) is a habit, so use the presente: {faccio}."},
+  {t:"pick", s:"Quando Marco ___ in America, parlerà inglese ogni giorno.", inf:"vivere", opts:["vivrà","vive","vivrò","vivranno"], ans:"vivrà", en:"When Marco lives in America, he will speak English every day.",
+   notes:{"vive":"After {quando}, when the other verb ({parlerà}) is in the futuro, use the futuro too: {vivrà}, not the presente {vive}."},
+   why:"After {quando}, when the other verb ({parlerà}) is in the futuro, use the futuro too: {vivrà}."},
+  {t:"type", s:"Guarda! Luca ___ la cucina.", inf:"pulire", ans:"pulisce", alt:["sta pulendo"], en:"Look! Luca is cleaning the kitchen.",
+   why:"{Guarda!} (Look!) means it is happening right now, so use the presente: {pulisce}."},
+  {t:"type", s:"Appena noi ___ i soldi, compreremo una casa grande.", inf:"avere", ans:"avremo", en:"As soon as we have the money, we will buy a big house.",
+   notes:{"abbiamo":"After {appena} (as soon as), when the other verb ({compreremo}) is in the futuro, use the futuro too: {avremo}, not the presente {abbiamo}."},
+   why:"After {appena} (as soon as), when the other verb ({compreremo}) is in the futuro, use the futuro too. {avere} → root {avr-}: {avremo}."},
+  {t:"pick", s:"Da due anni Sara ___ l'italiano.", inf:"studiare", opts:["studia","studierà","studiano","studierò"], ans:"studia", en:"Sara has been studying Italian for two years.",
+   why:"{da due anni} (for two years, and still now) = it started in the past and is still going on, so Italian uses the presente: {studia}."},
+  {t:"type", s:"Quando Giulia ___ a Roma, ci telefonerà.", inf:"arrivare", ans:"arriverà", en:"When Giulia gets to Rome, she will call us.",
+   notes:{"arriva":"After {quando}, when the other verb ({telefonerà}) is in the futuro, use the futuro too: {arriverà}, not the presente {arriva}."},
+   why:"After {quando}, when the other verb ({telefonerà}) is in the futuro, use the futuro too: {arriverà}."},
+  {t:"fix", s:"Adesso io avrò fame.", wrong:"avrò", inf:"avere", ans:"ho", en:"I'm hungry now.",
+   why:"{adesso} (now) + how I feel right now, so use the presente: {ho fame}."},
+  {t:"type", s:"Quando voi ___ diciotto anni, prenderete la patente.", inf:"avere", ans:"avrete", en:"When you all are eighteen, you will get your driver's license.",
+   notes:{"avete":"After {quando}, when the other verb ({prenderete}) is in the futuro, use the futuro too: {avrete}, not the presente {avete}."},
+   why:"After {quando}, when the other verb ({prenderete}) is in the futuro, use the futuro too. {avere} → root {avr-}: {avrete}."},
+  {t:"pick", s:"Di solito, quando io ___ a casa, guardo la TV.", inf:"tornare", opts:["torno","tornerò","torna","tornerà"], ans:"torno", en:"Usually, when I get home, I watch TV.",
+   why:"{di solito} + {quando} = something that happens every time, so use the presente: {torno}."},
+  {t:"fix", s:"Di solito Marco giocherà a calcio il sabato.", wrong:"giocherà", inf:"giocare", ans:"gioca", en:"Marco usually plays soccer on Saturdays.",
+   why:"{di solito} (usually) + {il sabato} (on Saturdays) = a habit, so use the presente: {gioca}."}
+]},
+{ id:112, key:"q17", fixTense:"futuro", part:17, tense:"fut", title:"essere · avere · andare (futuro)", dir:"Type the futuro of the verb in parentheses.", items:[
+  {t:"type", s:"Domani io ___ al mare.", inf:"andare", ans:"andrò", en:"Tomorrow I will go to the beach.",
+   why:"{andare} → root {andr-}. For {io}: {andrò}."},
+  {t:"type", s:"Fra un anno Marco ___ diciotto anni.", inf:"avere", ans:"avrà", en:"In a year Marco will be eighteen.",
+   why:"Age uses {avere}. Root {avr-}. Marco = {lui}: {avrà}."},
+  {t:"pick", s:"La settimana prossima noi ___ a Roma.", inf:"essere", opts:["saremo","sarete","saranno","sarò"], ans:"saremo", en:"Next week we will be in Rome.",
+   why:"{essere} → root {sar-}. For {noi}: {saremo}."},
+  {t:"type", s:"Domani tu ___ a scuola in bici?", inf:"andare", ans:"andrai", en:"Will you go to school by bike tomorrow?",
+   why:"For {tu}: {andrai}."},
+  {t:"fix", s:"Domani Giulia e Sara avrà un esame.", wrong:"avrà", inf:"avere", ans:"avranno", en:"Tomorrow Giulia and Sara will have a test.",
+   why:"{avrà} is the {lui/lei} form. Giulia e Sara = {loro}: {avranno}."},
+  {t:"en2it", en:"Tomorrow I will be at home.", tag:"futuro", inf:"essere", ans:"sarò",
+   answers:["Domani sarò a casa.","Domani io sarò a casa.","Sarò a casa domani.","Io sarò a casa domani."],
+   why:"“I will be” = {sarò}. “At home” = {a casa}."},
+  {t:"type", s:"L'estate prossima voi ___ in montagna?", inf:"andare", ans:"andrete", en:"Will you all go to the mountains next summer?",
+   why:"For {voi}: {andrete}."},
+  {t:"pick", s:"Fra due anni io ___ una macchina.", inf:"avere", opts:["avrò","avrà","avremo","avrai"], ans:"avrò", en:"In two years I will have a car.",
+   why:"For {io}: {avrò}."},
+  {t:"type", s:"Dopo la partita di domani, Luca ___ molto stanco.", inf:"essere", ans:"sarà", en:"After tomorrow's game, Luca will be very tired.",
+   why:"Luca = {lui}: {sarà}."},
+  {t:"fix", s:"L'anno prossimo Marco e Luca andrà in Italia.", wrong:"andrà", inf:"andare", ans:"andranno", en:"Next year Marco and Luca will go to Italy.",
+   why:"{andrà} is the {lui/lei} form. Marco e Luca = {loro}: {andranno}."}
+]},
+{ id:113, key:"q10", fixTense:"trapassato prossimo", part:10, tense:"fant", title:"Trapassato prossimo & futuro anteriore", dir:"Type the verb in the tense shown in parentheses.", items:[
+  {t:"type", s:"Quando Sara è arrivata, il treno ___.", inf:"partire", tag:"trapassato prossimo", ans:"era partito", alt:["era già partito"], en:"When Sara arrived, the train had left.",
+   why:"Trapassato prossimo = imperfetto of the helper + participle. {partire} takes {essere}; il treno is masculine: {era partito}."},
+  {t:"type", s:"Quando Marco ha telefonato, noi ___ la cena.", inf:"mangiare", tag:"trapassato prossimo", ans:"avevamo mangiato", alt:["avevamo già mangiato"], en:"When Marco called, we had eaten dinner.",
+   why:"{mangiare} takes {avere}. Imperfetto {avevamo} + {mangiato}."},
+  {t:"pick", s:"Quando siamo arrivati, Giulia e Sara ___.", inf:"uscire", tag:"trapassato prossimo", opts:["erano uscite","erano usciti","era uscita","eravamo uscite"], ans:"erano uscite", en:"When we arrived, Giulia and Sara had gone out.",
+   why:"{uscire} takes {essere}, so the participle agrees. Giulia e Sara are two girls: {erano uscite}."},
+  {t:"type", s:"Quando io ___ i compiti, uscirò.", inf:"finire", tag:"futuro anteriore", ans:"avrò finito", en:"When I have finished my homework, I will go out.",
+   why:"Futuro anteriore = futuro of the helper + participle: {avrò finito}. It is the action that will be done first."},
+  {t:"fix", s:"Quando Luca è arrivato, Giulia era già partito.", wrong:"era già partito", inf:"partire", ans:"era già partita", alt:["era partita"], en:"When Luca arrived, Giulia had already left.",
+   why:"With {essere}, the participle agrees with Giulia (one girl): {era già partita}."},
+  {t:"type", s:"Domani, entro le sei, Marco ___ a casa.", inf:"tornare", tag:"futuro anteriore", ans:"sarà tornato", en:"Tomorrow, by six, Marco will have come home.",
+   why:"{tornare} takes {essere}. Futuro {sarà} + {tornato} (Marco is a boy)."},
+  {t:"pick", s:"Sara non risponde. Non so perché: ___ il cellulare a casa.", inf:"lasciare", tag:"futuro anteriore, a guess", opts:["avrà lasciato","avrò lasciato","avranno lasciato","avrai lasciato"], ans:"avrà lasciato", en:"Sara isn't answering. I don't know why: she has probably left her phone at home.",
+   why:"{Non so perché} (I don't know why) shows a guess. The futuro anteriore can be a guess about the past. Sara = {lei}: {avrà lasciato}."},
+  {t:"type", s:"Quando Giulia ha chiamato, io ___ la lettera.", inf:"scrivere", tag:"trapassato prossimo", ans:"avevo scritto", en:"When Giulia called, I had written the letter.",
+   why:"{scrivere} takes {avere}; participle {scritto}: {avevo scritto}."},
+  {t:"type", s:"Fra un'ora noi ___ l'esame.", inf:"finire", tag:"futuro anteriore", ans:"avremo finito", en:"In an hour we will have finished the test.",
+   why:"Futuro of {avere} for {noi} ({avremo}) + {finito}."},
+  {t:"fix", s:"Ero stanca perché il giorno prima ero andato in montagna.", wrong:"ero andato", inf:"andare", ans:"ero andata", en:"I was tired because the day before I had gone to the mountains.",
+   why:"{stanca} shows the speaker is a girl. With {essere}, the participle agrees: {ero andata}."}
+]},
+{ id:114, key:"ppi", part:"ppi", tense:"ppi", title:"Passato prossimo vs. imperfetto", dir:"Passato prossimo or imperfetto? Type the verb in the right tense.", items:[
+  {t:"pick", s:"Da piccoli, ogni estate noi ___ in vacanza al mare.", inf:"andare", opts:["andavamo","siamo andati","andavano","sono andati"], ans:"andavamo", en:"As kids, every summer we went on vacation at the beach.",
+   why:"{ogni estate} (every summer) + {da piccoli} = a habit in the past, so use the imperfetto: {andavamo}."},
+  {t:"pick", s:"Ieri Marco ___ una camera d'albergo in cinque minuti.", inf:"prenotare", opts:["ha prenotato","prenotava","hanno prenotato","prenotavano"], ans:"ha prenotato", en:"Yesterday Marco booked a hotel room in five minutes.",
+   why:"{ieri} + {in cinque minuti} = one action, finished, so use the passato prossimo: {ha prenotato}."},
+  {t:"type", s:"Mentre Giulia ___ la valigia, è arrivato un messaggio.", inf:"fare", ans:"faceva", alt:["stava facendo"], en:"While Giulia was packing her suitcase, a message arrived.",
+   why:"{mentre} (while) = background, something in progress, so use the imperfetto: {faceva}. The message that arrived is the event: passato prossimo."},
+  {t:"type", s:"Mentre noi cercavamo un appartamento, ___ un annuncio perfetto.", inf:"trovare", ans:"abbiamo trovato", en:"While we were looking for an apartment, we found a perfect ad.",
+   why:"Finding the ad is the event that happens during the background ({cercavamo}), so use the passato prossimo: {abbiamo trovato}."},
+  {t:"pick", s:"La casa dei nonni ___ grande e aveva un bel giardino.", inf:"essere", opts:["era","è stata","erano","sono stati"], ans:"era", en:"Our grandparents' house was big and had a nice garden.",
+   why:"This describes how the house was, so use the imperfetto: {era}."},
+  {t:"why", s:"Ieri all'improvviso [ha cominciato] a piovere.", en:"Yesterday it suddenly started to rain.", tenseOf:"passato prossimo",
+   opts:["A sudden event that happened once (all'improvviso)","A habit: it happened again and again","A description of how things were","Background: something in progress"], ans:"A sudden event that happened once (all'improvviso)",
+   why:"{all'improvviso} (suddenly) marks one event that happened at one moment, so Italian uses the passato prossimo: {ha cominciato}."},
+  {t:"type", s:"L'estate scorsa Sara e Giulia ___ a Parigi per una settimana.", inf:"andare", ans:"sono andate", en:"Last summer Sara and Giulia went to Paris for a week.",
+   why:"A trip with a clear start and end ({l'estate scorsa}, {per una settimana}) is a finished event, so use the passato prossimo. {andare} takes {essere}; two girls: {sono andate}."},
+  {t:"fix", s:"Da piccolo, Luca è andato a scuola a piedi ogni giorno.", wrong:"è andato", inf:"andare", ans:"andava", en:"As a little boy, Luca walked to school every day.",
+   why:"{ogni giorno} (every day) + {da piccolo} = a habit in the past, so use the imperfetto: {andava}."},
+  {t:"pick", s:"Quando siamo arrivati in albergo, ___ molto stanchi.", inf:"essere", opts:["eravamo","saremo","erano","eravate"], ans:"eravamo", en:"When we got to the hotel, we were very tired.",
+   why:"How we felt (a state) is a description, so use the imperfetto: {eravamo}. Arriving is the event: {siamo arrivati}."},
+  {t:"why", s:"Da bambina, ogni domenica Giulia [cucinava] con la nonna.", en:"As a little girl, every Sunday Giulia cooked with Grandma.", tenseOf:"imperfetto",
+   opts:["A habit: it happened again and again (ogni domenica)","One event that happened once","A sudden event","An action with a clear end"], ans:"A habit: it happened again and again (ogni domenica)",
+   why:"{ogni domenica} (every Sunday) + {da bambina} = a habit in the past, so Italian uses the imperfetto: {cucinava}."},
+  {t:"type", s:"Mentre Marco ___ la TV, è andata via la luce.", inf:"guardare", ans:"guardava", alt:["stava guardando"], en:"While Marco was watching TV, the power went out.",
+   why:"{mentre} (while) = background, something in progress, so use the imperfetto: {guardava}. The power going out is the event: passato prossimo."},
+  {t:"type", s:"Ieri, per la prima volta, io ___ il treno da solo.", inf:"prendere", ans:"ho preso", en:"Yesterday, for the first time, I took the train by myself.",
+   why:"{ieri} + {per la prima volta} (for the first time) = one finished event, so use the passato prossimo. {prendere} → {preso}: {ho preso}."}
+]}
+];
+/* ---------- practice pool for the new section (not graded; 10 random per round) ---------- */
+const TQ_PPI_PRACTICE = [
+  {t:"pick", s:"Da piccolo, ogni mattina Marco ___ il latte.", inf:"bere", opts:["beveva","ha bevuto","bevevano","hanno bevuto"], ans:"beveva", en:"As a little boy, Marco drank milk every morning.",
+   why:"{ogni mattina} (every morning) = a habit in the past, so use the imperfetto: {beveva}."},
+  {t:"pick", s:"Ieri Sara ___ tre appartamenti in centro.", inf:"vedere", opts:["ha visto","vedeva","hanno visto","vedevano"], ans:"ha visto", en:"Yesterday Sara saw three apartments downtown.",
+   why:"{ieri} + a counted, finished action (three apartments) = passato prossimo: {ha visto}."},
+  {t:"type", s:"Mentre io ___ la cena, la mamma è tornata a casa.", inf:"cucinare", ans:"cucinavo", alt:["stavo cucinando"], en:"While I was cooking dinner, Mom came home.",
+   why:"{mentre} (while) = background, something in progress, so use the imperfetto: {cucinavo}."},
+  {t:"type", s:"Mentre Luca dormiva, il telefono ___.", inf:"suonare", ans:"ha suonato", en:"While Luca was sleeping, the phone rang.",
+   why:"The phone ringing is the event that interrupts the background ({dormiva}), so use the passato prossimo: {ha suonato}."},
+  {t:"pick", s:"L'appartamento che abbiamo visto ieri ___ tre camere e un balcone.", inf:"avere", opts:["aveva","ha avuto","avevano","hanno avuto"], ans:"aveva", en:"The apartment we saw yesterday had three bedrooms and a balcony.",
+   why:"This describes the apartment, so use the imperfetto: {aveva}."},
+  {t:"why", s:"Mentre Giulia [faceva] la doccia, è arrivata Sara.", en:"While Giulia was taking a shower, Sara arrived.", tenseOf:"imperfetto",
+   opts:["Background: something in progress (mentre)","One event that happened once","A sudden event","An action with a clear end"], ans:"Background: something in progress (mentre)",
+   why:"{mentre} (while) sets the background: an action in progress, so it is imperfetto: {faceva}."},
+  {t:"type", s:"L'estate scorsa Marco e Luca ___ in un albergo a Venezia per cinque giorni.", inf:"rimanere", ans:"sono rimasti", en:"Last summer Marco and Luca stayed in a hotel in Venice for five days.",
+   why:"{per cinque giorni} = a stay with a clear end, so use the passato prossimo. {rimanere} takes {essere} and has the participle {rimasto}; two boys: {sono rimasti}."},
+  {t:"pick", s:"Da piccole, ogni inverno Giulia e Sara ___ in montagna.", inf:"andare", opts:["andavano","sono andate","andavamo","siamo andate"], ans:"andavano", en:"As little girls, every winter Giulia and Sara went to the mountains.",
+   why:"{ogni inverno} (every winter) + {da piccole} = a habit in the past, so use the imperfetto: {andavano}."},
+  {t:"type", s:"Ieri sera io ___ la camera d'albergo in due minuti.", inf:"prenotare", ans:"ho prenotato", en:"Last night I booked the hotel room in two minutes.",
+   why:"{in due minuti} = one action, finished, so use the passato prossimo: {ho prenotato}."},
+  {t:"why", s:"La camera [era] piccola ma luminosa.", en:"The room was small but bright.", tenseOf:"imperfetto",
+   opts:["A description: how something was","One event that happened once","A sudden event","An action with a clear end"], ans:"A description: how something was",
+   why:"Describing a place (size, light, colors) uses the imperfetto: {era}."},
+  {t:"type", s:"Quando ero piccolo, la mia famiglia ___ in una casa con un giardino.", inf:"abitare", ans:"abitava", en:"When I was little, my family lived in a house with a garden.",
+   why:"{quando ero piccolo} = background and description in the past, so use the imperfetto: {abitava}."},
+  {t:"pick", s:"All'improvviso Marco ___ un rumore in cucina.", inf:"sentire", opts:["ha sentito","sentiva","hanno sentito","sentivano"], ans:"ha sentito", en:"Suddenly Marco heard a noise in the kitchen.",
+   why:"{all'improvviso} (suddenly) = one event at one moment, so use the passato prossimo: {ha sentito}."},
+  {t:"type", s:"Una volta, in vacanza, noi ___ il treno sbagliato!", inf:"prendere", ans:"abbiamo preso", en:"Once, on vacation, we took the wrong train!",
+   why:"{una volta} (once) = one finished event, so use the passato prossimo: {abbiamo preso}."},
+  {t:"type", s:"Da piccoli, ogni sabato mattina noi ___ la casa con il papà.", inf:"pulire", ans:"pulivamo", en:"As kids, every Saturday morning we cleaned the house with Dad.",
+   why:"{ogni sabato} (every Saturday) = a habit in the past, so use the imperfetto: {pulivamo}."},
+  {t:"type", s:"Sabato scorso Giulia ___ tutta la casa in tre ore.", inf:"pulire", ans:"ha pulito", en:"Last Saturday Giulia cleaned the whole house in three hours.",
+   why:"{sabato scorso} + {in tre ore} = one finished job, so use the passato prossimo: {ha pulito}."},
+  {t:"why", s:"L'anno scorso [siamo andati] in Sicilia per due settimane.", en:"Last year we went to Sicily for two weeks.", tenseOf:"passato prossimo",
+   opts:["A finished event with a clear time limit (per due settimane)","A habit: it happened again and again","A description of how things were","Background: something in progress"], ans:"A finished event with a clear time limit (per due settimane)",
+   why:"{per due settimane} gives the trip a clear end, so it is a finished event: passato prossimo, {siamo andati}."},
+  {t:"pick", s:"Mentre aspettavamo il treno, ___ un vecchio amico.", inf:"incontrare", opts:["abbiamo incontrato","incontravamo","hanno incontrato","incontravano"], ans:"abbiamo incontrato", en:"While we were waiting for the train, we ran into an old friend.",
+   why:"Running into a friend is the event during the background ({aspettavamo}), so use the passato prossimo: {abbiamo incontrato}."},
+  {t:"type", s:"Da piccola, Sara ___ paura dell'aereo.", inf:"avere", ans:"aveva", en:"As a little girl, Sara was afraid of flying.",
+   why:"A feeling or state in the past is a description, so use the imperfetto: {aveva paura}."}
+];
+
+/* =========================================================
+   TQ: graded quizzes for Aura Farm · Tempi (Italian 3 Honors), added 2026-11-12
+   Same design as the Italian 2 Quiz Time (name lock, ½ point on the 2nd try, code, 📸, 2 tries, teacher code 5697),
+   with the 3H accent rule: accents count fully. Own storage key, own code scheme (quizIds 101-114, "T" prefix).
+   ========================================================= */
+const TQ_ACCENTS = ["à","è","é","ì","ò","ù"];
+const TQ_TRIES = 2, TQ_TEACHER = "5697";
+const TQ_TYPE_LABEL = { type:"TYPE THE VERB", pick:"PICK THE FORM", fix:"FIX THE SENTENCE", en2it:"ENGLISH → ITALIAN", why:"WHY THIS TENSE?" };
+const tqByKey = k => TQ_QUIZZES.find(q=>q.key===k);
+const tqByPart = n => TQ_QUIZZES.find(q=>q.part===n);
+function tqNorm(s){ return String(s||"").normalize("NFC").replace(/[\u2019\u2018`\u00b4]/g,"'").toLowerCase()
+  .replace(/[.,;:!?«»"“”()]+/g," ").replace(/\s+/g," ").trim(); }
+function tqNoAcc(s){ return tqNorm(s).normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+/* {Italian} → <b lang="it">Italian</b>; plain text drops the braces */
+function tqH(s){ return esc(String(s||"")).replace(/\{([^}]*)\}/g,'<b lang="it">$1</b>'); }
+function tqPlain(s){ return String(s||"").replace(/[{}]/g,""); }
+function tqI(s){ return `<b lang="it">${esc(s)}</b>`; }
+function tqCap(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+function tqFine(){ try{ return matchMedia("(pointer:fine)").matches; }catch(e){ return false; } }
+function tqLsOK(){ try{ const k="auraTempi.t"; window.localStorage.setItem(k,"1"); window.localStorage.removeItem(k); return true; }catch(e){ return false; } }
+function tqQuizLabel(q){ if(q.part==="ppi") return "Passato prossimo vs. imperfetto"; const d=(typeof DISP!=="undefined" && DISP[q.part]) || ""; return (d ? d+" · " : "") + q.title; }
+
+/* ---------- answers ---------- */
+function tqFull(item){
+  if(item.t==="en2it") return item.answers[0];
+  if(item.t==="fix") return item.s.replace(item.wrong, item.ans);
+  if(item.t==="why") return item.ans;
+  let f=item.s.replace("___", item.ans);
+  if(/^[a-zà-ù]/.test(f) && item.s.indexOf("___")===0) f=tqCap(f);
+  return f;
+}
+function tqFullSentence(item){   /* the whole right sentence (for "Correct:") */
+  if(item.t==="why") return item.s.replace(/\[|\]/g,"");
+  return tqFull(item);
+}
+function tqAccepts(item){
+  if(item.t==="en2it") return item.answers.map(tqNorm);
+  if(item.t==="pick"||item.t==="why") return [tqNorm(item.ans)];
+  const base=[item.ans].concat(item.alt||[]);
+  const out=new Set(base.map(tqNorm));
+  const pre=tqNorm(item.s.split("___")[0]||"").split(" ").pop();
+  if(item.t==="type" && ["io","tu","lui","lei","noi","voi","loro"].includes(pre)) base.forEach(b=>out.add(tqNorm(pre+" "+b)));
+  base.forEach(b=>out.add(tqNorm(item.t==="fix" ? item.s.replace(item.wrong,b) : item.s.replace("___",b))));
+  return [...out];
+}
+function tqIsRight(item, got){ return tqAccepts(item).includes(tqNorm(got)); }
+function tqIsAlt(item, got){ return !!(item.alt && item.alt.length) && !tqAccepts({...item, alt:[]}).includes(tqNorm(got)); }
+
+/* ---------- WHY is a typed answer wrong? Always true, never a guess ---------- */
+function tqFutLike(item){ return ["fut","futpres","fant"].includes(item.quizTense) || (item.tag||"").includes("futuro"); }
+function tqAccentMsg(item, g, target){
+  const gw=g.split(" "), tw=tqNorm(target).split(" ");
+  for(let i=0;i<tw.length;i++){
+    const a=gw[i]||"", b=tw[i];
+    if(a===b || tqNoAcc(a)!==tqNoAcc(b)) continue;
+    const want=(b.match(/[àèéìòù]/)||[""])[0], had=(a.match(/[àèéìòùáíóú]/)||[""])[0];
+    if(b==="è" && had && had!=="è") return `Use ${tqI("è")} (the accent leans left), not ${esc(had)}.`;
+    if(b==="è") return `${tqI("è")} (is) needs the accent. Without it, ${tqI("e")} means “and”.`;
+    if(had && want && had!==want) return `Wrong accent: it is ${tqI(b)} (${want==="é"?"the accent leans right":"the accent leans left"}).`;
+    if(want && /[òà]$/.test(b) && tqFutLike(item)) return `${tqI(b)} needs the accent. Without it, it isn't the futuro.`;
+    if(want) return `${tqI(b)} needs the accent on ${esc(want)}. Accents count in this quiz.`;
+    return `Check the accent: it is ${tqI(b)}.`;
+  }
+  return `Check the accents: it is ${tqI(target)}.`;
+}
+let tqDiagFull=false;   /* true when the message already explains the rule (then the Why is not added) */
+const tqFullMsg = m => { tqDiagFull=true; return m; };
+function tqFormDiag(item, raw){
+  let g=tqNorm(raw);
+  if(item.t==="fix" && (g===tqNorm(item.wrong) || g===tqNorm(item.s))) return `You typed the mistake again.`;
+  /* typed a whole sentence or "subject + verb": keep only the words that are not already in the sentence */
+  if(g.includes(" ")){
+    const frame=new Set(tqNorm(item.t==="fix" ? item.s.replace(item.wrong," ") : item.s.replace("___"," ")).split(" "));
+    const left=g.split(" ").filter(w=>!frame.has(w) || tqNorm(item.ans).split(" ").includes(w));
+    const pron=["io","tu","lui","lei","noi","voi","loro"];
+    const core=left.filter(w=>!pron.includes(w) || tqNorm(item.ans).split(" ").includes(w)).join(" ");
+    if(core) g=core;
+  }
+  if(item.notes && item.notes[g]) return tqFullMsg(tqH(item.notes[g]));
+  const targets=[item.ans].concat(item.alt||[]);
+  for(const t of targets){ if(tqNoAcc(g.replace(/'/g,""))===tqNoAcc(t) && /'/.test(g) && !/'/.test(t)) return tqFullMsg(`Use the accent buttons: an accent is part of the letter (${tqI((t.match(/[àèéìòù]/)||["ò"])[0])}), not a letter + an apostrophe.`); }
+  for(const t of targets){ if(g!==tqNorm(t) && tqNoAcc(g)===tqNoAcc(t)) return tqFullMsg(tqAccentMsg(item, g, t)); }
+  /* futuro spelling slips (true rules, said only when the slip matches exactly) */
+  if(item.ans.indexOf(" ")<0){ const A=tqNorm(item.ans);
+    if(g.replace(/([cg])ier/,"$1er")===A && g!==A) return tqFullMsg(`-ciare and -giare verbs drop the i in the futuro: ${tqI(item.ans)}.`);
+    if(g.replace(/([cg])er/,"$1her")===A && g!==A) return tqFullMsg(`-care and -gare verbs add an h in the futuro to keep the hard sound: ${tqI(item.ans)}.`);
+    if(item.inf && item.inf.endsWith("are") && g.replace(/ar(ò|ai|à|emo|ete|anno)$/,"er$1")===A && g!==A) return tqFullMsg(`-are verbs change a to e in the futuro: ${tqI(item.ans)}.`); }
+  const v=item.inf, d=v ? tqDescribe(v, g) : "";
+  if(d) return `${tqI(g)} is ${esc(d)}.`;
+  if(v){
+    const words=g.split(" "), ansW=tqNorm(item.ans).split(" ");
+    if(ansW.length===2){
+      if(words.length===1 && tqNoAcc(words[0])===tqNoAcc(ansW[1])) return tqFullMsg(`${tqI(g)} is only the participle. This tense needs the helper verb too: ${tqI(item.ans)}.`);
+      if(words.length===1 && words[0]===ansW[0]) return tqFullMsg(`${tqI(g)} is only the helper verb. Add the participle: ${tqI(item.ans)}.`);
+      if(words.length===2){
+        const ess=TQ_ESS_VERBS.includes(v), otherAux=[].concat(...["pp","trap","fant"].map(t=>TQ_AUX[t][ess?"a":"e"]));
+        if(otherAux.includes(words[0])) return tqFullMsg(`${tqI(v)} takes ${tqI(ess?"essere":"avere")} as its helper, not ${tqI(ess?"avere":"essere")}.`);
+      }
+    }
+    if(g===v) return `${tqI(g)} is the infinitive. Change it to match the subject and the tense.`;
+    const need=tqDescribe(v, tqNorm(item.ans));
+    return tqFullMsg(need ? `${tqI(g)} is not the right form. You need ${esc(need)}.` : `${tqI(g)} is not the right form of ${tqI(v)} here.`);
+  }
+  return tqFullMsg(`${tqI(g)} isn't right here.`);
+}
+function tqSentDiag(item, raw){
+  const g=tqNorm(raw), key=tqNorm(item.ans);
+  const gw=" "+g+" ";
+  if(gw.includes(" "+key+" ")) return tqFullMsg(`Your verb ${tqI(item.ans)} is right. Check the other words.`);
+  /* an accent slip on the verb? */
+  const kw=key.split(" ");
+  const gs=g.split(" ");
+  for(let i=0;i+kw.length<=gs.length;i++){ const part=gs.slice(i,i+kw.length).join(" "); if(tqNoAcc(part)===tqNoAcc(key)) return tqFullMsg(tqAccentMsg(item, part, item.ans)); }
+  /* another real form of the same verb? */
+  if(item.inf){ const forms=tqForms(item.inf).map(x=>x.f).sort((a,b)=>b.length-a.length);
+    for(const f of forms){ if(gw.includes(" "+f+" ")) return `${tqI(f)} is ${esc(tqDescribe(item.inf,f))}. You need ${tqI(item.ans)}.`; } }
+  return `Your sentence needs the verb ${tqI(item.ans)}.`;
+}
+function tqOptDiag(item, opt){
+  if(item.notes && item.notes[opt]) return tqFullMsg(tqH(item.notes[opt]));
+  if(item.t==="why") return `Not this reason.`;
+  const d=item.inf ? tqDescribe(item.inf, tqNorm(opt)) : "";
+  return d ? `${tqI(opt)} is ${esc(d)}.` : `${tqI(opt)} is not right here.`;
+}
+function tqHelp(item, raw){
+  let diag; tqDiagFull=false;
+  if(item.t==="pick"||item.t==="why") diag=tqOptDiag(item, raw);
+  else if(item.t==="en2it") diag=tqSentDiag(item, raw);
+  else diag=tqFormDiag(item, raw);
+  return `${diag}${tqDiagFull?"":" "+tqH(item.why)}<span class="cor">Correct: ${tqI(tqFullSentence(item))}</span>`;
+}
+
+/* ---------- SAFE QUIZ STORAGE (own key; works in memory if storage is blocked) ---------- */
+const TQ_KEY="auraTempi.quiz.v1";
+const TQStore=(function(){
+  const mem={ name:"", nameLocked:false, q:{}, ppi:{best:0, done:false, plays:0} };
+  let saving=tqLsOK();
+  const n=(x,max)=>{ const v=Number(x); return Number.isFinite(v)&&v>0 ? Math.min(Math.floor(v),max) : 0; };
+  function cleanRec(r){ r=(r&&typeof r==="object")?r:{};
+    const last=(r.last && typeof r.last==="object" && typeof r.last.code==="string" && Array.isArray(r.last.misses) && Number.isFinite(r.last.half)) ? r.last : null;
+    return { used:n(r.used,99), total:n(r.total,99), inProgress:!!r.inProgress, last }; }
+  try{
+    const raw=window.localStorage.getItem(TQ_KEY);
+    if(raw){ const v=JSON.parse(raw);
+      if(v && typeof v==="object"){
+        if(typeof v.name==="string") mem.name=v.name.slice(0,40);
+        mem.nameLocked=!!v.nameLocked && !!mem.name;
+        if(v.q && typeof v.q==="object") Object.keys(v.q).forEach(k=>{ if(tqByKey(k)) mem.q[k]=cleanRec(v.q[k]); });
+        if(v.ppi && typeof v.ppi==="object") mem.ppi={ best:n(v.ppi.best,10), done:!!v.ppi.done, plays:n(v.ppi.plays,9999) };
+      } }
+  }catch(e){}
+  Object.values(mem.q).forEach(r=>{ r.inProgress=false; });   /* a try open when the page closed already counted */
+  function save(){ try{ window.localStorage.setItem(TQ_KEY, JSON.stringify(mem)); saving=true; }catch(e){ saving=false; } }
+  return {
+    get name(){ return mem.name; }, get nameLocked(){ return mem.nameLocked; },
+    setName(nm, lock){ mem.name=nm; mem.nameLocked=!!lock; save(); },
+    rec(k){ if(!mem.q[k]) mem.q[k]=cleanRec(null); return mem.q[k]; },
+    peek(k){ return mem.q[k] || null; },
+    ppi:()=>mem.ppi,
+    save, saving:()=>saving,
+    unlockAll(){ Object.values(mem.q).forEach(r=>{ r.used=0; r.inProgress=false; }); mem.nameLocked=false; save(); }
+  };
+})();
+
+/* ---------- VERIFICATION CODE (Tempi scheme; different constants from Italian 2) ----------
+   P = (quizId*25 + halfPoints)*10 + attempt     quizId 101-114, halfPoints 0-24, attempt 1-9
+   X = (P*1913 + 20771) mod 32768 -> 3 symbols;  C = (11P² + 73P + 259) mod 1024 -> 2 symbols
+   Code = "T" + XXX + "-" + CC, symbols 23456789ABCDEFGHJKLMNPQRSTUVWXYZ. Decode steps are in NOTES.md. */
+const TQ_ALPH="23456789ABCDEFGHJKLMNPQRSTUVWXYZ", TQ_MUL=1913, TQ_ADD=20771, TQ_MOD=32768;
+function tqModInv(a,m){ let t=0,nt=1,r=m,nr=a%m; while(nr){ const q=Math.floor(r/nr); [t,nt]=[nt,t-q*nt]; [r,nr]=[nr,r-q*nr]; } return ((t%m)+m)%m; }
+const TQ_INV=tqModInv(TQ_MUL,TQ_MOD);
+function tqCheckSum(P){ return (11*P*P + 73*P + 259 + 397*Math.floor(P/1024) + 151*Math.floor(P/32)) % 1024; }  /* the floor terms catch typos in the first two symbols */
+function tqB32(x,len){ let s=""; for(let i=0;i<len;i++){ s=TQ_ALPH[x%32]+s; x=Math.floor(x/32); } return s; }
+function tqMakeCode(quizId, half, attempt){
+  const a=Math.max(1,Math.min(9,attempt|0)), P=(quizId*25+half)*10+a, X=(P*TQ_MUL+TQ_ADD)%TQ_MOD;
+  return "T"+tqB32(X,3)+"-"+tqB32(tqCheckSum(P),2);
+}
+function tqReadCode(code){
+  let s=String(code||"").toUpperCase().replace(/[^0-9A-Z]/g,"").replace(/O/g,"0").replace(/I/g,"1");
+  if(s.length===6 && s[0]==="T") s=s.slice(1);
+  if(s.length!==5) return null;
+  const v=[...s].map(ch=>TQ_ALPH.indexOf(ch)); if(v.some(x=>x<0)) return null;
+  const X=v[0]*1024+v[1]*32+v[2], C=v[3]*32+v[4];
+  const P=(((X-TQ_ADD)%TQ_MOD+TQ_MOD)%TQ_MOD*TQ_INV)%TQ_MOD;
+  if(tqCheckSum(P)!==C) return null;
+  const attempt=P%10, half=Math.floor(P/10)%25, quizId=Math.floor(P/250);
+  const quiz=TQ_QUIZZES.find(q=>q.id===quizId);
+  if(!quiz || attempt<1 || half>quiz.items.length*2) return null;
+  return { quiz, half, attempt };
+}
+function tqHalf(h){ return h%2 ? (h-1)/2+".5" : String(h/2); }
+function tqPct(h,t){ return Math.round(h/2/t*100); }
+function tqNow(d){ try{ return d.toLocaleString(undefined,{year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}); }catch(e){ return d.toString(); } }
+
+/* ---------- accent buttons (insert at the caret, keep focus, sit above a phone keyboard) ---------- */
+function tqBindAccents(inp, row){
+  row.innerHTML=TQ_ACCENTS.map(c=>`<button type="button" class="acc-btn" data-ch="${c}" aria-label="Type ${c}" lang="it">${c}</button>`).join("");
+  let caret=null;
+  const keep=()=>{ try{ caret=[inp.selectionStart, inp.selectionEnd]; }catch(_){} };
+  ["keyup","keydown","click","blur","select","mouseup","touchend","input"].forEach(ev=>inp.addEventListener(ev,keep));
+  inp.addEventListener("input",()=>inp.classList.remove("bad"));
+  const insert=ch=>{
+    if(!ch || inp.disabled || inp.readOnly) return;
+    const live=document.activeElement===inp && inp.selectionStart!=null;
+    let a,z;
+    if(live){ a=inp.selectionStart; z=inp.selectionEnd; }
+    else if(caret && caret[0]!=null){ a=caret[0]; z=caret[1]!=null?caret[1]:caret[0]; }
+    else { a=z=inp.value.length; }
+    if(typeof a!=="number"||typeof z!=="number"||a<0||z<0||a>inp.value.length){ a=z=inp.value.length; }
+    inp.value=inp.value.slice(0,a)+ch+inp.value.slice(z);
+    const c=a+ch.length;
+    inp.focus({preventScroll:true});
+    try{ inp.setSelectionRange(c,c); }catch(_){}
+    caret=[c,c];
+    try{ inp.dispatchEvent(new Event("input",{bubbles:true})); }catch(_){}
+    syncTypeDock();
+  };
+  row.querySelectorAll(".acc-btn").forEach(b=>{
+    let armed=0;
+    const go=e=>{ e.preventDefault(); e.stopPropagation();
+      if(e.type==="click" && Date.now()-armed<600) return;   /* pointerdown already typed it */
+      if(e.type!=="click") armed=Date.now();
+      insert(b.dataset.ch); };
+    b.addEventListener("pointerdown", go, {passive:false});
+    b.addEventListener("click", go);
+  });
+  return { reset(){ caret=null; } };
+}
+
+/* =========================================================
+   ENTRY POINTS: badges on part cards, a quiz card in each part, the new section, the quiz list
+   ========================================================= */
+let TQ=null;            /* the quiz / practice being played */
+let tqShown=null;       /* the result on the result screen */
+let tqOrigin={kind:"home"};
+let tqCurKey=null;
+let tqAcc=null;
+function tqBadge(n){
+  try{ const q=tqByPart(n); if(!q) return ""; const r=TQStore.peek(q.key);
+    return r && r.last ? `<span class="tq-badge taken">Quiz ✓</span>` : `<span class="tq-badge">Quiz</span>`; }catch(e){ return ""; }
+}
+function tqQuizCardHTML(q){
+  const r=TQStore.rec(q.key), left=Math.max(0,TQ_TRIES-r.used), last=r.last;
+  return `<button class="round-card tq-quizcard${left?"":" locked"}" data-tqquiz="${q.key}" aria-label="Graded quiz: ${esc(tqQuizLabel(q))}">
+    <div class="rnum" aria-hidden="true">📝</div><div class="rbody"><h3>Graded quiz · ${q.items.length} questions</h3>
+    <p>${left?`After the practice. Tries left on this device: ${left} of ${TQ_TRIES}.`:"🔒 Both tries used. Ask your teacher."}</p></div>
+    <div class="rstat">${last?`Last: ${tqHalf(last.half)}/${last.total}`:"Not taken"}</div><div class="play" aria-hidden="true">▶</div></button>`;
+}
+function tqPartHook(n){
+  try{
+    const q=tqByPart(n); if(!q) return;
+    const list=$("roundList"); list.insertAdjacentHTML("beforeend", tqQuizCardHTML(q));
+    list.querySelector("[data-tqquiz]").onclick=()=>tqOpenQuiz(q.key, {kind:"part", n});
+  }catch(e){}
+}
+function tqHomeHook(){
+  try{
+    const fut=$("sec-fut"); if(!fut) return;
+    const p=TQStore.ppi(), q=tqByKey("ppi"), r=TQStore.peek("ppi");
+    const html=`<div class="sec-head sec-tqppi" id="sec-tqppi"><span class="sec-name">⚖️ Passato prossimo vs. imperfetto</span><span class="sec-sub">Midterm skill: which past tense?</span></div>
+      <button class="part-card tq-ppi" id="tqPpiCard" aria-label="Passato prossimo vs. imperfetto: practice and graded quiz">
+        <div class="pthumb" aria-hidden="true">⚖️</div>
+        <div><div class="pnum">NEW · PRACTICE ${r&&r.last?'<span class="tq-badge taken">Quiz ✓</span>':'<span class="tq-badge">Quiz</span>'} ${p.done?'<span class="done-badge">Done ✓</span>':""}</div>
+        <h3>Which past tense?</h3><div class="psub" lang="it">ieri · una volta · mentre · da piccolo</div>
+        <div class="pbar"><div class="rail"><div class="fill" style="width:${p.best*10}%"></div></div><span>${p.plays?`Best ${p.best}/10`:"Not played"}</span></div></div></button>`;
+    fut.insertAdjacentHTML("beforebegin", html);
+    $("tqPpiCard").onclick=()=>tqOpenSec();
+  }catch(e){}
+}
+function tqOpenSec(){
+  setFx(false);
+  const p=TQStore.ppi(), q=tqByKey("ppi");
+  $("tqSecList").innerHTML=`<button class="round-card" id="tqPpiPractice"><div class="rnum">1</div><div class="rbody"><h3>Practice: which past tense?</h3>
+      <p>10 sentences about the house, apartments, trips, hotels and childhood. Not graded: earn ⭐ points.</p></div>
+      <div class="rstat">${p.done?'<span class="done-badge">Done ✓</span>':"Not done"}${p.plays?`<br>Best ${p.best}/10`:""}</div><div class="play" aria-hidden="true">▶</div></button>` + tqQuizCardHTML(q);
+  $("tqPpiPractice").onclick=()=>tqStartPractice();
+  $("tqSecList").querySelector("[data-tqquiz]").onclick=()=>tqOpenQuiz("ppi", {kind:"sec"});
+  show("tqsec");
+  $("tqsec").querySelector(".tq-scroll").scrollTop=0;
+}
+function tqOpenAll(){
+  setFx(false);
+  const order=[]; SECTIONS.forEach(sec=>{ sec.parts.forEach(n=>{ const q=tqByPart(n); if(q) order.push(q); }); if(sec.k==="impf") order.push(tqByKey("ppi")); });
+  $("tqAllList").innerHTML=order.map(q=>{ const r=TQStore.rec(q.key), left=Math.max(0,TQ_TRIES-r.used);
+    return `<button class="tq-arow" data-tqquiz="${q.key}"><div><div class="l">${q.part==="ppi"?"MIDTERM SKILL":esc((DISP[q.part]||"").toUpperCase())}</div><h3 lang="it">${esc(q.title)}</h3></div>
+      <div class="s">${r.last?`Last ${tqHalf(r.last.half)}/${r.last.total}`:"Not taken"}<br>${left?`${left} of ${TQ_TRIES} tries left`:"🔒 Locked"}</div></button>`; }).join("");
+  $("tqAllList").querySelectorAll("[data-tqquiz]").forEach(b=>b.onclick=()=>tqOpenQuiz(b.dataset.tqquiz, {kind:"all"}));
+  show("tqall");
+}
+function tqGoBack(){
+  const o=tqOrigin||{kind:"home"};
+  TQ=null;
+  if(o.kind==="part" && PARTS[o.n-1]) openPart(o.n);
+  else if(o.kind==="sec") tqOpenSec();
+  else if(o.kind==="all") tqOpenAll();
+  else renderHome();
+}
+
+/* =========================================================
+   QUIZ START / LOCK
+   ========================================================= */
+function tqShowNames(){ document.querySelectorAll(".tqNameShow").forEach(el=>el.textContent=TQStore.name || "(no name yet)"); }
+function tqNameValid(nm){ return /^[\p{L}][\p{L} .'\-]{0,39}$/u.test(nm) && (nm.match(/\p{L}/gu)||[]).length>=2; }
+function tqOpenQuiz(key, origin){
+  const q=tqByKey(key); if(!q) return;
+  if(origin) tqOrigin=origin;
+  tqCurKey=key; TQ=null; setFx(false);
+  const r=TQStore.rec(key);
+  if(r.used>=TQ_TRIES){ tqShowLock(q); return; }
+  const inp=$("tqNameIn"); inp.value=TQStore.name; inp.readOnly=TQStore.nameLocked; inp.classList.remove("bad");
+  const note=$("tqNameNote"); note.style.color="";
+  note.textContent=TQStore.nameLocked ? "🔒 Your name is locked on this device. Your teacher can unlock it." : "Type your name first. It locks when the quiz starts and shows on your result.";
+  const left=Math.max(0,TQ_TRIES-r.used);
+  $("tqPickBox").innerHTML=`<button class="tq-pick" id="tqStartBtn"><div class="th" aria-hidden="true">📝</div><div><div class="tq-mech">Quiz · ${q.items.length} questions</div>
+    <h3>${esc(tqQuizLabel(q))}</h3><p>Tries left on this device: ${left} of ${TQ_TRIES}. Tap to start.</p></div></button>`;
+  $("tqStartBtn").onclick=()=>tqAskStart(q);
+  $("tqLastBtn").style.display=r.last?"":"none";
+  $("tqStoreNote").style.display=TQStore.saving()?"none":"";
+  show("tqhome"); tqShowNames();
+  $("tqhome").querySelector(".tq-scroll").scrollTop=0;
+}
+function tqAskStart(q){
+  const r=TQStore.rec(q.key);
+  if(r.used>=TQ_TRIES){ tqShowLock(q); return; }
+  const inp=$("tqNameIn"), nm=inp.value.replace(/\s+/g," ").trim();
+  if(!tqNameValid(nm)){
+    const note=$("tqNameNote"); note.style.color="#ffc2cd";
+    note.textContent="Please type your first and last name before you start (letters only).";
+    inp.classList.add("bad"); inp.focus(); return;
+  }
+  inp.classList.remove("bad");
+  $("tqStartInfo").innerHTML=`Name: <b>${esc(nm)}</b><br>Quiz: <b>${esc(tqQuizLabel(q))}</b><br>This is try ${r.used+1} of ${TQ_TRIES} on this device. It counts as soon as you start.<br>Your name locks now. No hints. Accents count. A wrong answer gets one second try for ½ point.`;
+  $("tqStartYes").onclick=()=>{ closeModal("tqStartModal"); tqStartQuiz(q, nm); };
+  openModal("tqStartModal");
+  setTimeout(()=>{ try{ $("tqStartYes").focus(); }catch(e){} }, 40);
+}
+function tqShowLock(q){
+  tqCurKey=q.key;
+  show("tqlock"); tqShowNames();
+  $("tqLockTitle").innerHTML=`${esc(tqQuizLabel(q))} is locked`;
+  $("tqLockCode").value=""; $("tqLockFb").className="tq-fb"; $("tqLockFb").textContent="";
+  $("tqLockLast").style.display=TQStore.rec(q.key).last?"":"none";
+}
+
+/* =========================================================
+   PLAY (graded quiz, or practice in the new section)
+   ========================================================= */
+function tqStartQuiz(q, nm){
+  const r=TQStore.rec(q.key);
+  if(r.used>=TQ_TRIES){ tqShowLock(q); return; }
+  TQStore.setName(nm, true);
+  r.used++; r.total=Math.min(99,r.total+1); r.inProgress=true; TQStore.save();
+  TQ={ quiz:q, items:q.items.map(it=>({...it, quizTense:q.tense})), i:0, phase:"answer", res:[], attempt:r.total, practice:false, sel:null, shownAt:0, streak:0 };
+  tqEnterPlay();
+}
+function tqStartPractice(){
+  const pool=shuffle(TQ_PPI_PRACTICE).slice(0,10).map(it=>({...it, quizTense:"ppi"}));
+  TQ={ quiz:{key:"ppi-practice", title:"Practice: which past tense?", dir:tqByKey("ppi").dir, tense:"ppi"}, items:pool, i:0, phase:"answer", res:[], practice:true, sel:null, shownAt:0, streak:0, pts:0 };
+  tqOrigin={kind:"sec"};
+  tqEnterPlay();
+}
+function tqEnterPlay(){
+  show("tqplay");
+  $("tqNameBar").classList.toggle("tq-hide", TQ.practice);
+  document.querySelector("#tqplay .tq-pts").classList.toggle("tq-hide", !TQ.practice);
+  $("tqLeave").setAttribute("aria-label", TQ.practice ? "Leave the practice" : "Leave the quiz");
+  tqShowNames(); tqRender();
+}
+function tqItem(){ return TQ.items[TQ.i]; }
+function tqTyped(item){ return item.t==="type"||item.t==="fix"||item.t==="en2it"; }
+function tqRender(){
+  const item=tqItem(), n=TQ.items.length;
+  $("tqCount").textContent=(TQ.practice?"Practice · ":"")+`Question ${TQ.i+1} of ${n}`;
+  $("tqProg").style.width=`${TQ.i/n*100}%`;
+  $("tqType").textContent=TQ_TYPE_LABEL[item.t];
+  $("tqDir").textContent = item.t==="type" ? (TQ.quiz.dir||"Type the verb.")
+    : item.t==="fix" && TQ.quiz.fixTense ? `One verb in this sentence is wrong (it is underlined). Type the correct ${TQ.quiz.fixTense} form.`
+    : TQ_DIR[item.t];
+  $("tqWho").textContent = item.who ? `💬 ${item.who} says:` : "";
+  const P=$("tqPrompt"), E=$("tqEn");
+  const inf = item.inf ? ` <span class="inf">(${esc(item.inf)}${item.tag?" · "+esc(item.tag):""})</span>` : "";
+  if(item.t==="type"||item.t==="pick"){
+    P.innerHTML=esc(item.s).replace("___",`<span class="blank" id="tqBlank" aria-label="blank">&nbsp;</span>`)+(item.t==="type"||item.tag?inf:` <span class="inf">(${esc(item.inf)})</span>`);
+    P.lang="it"; E.className="tq-en"; E.textContent=item.en;
+  } else if(item.t==="fix"){
+    P.innerHTML=esc(item.s).replace(esc(item.wrong),`<span class="wrong">${esc(item.wrong)}</span>`);
+    P.lang="it"; E.className="tq-en"; E.textContent=item.en;
+  } else if(item.t==="why"){
+    P.innerHTML=esc(item.s).replace(/\[([^\]]+)\]/,'<span class="mark">$1</span>');
+    P.lang="it"; E.className="tq-en"; E.innerHTML=`${esc(item.en)}<br><span class="tag">The underlined verb is in the ${esc(item.tenseOf)}.</span>`;
+  } else {
+    P.innerHTML=""; P.removeAttribute("lang"); E.className="tq-en big";
+    E.innerHTML=`${esc(item.en)} <span class="tag">(${item.inf?esc(item.inf)+" · ":""}${esc(item.tag)})</span>`;
+  }
+  TQ.phase="answer"; TQ.sel=null;
+  const typed=tqTyped(item);
+  $("tqTypeWrap").classList.toggle("tq-hide", !typed);
+  $("tqAcc").classList.toggle("tq-hide", !typed);
+  $("tqClear").classList.toggle("tq-hide", !typed);
+  tqRenderOpts(item, item.opts ? (TQ.practice ? shuffle(item.opts) : tqFixedOrder(item.opts, TQ.i)) : null);
+  const inp=$("tqIn"); inp.value=""; inp.disabled=false; inp.classList.remove("bad"); tqAcc && tqAcc.reset();
+  inp.placeholder = item.t==="en2it" ? "Type the Italian sentence" : item.t==="fix" ? "Type the correct form" : "Type the verb";
+  tqButtons("check");
+  tqFb("info", typed ? "Type your answer, then Check. Accents count." : "Tap one answer, then Check.");
+  $("tqBody").scrollTop=0;
+  try{ fxTempo(qTempo(TQ.i, n)); }catch(e){}
+  if(typed && tqFine()) setTimeout(()=>{ if(TQ && CUR==="tqplay" && !modalOpen()) inp.focus({preventScroll:true}); }, 30);
+  syncTypeDock();
+}
+/* graded quizzes keep one fixed order for everyone (the answer is not always first); practice shuffles */
+function tqFixedOrder(opts, i){ const k=(i*7+3)%opts.length; return opts.slice(k).concat(opts.slice(0,k)); }
+function tqRenderOpts(item, opts, shuffleIt){
+  const box=$("tqOpts"); box.innerHTML=""; box.classList.toggle("reasons", item.t==="why");
+  if(!opts) return;
+  const order = shuffleIt ? shuffle(opts) : opts;
+  order.forEach(o=>{ const b=document.createElement("button"); b.type="button"; b.className="tq-opt"; b.textContent=o; b.dataset.v=o;
+    if(item.t!=="why") b.lang="it";
+    b.onclick=()=>{ if(!TQ || (TQ.phase!=="answer"&&TQ.phase!=="retry") || b.disabled) return;
+      box.querySelectorAll(".tq-opt").forEach(x=>{ x.classList.remove("sel"); x.setAttribute("aria-pressed","false"); });
+      b.classList.add("sel"); b.setAttribute("aria-pressed","true"); TQ.sel=o;
+      const bl=$("tqBlank"); if(bl && item.t==="pick") bl.textContent=o; };
+    b.setAttribute("aria-pressed","false");
+    box.appendChild(b); });
+}
+function tqButtons(mode){
+  $("tqCheck").classList.toggle("tq-hide", mode!=="check");
+  $("tqClear").classList.toggle("tq-hide", mode!=="check" || !tqTyped(tqItem()));
+  $("tqRetry").classList.toggle("tq-hide", mode!=="retry");
+  $("tqNext").classList.toggle("tq-hide", mode!=="next");
+  $("tqRetry").textContent = TQ.practice ? "Try again" : "Try again for ½ point";
+  const lock=mode!=="check";
+  $("tqIn").disabled=lock;
+  $("tqAcc").querySelectorAll("button").forEach(b=>b.disabled=lock);
+  $("tqOpts").querySelectorAll(".tq-opt").forEach(b=>{ if(lock) b.disabled=true; });
+  TQ.shownAt=performance.now();
+  const focus=id=>setTimeout(()=>{ const b=$(id); if(b && !b.classList.contains("tq-hide")) b.focus({preventScroll:true}); },60);
+  if(mode==="next") focus("tqNext");
+  if(mode==="retry") focus("tqRetry");
+}
+function tqFb(kind, html){ const f=$("tqFb"); f.className="tq-fb"+(kind?" "+kind:""); f.innerHTML=html;
+  requestAnimationFrame(()=>{ try{ const b=$("tqBody"), r=f.getBoundingClientRect(), br=b.getBoundingClientRect(); if(r.bottom>br.bottom) b.scrollTop += Math.min(r.bottom-br.bottom, r.top-br.top); }catch(e){} }); }
+function tqGot(item){ return tqTyped(item) ? $("tqIn").value : (TQ.sel||""); }
+function tqShowGot(item, raw){ return String(raw||"").replace(/\s+/g," ").trim(); }
+function tqAward(anchor){
+  if(!TQ.practice) return;
+  TQ.streak++;
+  const bonus = TQ.streak>=PTS_STREAK_FROM ? PTS_STREAK : 0, add=PTS_BASE+bonus;
+  P.pts=Math.min(999999, P.pts+add); TQ.pts+=add; saveP(); syncPts();
+  try{ AuraFX.burst(anchor, "+"+PTS_BASE, bonus?"🔥 +"+bonus+" streak bonus":""); document.querySelectorAll(".screen.active .pts-pill").forEach(p=>AuraFX.bump(p)); }catch(e){}
+}
+function tqMarkOpt(v, cls){ const b=[...$("tqOpts").querySelectorAll(".tq-opt")].find(x=>x.dataset.v===v); if(b){ b.classList.remove("sel"); b.classList.add(cls); } return b; }
+function tqCheck(){
+  if(!TQ || (TQ.phase!=="answer" && TQ.phase!=="retry")) return;
+  const item=tqItem(), raw=tqGot(item), typed=tqTyped(item);
+  if(!tqNorm(raw)){ tqFb("info", typed ? "Type your answer first, then Check." : "Tap one answer first, then Check."); if(typed) $("tqIn").focus(); return; }
+  const ok=tqIsRight(item, raw), shown=tqShowGot(item, raw), alt=ok && tqIsAlt(item, raw);
+  const rightLine=`${tqI(tqFullSentence(item))}${item.t==="why"?"":" = "+esc(item.en)}`;
+  const altLine = alt && item.altNote ? `<span class="cor">${tqH(item.altNote)}</span>` : "";
+  const anchor = typed ? $("tqIn") : (tqMarkOpt(raw, ok?"right":"tried") || $("tqCheck"));
+  if(TQ.phase==="answer"){
+    if(ok){ TQ.res[TQ.i]={credit:1, got:shown}; beep("ok"); flash(true); tqAward(anchor);
+      tqFb("ok", `<span class="t">✓ Right!${TQ.practice?"":" 1 point."}</span>${rightLine}${item.t==="why"?`<span class="cor">${tqH(item.why)}</span>`:""}${altLine}`);
+      TQ.phase="done"; tqButtons("next");
+      if(TQ.practice){ const idx=TQ.i, cur=TQ; fxAuto(()=>{ if(TQ===cur && TQ.i===idx && TQ.phase==="done" && CUR==="tqplay") tqNext(true); }, AUTO_MS, $("tqNext")); }
+    } else {
+      TQ.res[TQ.i]={credit:0, got:shown, why:tqPlain(item.why)}; TQ.streak=0; beep("bad"); flash(false); if(typed) $("tqIn").classList.add("bad");
+      tqFb("bad", `<span class="t">✗ Not quite.</span>${tqHelp(item, raw)}`); TQ.phase="help"; tqButtons("retry");
+    }
+  } else {
+    const r=TQ.res[TQ.i]; r.got2=shown;
+    if(ok){ r.credit = TQ.practice ? 0 : 0.5; beep("ok"); flash(true);
+      tqFb("ok", `<span class="t">✓ Right on the second try${TQ.practice?".":": ½ point."}</span>${rightLine}${altLine}`); }
+    else { r.credit=0; beep("bad"); flash(false); if(typed) $("tqIn").classList.add("bad");
+      if(!typed) tqMarkOpt(item.ans,"right");
+      tqFb("bad", `<span class="t">✗ Still not right${TQ.practice?".":": 0 points for this one."}</span>${tqHelp(item, raw)}`); }
+    TQ.phase="done"; tqButtons("next");
+  }
+}
+function tqRetry(){
+  if(!TQ || TQ.phase!=="help" || performance.now()-TQ.shownAt<700) return;
+  const item=tqItem();
+  TQ.phase="retry"; TQ.sel=null;
+  if(tqTyped(item)){ const inp=$("tqIn"); inp.value=""; inp.classList.remove("bad"); tqAcc && tqAcc.reset(); }
+  else { const tried=[...$("tqOpts").querySelectorAll(".tq-opt.tried")].map(b=>b.dataset.v);
+    tqRenderOpts(item, item.opts, true); tried.forEach(v=>{ const b=tqMarkOpt(v,"tried"); if(b) b.disabled=true; }); const bl=$("tqBlank"); if(bl) bl.innerHTML="&nbsp;"; }
+  tqButtons("check");
+  $("tqOpts").querySelectorAll(".tq-opt.tried").forEach(b=>b.disabled=true);
+  tqFb("warn", `<span class="t">${TQ.practice?"Try again.":"Second try for ½ point."}</span>Answer from memory. Accents count.`);
+  if(tqTyped(item)) $("tqIn").focus({preventScroll:true});
+  const bl=$("tqBlank"); if(bl && item.t==="type") bl.innerHTML="&nbsp;";
+}
+function tqNext(fromAuto){
+  if(!TQ || TQ.phase!=="done") return;
+  if(!fromAuto && performance.now()-TQ.shownAt<400) return;
+  fxCancelAuto();
+  TQ.i++;
+  if(TQ.i>=TQ.items.length) (TQ.practice ? tqFinishPractice() : tqFinishQuiz()); else tqRender();
+}
+function tqPromptText(item){
+  const inf=item.inf?` (${item.inf}${item.tag?" · "+item.tag:""})`:"";
+  if(item.t==="type") return (item.who?`${item.who}: `:"")+item.s+inf;
+  if(item.t==="pick") return (item.who?`${item.who}: `:"")+item.s+` (${item.inf}${item.tag?" · "+item.tag:""})`;
+  if(item.t==="fix") return `Fix: ${item.s} (the mistake: ${item.wrong})`;
+  if(item.t==="why") return `Why this tense? ${item.s.replace(/\[|\]/g,"")}`;
+  return `In Italian: ${item.en}`+(item.who?` (${item.who} speaking)`:"");
+}
+function tqMisses(items, res){
+  const misses=[]; let half=0;
+  items.forEach((item,i)=>{
+    const r=res[i] || {credit:0, got:"(not answered)", skipped:true};
+    half+=Math.round(r.credit*2);
+    if(r.credit<1) misses.push({ n:i+1, prompt:tqPromptText(item), got:r.got||"(blank)", got2:r.got2||"", correct:tqFullSentence(item), credit:r.credit, skipped:!!r.skipped, why:tqPlain(item.why) });
+  });
+  return {misses, half};
+}
+function tqFinishQuiz(){
+  fxCancelAuto();
+  const q=TQ.quiz, {misses, half}=tqMisses(TQ.items, TQ.res), d=new Date();
+  const R={ quizId:q.id, key:q.key, title:tqQuizLabel(q), name:TQStore.name, half, total:q.items.length, attempt:TQ.attempt, triesUsed:TQStore.rec(q.key).used,
+    date:tqNow(d), iso:d.toISOString(), code:tqMakeCode(q.id, half, TQ.attempt), misses };
+  const rec=TQStore.rec(q.key); rec.inProgress=false; rec.last=R; TQStore.save();
+  TQ=null;
+  beep("win");
+  tqShowEnd(R);
+}
+function tqFinishPractice(){
+  fxCancelAuto();
+  const {misses, half}=tqMisses(TQ.items, TQ.res), score=Math.floor(half/2), pts=TQ.pts;
+  const p=TQStore.ppi(); p.plays=Math.min(9999,p.plays+1); p.best=Math.max(p.best, score); if(score>=6) p.done=true; TQStore.save();
+  const R={ practice:true, title:"Practice: which past tense?", half:score*2, total:TQ.items.length, misses, pts };
+  TQ=null;
+  beep(score>=6?"win":"soft");
+  tqShowEnd(R);
+}
+function tqShowEnd(R){
+  tqShown=R;
+  show("tqend");
+  const prac=!!R.practice;
+  $("tqEndName").classList.toggle("tq-hide", prac);
+  $("tqEndNameTxt").textContent=R.name||"(no name)";
+  $("tqEndPill").textContent = prac ? "⚖️ Practice result" : "📝 Quiz result";
+  $("tqResQuiz").textContent = prac ? "PRACTICE · NOT GRADED" : "QUIZ · "+R.title.toUpperCase();
+  $("tqResScore").textContent = prac ? `${R.half/2} / ${R.total}` : `${tqHalf(R.half)} / ${R.total}`;
+  $("tqResMeta").innerHTML = prac ? `${R.half/2>=6?"Done ✓ ":""}⭐ +${R.pts} points this round · ${P.pts} total` : `${tqPct(R.half,R.total)}% · Finished ${esc(R.date)}`;
+  ["tqCodeRow","tqCodeNote","tqShotRow","tqShotNote"].forEach(id=>$(id).classList.toggle("tq-hide", prac));
+  if(!prac){ $("tqResCode").textContent=R.code; $("tqResTry").textContent=`Try ${Math.min(R.triesUsed||1,TQ_TRIES)} of ${TQ_TRIES}`; }
+  $("tqMissHead").textContent = R.misses.length ? `Missed items (${R.misses.length})` : (prac ? "Missed items: none. Great job!" : "Missed items: none. Perfect score!");
+  $("tqMissList").innerHTML=R.misses.map(m=>`<li><div class="p">${m.n}. <span lang="it">${esc(m.prompt)}</span></div>
+    <div class="y">Your answer: <span lang="it">${esc(m.got)}</span>${m.got2?` · 2nd try: <span lang="it">${esc(m.got2)}</span>`:""}</div>
+    <div class="c">Correct: <b lang="it">${esc(m.correct)}</b></div>
+    <div class="w">Why: ${esc(m.why)}</div>
+    <div class="h">${prac?"Practice: no points lost":m.credit===0.5?"½ point (right on the 2nd try)":(m.skipped?"0 points (not answered)":"0 points")}</div></li>`).join("");
+  $("tqEndActs").innerHTML = prac ? `<button class="big-btn" id="tqAgain" type="button">▶ Practice again</button><button class="ghost-btn" id="tqEndBack2" type="button">Back</button>`
+    : `<button class="ghost-btn" id="tqEndBack2" type="button">Back</button>`;
+  if(prac) $("tqAgain").onclick=()=>tqStartPractice();
+  $("tqEndBack2").onclick=()=>tqGoBack();
+  $("tqEndFb").style.display="none";
+  $("tqEndBody").scrollTop=0;
+}
+function tqResultText(R){
+  const lines=[`Aura Farm · Tempi quiz: ${R.title}`, `Name: ${R.name}`, `Score: ${tqHalf(R.half)} / ${R.total} (${tqPct(R.half,R.total)}%)`,
+    `Try ${Math.min(R.triesUsed||1,TQ_TRIES)} of ${TQ_TRIES} (device try #${R.attempt}) · ${R.date}`, `Verification code: ${R.code}`, R.misses.length?"Missed items:":"Missed items: none"];
+  R.misses.forEach(m=>lines.push(`${m.n}. ${m.prompt} | Your answer: ${m.got}${m.got2?` | 2nd try: ${m.got2}`:""} | Correct: ${m.correct} | ${m.credit===0.5?"1/2 point":"0 points"} | Why: ${m.why}`));
+  return lines.join("\n");
+}
+function tqEndMsg(kind, html){ const f=$("tqEndFb"); f.style.display=""; f.className="tq-fb "+kind; f.innerHTML=html; }
+function tqCopy(){
+  const R=tqShown; if(!R || R.practice) return;
+  const text=tqResultText(R);
+  const done=()=>tqEndMsg("ok","✓ Copied. Paste it in Google Classroom if your teacher asks for text.");
+  const fallback=()=>{
+    let ok=false;
+    try{ const ta=document.createElement("textarea"); ta.value=text; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.left="-9999px"; document.body.appendChild(ta); ta.select(); ok=document.execCommand && document.execCommand("copy"); ta.remove(); }catch(e){ ok=false; }
+    if(ok) done(); else { $("tqCopyText").value=text; openModal("tqCopyModal"); setTimeout(()=>{ try{ $("tqCopyText").focus(); $("tqCopyText").select(); }catch(e){} },50); }
+  };
+  try{ if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback(); }catch(e){ fallback(); }
+}
+
+/* ---------- 📸 the result card drawn onto a canvas (no libraries, works offline) ---------- */
+function tqDrawResult(R){
+  const W=1080, PAD=64, MAXW=W-PAD*2, FF='system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif', F=(w,s)=>`${w} ${s}px ${FF}`;
+  const cv=document.createElement("canvas"), x=cv.getContext("2d");
+  const wrap=(t,font,maxW)=>{ x.font=font; const out=[]; String(t).split("\n").forEach(par=>{ let line=""; par.split(" ").forEach(w=>{ const test=line?line+" "+w:w; if(x.measureText(test).width>maxW && line){ out.push(line); line=w; } else line=test; }); out.push(line); }); return out; };
+  const blocks=[], add=(t,font,color,size,after=8,indent=0)=>blocks.push({kind:"text", lines:wrap(t,font,MAXW-indent), font, color, lh:Math.round(size*1.3), after, indent});
+  add("Name",F(700,28),"#c3b8d8",28,2); add(R.name||"(no name)",F(800,46),"#ffffff",46,18);
+  add("Quiz",F(700,28),"#c3b8d8",28,2); add(R.title,F(800,36),"#ffffff",36,18);
+  add("Score",F(700,28),"#c3b8d8",28,2); add(`${tqHalf(R.half)} / ${R.total}   (${tqPct(R.half,R.total)}%)`,F(900,68),"#ffd166",68,10);
+  add(`Try ${Math.min(R.triesUsed||1,TQ_TRIES)} of ${TQ_TRIES} on this device · Finished ${R.date}`,F(600,28),"#ffffff",28,22);
+  blocks.push({kind:"code", h:96, after:30});
+  add(R.misses.length?`Missed items (${R.misses.length})`:"Missed items: none. Perfect score!",F(800,34),"#ffd166",34,12);
+  R.misses.forEach(m=>{
+    blocks.push({kind:"rule", h:2, after:14});
+    add(`${m.n}. ${m.prompt}`,F(800,30),"#ffffff",30,4);
+    add(`Your answer: ${m.got}${m.got2?`  ·  2nd try: ${m.got2}`:""}`,F(600,28),"#ffc2cd",28,4,28);
+    add(`Correct: ${m.correct}`,F(700,28),"#b9ffd3",28,4,28);
+    add(`Why: ${m.why}`,F(500,26),"#e8e0ff",26,4,28);
+    add(m.credit===0.5?"½ point (right on the 2nd try)":(m.skipped?"0 points (not answered)":"0 points"),F(700,26),"#ffd166",26,14,28);
+  });
+  blocks.push({kind:"rule", h:2, after:18});
+  add("📸 Upload this picture to your Google Classroom assignment.",F(600,28),"#c3b8d8",28,0);
+  const HEAD=190; let H=HEAD+40; blocks.forEach(b=>{ H+=(b.kind==="text"?b.lines.length*b.lh:b.h)+b.after; }); H+=PAD;
+  cv.width=W; cv.height=H;
+  x.fillStyle="#140a22"; x.fillRect(0,0,W,H);
+  const g=x.createLinearGradient(0,0,W,HEAD); g.addColorStop(0,"#5b1f8f"); g.addColorStop(1,"#0f5e57"); x.fillStyle=g; x.fillRect(0,0,W,HEAD);
+  x.textBaseline="alphabetic"; x.fillStyle="#ffffff"; x.font=F(900,54); x.fillText("Aura Farm · Tempi · Quiz result", PAD, 92);
+  x.fillStyle="#bffcf2"; x.font=F(700,30); x.fillText("Italian 3 Honors", PAD, 144);
+  let y=HEAD+40;
+  blocks.forEach(b=>{
+    if(b.kind==="text"){ x.font=b.font; x.fillStyle=b.color; b.lines.forEach(l=>{ y+=b.lh; x.fillText(l, PAD+b.indent, y-Math.round(b.lh*0.24)); }); }
+    else if(b.kind==="code"){ x.fillStyle="#00f5d4"; x.fillRect(PAD,y,MAXW,b.h); x.fillStyle="#0a0614"; x.font=F(700,28); x.fillText("Verification code",PAD+24,y+58);
+      x.font='900 50px ui-monospace,Menlo,Consolas,"Courier New",monospace'; const cw=x.measureText(R.code).width; x.fillText(R.code, PAD+MAXW-24-cw, y+66); y+=b.h; }
+    else if(b.kind==="rule"){ x.fillStyle="rgba(255,255,255,.22)"; x.fillRect(PAD,y,MAXW,b.h); y+=b.h; }
+    y+=b.after;
+  });
+  return cv;
+}
+function tqSlug(s){ return (String(s||"student").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"")||"student").slice(0,30); }
+let tqShotURL=null;
+function tqShot(){
+  const R=tqShown; if(!R || R.practice) return;
+  let cv; try{ cv=tqDrawResult(R); }catch(e){ tqEndMsg("bad","Sorry, the picture could not be made on this device. Use your device's screenshot keys instead."); return; }
+  const fname=`AuraFarmTempi-Quiz-${tqSlug(R.key)}-${tqSlug(R.name)}-${(R.iso||"").slice(0,10)||"result"}.png`;
+  let dataURL=""; try{ dataURL=cv.toDataURL("image/png"); }catch(e){}
+  const showIt=url=>{
+    const a=document.createElement("a"); a.href=url; a.download=fname; a.style.display="none"; document.body.appendChild(a);
+    try{ a.click(); }catch(e){}
+    setTimeout(()=>a.remove(),0);
+    $("tqShotImg").src=dataURL||url;   /* the page's CSP allows data: images only (press-and-hold copy) */
+    $("tqShotMsg").textContent=`The picture “${fname}” was saved to your Downloads. Upload it to your Google Classroom assignment.`;
+    openModal("tqShotModal");
+  };
+  try{
+    if(cv.toBlob) cv.toBlob(b=>{ if(!b){ showIt(cv.toDataURL("image/png")); return; } if(tqShotURL) URL.revokeObjectURL(tqShotURL); tqShotURL=URL.createObjectURL(b); showIt(tqShotURL); }, "image/png");
+    else showIt(cv.toDataURL("image/png"));
+  }catch(e){ try{ showIt(cv.toDataURL("image/png")); }catch(e2){ tqEndMsg("bad","Sorry, the picture could not be made on this device. Use your device's screenshot keys instead."); } }
+}
+
+/* ---------- Teacher tools ---------- */
+function tqUnlock(code, fb){
+  if(String(code).trim()===TQ_TEACHER){ TQStore.unlockAll(); fb.className="tq-fb ok"; fb.textContent="✓ Unlocked. Every quiz has 2 tries again, and the name can be changed."; return true; }
+  fb.className="tq-fb bad"; fb.textContent="That teacher code is not right."; return false;
+}
+function tqTeacherCheck(){
+  const v=$("tqTCheck").value, r=tqReadCode(v), fb=$("tqTFb");
+  if(!v.trim()){ fb.className="tq-fb info"; fb.textContent="Type the student's code, for example T7KQ-M4."; return; }
+  if(!r){ fb.className="tq-fb bad"; fb.textContent="✗ Not a valid Tempi quiz code. Check the letters (a T and 5 letters/numbers, like T7KQ-M4)."; return; }
+  fb.className="tq-fb ok";
+  fb.innerHTML=`✓ Real code.<br>Quiz: <b>${esc(tqQuizLabel(r.quiz))}</b><br>Score: <b>${tqHalf(r.half)} / ${r.quiz.items.length}</b> (${tqPct(r.half,r.quiz.items.length)}%)<br>Try #${r.attempt} on the student's device`;
+}
+function tqOpenTeacher(){ $("tqTCode").value=""; $("tqTCheck").value=""; $("tqTFb").className="tq-fb"; $("tqTFb").textContent=""; openModal("tqTeacherModal"); setTimeout(()=>$("tqTCode").focus(),40); }
+
+/* ---------- leaving ---------- */
+function tqLeaveAsk(){
+  if(!TQ){ tqGoBack(); return; }
+  if(TQ.practice){
+    const started=TQ.i>0 || TQ.phase!=="answer";
+    const back=()=>{ fxCancelAuto(); TQ=null; tqOpenSec(); };
+    if(started) askConfirm("Leave this practice?","Your score for this practice won't count. Your ⭐ points stay.","Leave",false,back); else back();
+    return;
+  }
+  openModal("tqLeaveModal");
+}
+/* browser back key / phone back swipe on the quiz screens (called from the popstate handler) */
+function tqOnBack(){
+  if(CUR==="tqplay") tqLeaveAsk();
+  else if(CUR==="tqhome"||CUR==="tqlock"||CUR==="tqend") tqGoBack();
+  else renderHome();
+}
+
+/* ---------- wiring ---------- */
+(function tqWire(){
+  tqAcc=tqBindAccents($("tqIn"), $("tqAcc"));
+  $("tqIn").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); if(TQ && TQ.phase==="done") tqNext(); else if(TQ && TQ.phase==="help") tqRetry(); else tqCheck(); } });
+  const live=()=>{ const b=$("tqBlank"); if(b && CUR==="tqplay" && TQ && tqItem().t==="type") b.textContent=$("tqIn").value.trim()||"\u00a0"; };
+  $("tqIn").addEventListener("input", live);
+  $("tqCheck").onclick=tqCheck; $("tqRetry").onclick=tqRetry; $("tqNext").onclick=()=>tqNext();
+  $("tqClear").onclick=()=>{ if(!TQ||(TQ.phase!=="answer"&&TQ.phase!=="retry")) return; $("tqIn").value=""; tqAcc.reset(); live(); $("tqIn").focus(); };
+  $("tqLeave").onclick=tqLeaveAsk;
+  $("tqLeaveNo").onclick=()=>closeModal("tqLeaveModal");
+  $("tqLeaveYes").onclick=()=>{ closeModal("tqLeaveModal"); if(TQ && !TQ.practice) tqFinishQuiz(); };
+  $("tqStartNo").onclick=()=>closeModal("tqStartModal");
+  $("tqHomeBack").onclick=tqGoBack; $("tqLockBack").onclick=tqGoBack; $("tqEndBack").onclick=tqGoBack;
+  $("tqLastBtn").onclick=()=>{ const r=TQStore.rec(tqCurKey); if(r.last) tqShowEnd(r.last); };
+  $("tqLockLast").onclick=()=>{ const r=TQStore.rec(tqCurKey); if(r.last) tqShowEnd(r.last); };
+  $("tqLockPractice").onclick=()=>{ const q=tqByKey(tqCurKey); if(!q) return renderHome(); if(q.part==="ppi") tqOpenSec(); else openPart(q.part); };
+  $("tqShot").onclick=tqShot; $("tqCopy").onclick=tqCopy;
+  $("tqTeacherBtn").onclick=tqOpenTeacher; $("tqAllTeacher").onclick=tqOpenTeacher;
+  $("tqTUnlock").onclick=()=>{ if(tqUnlock($("tqTCode").value, $("tqTFb"))) tqRefreshBehind(); };
+  $("tqTCode").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); if(tqUnlock($("tqTCode").value, $("tqTFb"))) tqRefreshBehind(); } });
+  $("tqTCheckGo").onclick=tqTeacherCheck;
+  $("tqTCheck").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); tqTeacherCheck(); } });
+  const lockGo=()=>{ if(tqUnlock($("tqLockCode").value, $("tqLockFb"))) setTimeout(()=>{ if(CUR==="tqlock") tqOpenQuiz(tqCurKey); }, 1200); };
+  $("tqLockGo").onclick=lockGo;
+  $("tqLockCode").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); lockGo(); } });
+  $("tqNameIn").addEventListener("input",()=>$("tqNameIn").classList.remove("bad"));
+  $("tqNameIn").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); const q=tqByKey(tqCurKey); if(q) tqAskStart(q); } });
+  /* Enter / → on the play screen when the input is not focused */
+  document.addEventListener("keydown",e=>{
+    if(CUR!=="tqplay" || !TQ || modalOpen() || document.activeElement===$("tqIn")) return;
+    if(e.key!=="Enter") return;
+    const onBtn=(document.activeElement&&document.activeElement.tagName||"").toLowerCase()==="button";
+    if(onBtn) return;
+    e.preventDefault();
+    if(TQ.phase==="done") tqNext(); else if(TQ.phase==="help") tqRetry(); else tqCheck();
+  });
+})();
+function tqRefreshBehind(){ if(CUR==="tqhome" && tqCurKey) tqOpenQuiz(tqCurKey); else if(CUR==="tqall") tqOpenAll(); else if(CUR==="tqsec") tqOpenSec(); else if(CUR==="part") openPart(CUR_PART); else if(CUR==="home") renderHome(); }
+
+/* ---------- read-only helpers for automated tests ---------- */
+window.__tqTest = {
+  quizzes:()=>TQ_QUIZZES.map(q=>({id:q.id,key:q.key,part:q.part,tense:q.tense,title:q.title,label:tqQuizLabel(q),dir:q.dir,fixTense:q.fixTense||null,items:q.items})),
+  practice:()=>TQ_PPI_PRACTICE,
+  state:()=>TQ ? {screen:CUR, key:TQ.quiz.key, i:TQ.i, n:TQ.items.length, phase:TQ.phase, practice:TQ.practice, item:TQ.items[TQ.i], res:TQ.res} : {screen:CUR},
+  accepts:(key,i)=>tqAccepts(tqByKey(key).items[i]),
+  help:(key,i,raw)=>tqHelp({...tqByKey(key).items[i], quizTense:tqByKey(key).tense}, raw),
+  forms:v=>tqForms(v),
+  makeCode:tqMakeCode, readCode:c=>{ const r=tqReadCode(c); return r?{id:r.quiz.id,half:r.half,attempt:r.attempt}:null; },
+  shown:()=>tqShown, store:()=>{ try{ return JSON.parse(window.localStorage.getItem(TQ_KEY)); }catch(e){ return "blocked"; } },
+  canvas:()=>{ try{ return tqDrawResult(tqShown).toDataURL("image/png").length; }catch(e){ return -1; } }
 };
 
 /* ===================== FUTURO SECTION: SCREENS & TYPED ANSWERS ===================== */
